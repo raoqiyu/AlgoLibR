@@ -2,7 +2,6 @@
 
 from cmul cimport mul
 
-
 def pymul(a, b):
     return mul(a,b)
 

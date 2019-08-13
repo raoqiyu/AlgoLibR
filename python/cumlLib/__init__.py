@@ -1,4 +1,3 @@
-from cumlRao.mul import pymul
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+from cumlLib.demo.adapter import PyMyDemo
+from cumlLib.mul.mul import pymul
+

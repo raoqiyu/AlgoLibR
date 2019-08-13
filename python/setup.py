@@ -17,7 +17,7 @@ install_requires = [
 
 exc_list = []
 
-cython_files = ['cumlRao/*/*.pyx']
+cython_files = ['cumlLib/*/*.pyx']
 include_dirs = ['../cpp']
 
 extensions = [
@@ -35,7 +35,7 @@ extensions = [
 shutil.rmtree('build', ignore_errors=True)
 
 setup(name=name,
-      description='cuMLRao - RAPIDS ML Algorithms',
+      description='cumlLib - ML Algorithms',
       #long_description=open('README.md', encoding='UTF-8').read(),
       #long_description_content_type='text/markdown',
       #url='https://github.com/raoqiyu',
@@ -50,7 +50,7 @@ setup(name=name,
       setup_requires=['cython'],
       ext_modules=cythonize(extensions,
                             exclude=exc_list),
-      packages=find_packages(include=['cumlRao', 'cumlRao.*']),
+      packages=find_packages(include=['cumlLib', 'cumlLib.*']),
       license='Apache 2.0',
       install_requires=install_requires,
       #cmdclass=versioneer.get_cmdclass(),
@@ -61,4 +61,6 @@ setup(name=name,
       zip_safe=False
       )
 
-#convert_to_manylinux(name, version)
+shutil.rmtree('build', ignore_errors=True)
+shutil.rmtree('cumlLib.egg-info', ignore_errors=True)
+shutil.rmtree('dist', ignore_errors=True)
