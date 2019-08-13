@@ -1,13 +1,13 @@
 import os
 import shutil
-import versioneer
 from Cython.Build import cythonize
 from setuptools.extension import Extension
 from setuptools import setup, find_packages
 from distutils.sysconfig import get_python_lib
+from cmake_setuptools import CMakeBuildExt, CMakeExtension, \
+    convert_to_manylinux, InstallHeaders, distutils_dir_name
 
-
-name = 'cumlRao'
+name = 'cumlLib'
 version = '0.1'
 
 install_requires = [
@@ -36,25 +36,28 @@ shutil.rmtree('build', ignore_errors=True)
 
 setup(name=name,
       description='cuMLRao - RAPIDS ML Algorithms',
-      long_description=open('README.md', encoding='UTF-8').read(),
-      long_description_content_type='text/markdown',
-      url='https://github.com/raoqiyu',
-      version=versioneer.get_version(),
+      #long_description=open('README.md', encoding='UTF-8').read(),
+      #long_description_content_type='text/markdown',
+      #url='https://github.com/raoqiyu',
+      version=version,#versioneer.get_version(),
       classifiers=[
           "Intended Audience :: Developers",
           "Programming Language :: Python",
           "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7"
       ],
-      packages=find_packages(include=['cumlRao', 'cumlRao.*']),
       author="WahahR",
       setup_requires=['cython'],
-      license='Apache 2.0',
-      install_requires=install_requires,
-      python_requires='>=3.6,<3.8',
       ext_modules=cythonize(extensions,
                             exclude=exc_list),
-      cmdclass=versioneer.get_cmdclass(),
+      packages=find_packages(include=['cumlRao', 'cumlRao.*']),
+      license='Apache 2.0',
+      install_requires=install_requires,
+      #cmdclass=versioneer.get_cmdclass(),
+      cmdclass={
+          'build_ext': CMakeBuildExt,
+          'install_headers': InstallHeaders
+      },
       zip_safe=False
       )
 
