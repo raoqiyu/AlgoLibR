@@ -1,1 +1,1 @@
-from cumlLib.demo.adapter import PyMyDemo
+# from cumlLib.demo.adapter import PyMyDemo
