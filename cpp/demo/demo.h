@@ -6,7 +6,8 @@
  ************************************************************************/
 
 #ifndef DEMO_H
-#define DEMO_H 
+#define DEMO_H
+
 using namespace std;
 namespace demo {
     class MyDemo {
@@ -14,8 +15,9 @@ namespace demo {
             int a;
             MyDemo();
             MyDemo(int a );
-            ~MyDemo(); 
+            ~MyDemo();
             int mul(int m );
+            int pymul(int m);
             int add(int b);
             void sayHello(char* name);
     };

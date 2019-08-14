@@ -10,8 +10,12 @@ cdef class PyMyDemo:
 
     def __cinit__(self,a):
         self.c_mydemo = MyDemo(a)   
+
     def mul(self, m):
         return self.c_mydemo.mul(m)
+
+    def pymul(self, m):
+        return self.c_mydemo.pymul(m)
 
     def add(self,b):
         return self.c_mydemo.add(b)

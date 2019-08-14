@@ -1,3 +1,7 @@
+cdef extern from "mul/mul.cpp":
+    pass
+cdef extern from "mul/mul.h" namespace "mul":
+    int mul(int a, int b)
 
 cdef extern from "demo/demo.cpp":
     pass
@@ -8,7 +12,8 @@ cdef extern from "demo/demo.h" namespace "demo":
         MyDemo() except +
         MyDemo(int) except +
         int a
-        int mul(int )
+        int mul(int)
+        int pymul(int)
         int add(int )
         void sayHello(char*)
 

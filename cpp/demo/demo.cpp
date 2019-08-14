@@ -7,6 +7,7 @@
 
 #include "demo.h" 
 #include <iostream> 
+#include "mul/mul.h"
 
 namespace demo {
  
@@ -22,11 +23,14 @@ namespace demo {
         return this->a*m;
     }
 
+    int MyDemo::pymul(int m) {
+        return mul::mul(this->a, m);
+    }
     int MyDemo::add (int b) {
         return this->a+b;
     }
     void MyDemo::sayHello(char* name){
-        cout<<"hello modify"<<name<<"!"<<endl;
+        cout<<"hello "<<name<<"!"<<endl;
     }
 
    
