@@ -15,20 +15,31 @@ install_requires = [
     'cython>=0.29<0.30',
 ]
 
+cuda_include_dir = '/usr/local/cuda/include'
+cuda_lib_dir = "/usr/local/cuda/lib"
+
+if os.environ.get('CUDA_HOME', False):
+    cuda_lib_dir = os.path.join(os.environ.get('CUDA_HOME'), 'lib64')
+    cuda_include_dir = os.path.join(os.environ.get('CUDA_HOME'), 'include')
+
+libs = ['cuda', 'cuml++']
+
 exc_list = []
 
-cython_files = ['cumlLib/*/*.pyx']
-include_dirs = ['../cpp']
+cython_files = ['cumlLib/**/**.pyx']
+include_dirs = ['../cpp/src',cuda_include_dir]
 
 extensions = [
     Extension("*",
               sources=cython_files,
               include_dirs=include_dirs,
               library_dirs=[get_python_lib()],
-              libraries=[],
+              libraries=libs,
               language='c++',
-              runtime_library_dirs=[],
-              extra_compile_args=['-std=c++11'])
+              runtime_library_dirs=[cuda_lib_dir,'/usr/local/lib/'],
+              extra_compile_args=['-std=c++11','-fopenmp'],
+              extra_link_args=['-lgomp']
+)
 ]
 
 
@@ -53,7 +64,7 @@ setup(name=name,
       packages=find_packages(include=['cumlLib', 'cumlLib.*']),
       license='Apache 2.0',
       install_requires=install_requires,
-      #cmdclass=versioneer.get_cmdclass(),
+      # cmdclass=versioneer.get_cmdclass(),
       cmdclass={
           'build_ext': CMakeBuildExt,
           'install_headers': InstallHeaders
@@ -61,6 +72,6 @@ setup(name=name,
       zip_safe=False
       )
 
-shutil.rmtree('build', ignore_errors=True)
-shutil.rmtree('cumlLib.egg-info', ignore_errors=True)
-shutil.rmtree('dist', ignore_errors=True)
+# shutil.rmtree('build', ignore_errors=True)
+# shutil.rmtree('cumlLib.egg-info', ignore_errors=True)
+# shutil.rmtree('dist', ignore_errors=True)
