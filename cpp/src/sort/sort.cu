@@ -122,13 +122,14 @@ void movebyBins(unsigned int* const d_inputVals,unsigned int* const d_outputVals
 }
 
 void radix_sort(unsigned int*  d_inputVals,
-               unsigned int*  d_outputVals,
+               unsigned int*  h_outputVals,
                const size_t numElems){
 
     const dim3 blockSize(1024);
     const dim3 gridSize(ceil((float)numElems/1024));
 
-    unsigned int *d_binHistogram, *d_binScan, *d_binElems;
+    unsigned int *d_binHistogram, *d_binScan, *d_binElems, *d_outputVals;
+    checkCudaErrors(cudaMalloc((void **)&d_outputVals, numElems* sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binHistogram, numBins*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binScan, numElems*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binElems, numElems*sizeof(unsigned int)));
@@ -160,8 +161,11 @@ void radix_sort(unsigned int*  d_inputVals,
 
     }
     cudaMemcpy(d_outputVals, d_inputVals, numElems*sizeof(int), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(h_outputVals, d_outputVals, numElems*sizeof(int), cudaMemcpyDeviceToHost);
+
     checkCudaErrors(cudaFree(d_binHistogram));
     checkCudaErrors(cudaFree(d_binScan));
     checkCudaErrors(cudaFree(d_binElems));
+    checkCudaErrors(cudaFree(d_outputVals));
 }
 }
