@@ -34,8 +34,8 @@ void movebyBins(unsigned int* const d_inputVals,
           unsigned int* const d_outputVals,
           unsigned int* const d_binElems, unsigned int *d_binScan , unsigned int *d_binHistogram, const size_t numElems, const int mask);
 
-void radix_sort(unsigned int*  d_inputVals,
-               unsigned int*  d_outputVals,
+void radix_sort(unsigned int*  h_inputVals,
+               unsigned int*  h_outputVals,
                const size_t numElems);
 }
 #endif

@@ -80,8 +80,8 @@ include_directories(
 set(CUML_CPP_TARGET "cuml++")
   add_library(${CUML_CPP_TARGET} SHARED
     src/gpu/enum_gpu.cu
+    src/sort/sort.cu)
 
-)
 set(CUML_LINK_LIBRARIES
 ${CUDA_cublas_LIBRARY}
 ${CUDA_curand_LIBRARY}
@@ -104,3 +104,4 @@ target_link_libraries(${CUML_C_TARGET} ${CUML_CPP_TARGET})
 
 
 install(TARGETS ${CUML_CPP_TARGET} DESTINATION lib)
+# install(TARGETS ${CUML_C_TARGET} DESTINATION lib)

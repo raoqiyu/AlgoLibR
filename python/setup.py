@@ -22,7 +22,7 @@ if os.environ.get('CUDA_HOME', False):
     cuda_lib_dir = os.path.join(os.environ.get('CUDA_HOME'), 'lib64')
     cuda_include_dir = os.path.join(os.environ.get('CUDA_HOME'), 'include')
 
-libs = ['cuda', 'cuml++']
+libs = ['cuda', 'cuml++','cuml']
 
 exc_list = []
 
@@ -37,7 +37,7 @@ extensions = [
               libraries=libs,
               language='c++',
               runtime_library_dirs=[cuda_lib_dir,'/usr/local/lib/'],
-              extra_compile_args=['-std=c++11','-fopenmp'],
+              extra_compile_args=['-std=c++11'],#,'-fopenmp'],
               extra_link_args=['-lgomp']
 )
 ]

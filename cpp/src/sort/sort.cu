@@ -6,7 +6,8 @@
 */
 
 #include "sort.h"
-#include <cuda.h>
+#include <stdio.h>
+#include <cuda_runtime.h>
 
 
 namespace SORT{
@@ -121,19 +122,21 @@ void movebyBins(unsigned int* const d_inputVals,unsigned int* const d_outputVals
     }
 }
 
-void radix_sort(unsigned int*  d_inputVals,
+void radix_sort(unsigned int*  h_inputVals,
                unsigned int*  h_outputVals,
                const size_t numElems){
 
     const dim3 blockSize(1024);
     const dim3 gridSize(ceil((float)numElems/1024));
 
-    unsigned int *d_binHistogram, *d_binScan, *d_binElems, *d_outputVals;
+    unsigned int *d_binHistogram, *d_binScan, *d_binElems, *d_inputVals,*d_outputVals;
+    checkCudaErrors(cudaMalloc((void **)&d_inputVals, numElems* sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void **)&d_outputVals, numElems* sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binHistogram, numBins*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binScan, numElems*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binElems, numElems*sizeof(unsigned int)));
-    checkCudaErrors(cudaGetLastError());
+    checkCudaErrors(cudaMemcpy(d_inputVals, h_inputVals, numElems * sizeof(unsigned int), cudaMemcpyHostToDevice));
+
     for(int i = 0; i < 8 * (int)sizeof(unsigned int); i += numBits){
         checkCudaErrors(cudaMemset(d_binHistogram,0, numBins*sizeof(unsigned int)));
         checkCudaErrors(cudaGetLastError());
@@ -160,12 +163,12 @@ void radix_sort(unsigned int*  d_inputVals,
         std::swap(d_inputVals, d_outputVals);
 
     }
-    cudaMemcpy(d_outputVals, d_inputVals, numElems*sizeof(int), cudaMemcpyDeviceToDevice);
-    cudaMemcpy(h_outputVals, d_outputVals, numElems*sizeof(int), cudaMemcpyDeviceToHost);
+    checkCudaErrors(cudaMemcpy(h_outputVals, d_inputVals, numElems*sizeof(unsigned int), cudaMemcpyDeviceToHost));
 
     checkCudaErrors(cudaFree(d_binHistogram));
     checkCudaErrors(cudaFree(d_binScan));
     checkCudaErrors(cudaFree(d_binElems));
+    checkCudaErrors(cudaFree(d_inputVals));
     checkCudaErrors(cudaFree(d_outputVals));
 }
 }
