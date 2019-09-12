@@ -14,26 +14,24 @@ namespace SORT{
 
 __global__
 void histogram(const unsigned int * const d_in, unsigned int * const d_out, const int nthBit, const size_t numElems){
-   //use shared memory to load the whole block data
-   extern __shared__ unsigned int tempElems[];
+    //use shared memory to load the whole block data
+    extern __shared__ unsigned int tempElems[];
 
-   unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x;
-   unsigned int tid = threadIdx.x;
+    unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x;
+    unsigned int tid = threadIdx.x;
 
-
-   if(idx < numElems){
-       tempElems[tid] = d_in[idx];
-       __syncthreads();
-       unsigned int nthBin = (tempElems[tid]>>nthBit)&(numBins-1);
-       atomicAdd(&d_out[nthBin],1);
-   }
-
+    if(idx < numElems){
+        tempElems[tid] = d_in[idx];
+        __syncthreads();
+        unsigned int nthBin = (tempElems[tid]>>nthBit)&(numBins-1);
+        atomicAdd(&d_out[nthBin],1);
+    }
 }
 
 // Hillis Steele Scan
 __global__
 void scan(const unsigned int * const d_in, unsigned int *d_out, unsigned int *d_blockLastElems, const size_t numElems){
-    // use shar memory to load the whole block data
+    // use shared memory to load the whole block data
     extern __shared__ unsigned int temp[];
 
     unsigned int tid = threadIdx.x;
@@ -50,10 +48,9 @@ void scan(const unsigned int * const d_in, unsigned int *d_out, unsigned int *d_
         unsigned int tmpVal = temp[tid];
         __syncthreads();
 
-        if(tid + stride < blockDim.x){
+        if(tid + stride < blockDim.x)
             temp[tid+stride] += tmpVal;
-            __syncthreads();
-        }
+        __syncthreads();
     }
 
     // exclusive scan
@@ -132,14 +129,21 @@ void radix_sort(unsigned int*  h_inputVals,
     unsigned int *d_binHistogram, *d_binScan, *d_binElems, *d_inputVals,*d_outputVals;
     checkCudaErrors(cudaMalloc((void **)&d_inputVals, numElems* sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void **)&d_outputVals, numElems* sizeof(unsigned int)));
+
     checkCudaErrors(cudaMalloc((void**)&d_binHistogram, numBins*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binScan, numElems*sizeof(unsigned int)));
     checkCudaErrors(cudaMalloc((void**)&d_binElems, numElems*sizeof(unsigned int)));
+
+    checkCudaErrors(cudaMemset(d_inputVals,0, numElems*sizeof(unsigned int)));
+    checkCudaErrors(cudaMemset(d_outputVals,0, numElems*sizeof(unsigned int)));
+    checkCudaErrors(cudaMemset(d_binHistogram,0, numBins*sizeof(unsigned int)));
+    checkCudaErrors(cudaMemset(d_binScan,0, numElems*sizeof(unsigned int)));
+    checkCudaErrors(cudaMemset(d_binElems,0, numElems*sizeof(unsigned int)));
+
     checkCudaErrors(cudaMemcpy(d_inputVals, h_inputVals, numElems * sizeof(unsigned int), cudaMemcpyHostToDevice));
 
     for(int i = 0; i < 8 * (int)sizeof(unsigned int); i += numBits){
         checkCudaErrors(cudaMemset(d_binHistogram,0, numBins*sizeof(unsigned int)));
-        checkCudaErrors(cudaGetLastError());
 
         // 1) Histogram of the number of occurrences of the i-th bit
         histogram<<<gridSize, blockSize, blockSize.x*sizeof(unsigned int)>>>(d_inputVals, d_binHistogram, i, numElems);
