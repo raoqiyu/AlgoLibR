@@ -4,13 +4,14 @@
 @Author  :   raoqiyu@gmail.com
 @Desc    :   Implementing Parallel Radix Sort with CUDA
 */
-#ifndef SORT_H
-#define SORT_H
+#ifndef RADIX_SORT_H
+#define RADIX_SORT_H
 #include <cuda_runtime.h>
 #include "common/utils.h"
 
 
 namespace SORT{
+namespace RADIX_SORT{
 #define numBits 2
 #define numBins (1 << numBits)
 
@@ -34,8 +35,9 @@ void movebyBins(unsigned int* const d_inputVals,
           unsigned int* const d_outputVals,
           unsigned int* const d_binElems, unsigned int *d_binScan , unsigned int *d_binHistogram, const size_t numElems, const int mask);
 
-void radix_sort(unsigned int*  h_inputVals,
+void radix_sort_kernel(unsigned int*  h_inputVals,
                unsigned int*  h_outputVals,
                const size_t numElems);
+}
 }
 #endif

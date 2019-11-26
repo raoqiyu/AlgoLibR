@@ -1,5 +1,5 @@
 #include "common/utils.h"
-#include "sort/sort.h"
+#include "sort/radix_sort.h"
 #include <stdio.h>
 #define N 200
 
@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
 };
     unsigned int h_outs[N];
 
-    SORT::radix_sort(h_in, h_outs,  (size_t) N);
+    SORT::RADIX_SORT::radix_sort_kernel(h_in, h_outs,  (size_t) N);
 
     for(int i = 0; i < N; i++){
         printf("%d ",h_outs[i]);

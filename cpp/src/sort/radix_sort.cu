@@ -5,12 +5,13 @@
 @Desc    :   Implementing Parallel Radix Sort with CUDA
 */
 
-#include "sort.h"
+#include "radix_sort.h"
 #include <stdio.h>
 #include <cuda_runtime.h>
 
 
 namespace SORT{
+namespace RADIX_SORT{
 
 __global__
 void histogram(const unsigned int * const d_in, unsigned int * const d_out, const int nthBit, const size_t numElems){
@@ -119,7 +120,7 @@ void movebyBins(unsigned int* const d_inputVals,unsigned int* const d_outputVals
     }
 }
 
-void radix_sort(unsigned int*  h_inputVals,
+void radix_sort_kernel(unsigned int*  h_inputVals,
                unsigned int*  h_outputVals,
                const size_t numElems){
 
@@ -174,5 +175,6 @@ void radix_sort(unsigned int*  h_inputVals,
     checkCudaErrors(cudaFree(d_binElems));
     checkCudaErrors(cudaFree(d_inputVals));
     checkCudaErrors(cudaFree(d_outputVals));
+}
 }
 }

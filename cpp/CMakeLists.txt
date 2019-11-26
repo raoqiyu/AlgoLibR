@@ -80,7 +80,7 @@ include_directories(
 set(ALGO_CPP_TARGET "AlgoLibR++")
   add_library(${ALGO_CPP_TARGET} SHARED
     src/gpu/enum_gpu.cu
-    src/sort/sort.cu)
+    src/sort/radix_sort.cu)
 
 set(CUML_LINK_LIBRARIES
 ${CUDA_cublas_LIBRARY}

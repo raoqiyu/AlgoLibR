@@ -1,9 +1,9 @@
 # distutils: language = c++
 
 from cpython cimport array
-from csort cimport radix_sort
+from csort cimport radix_sort_kernel
 
-def sort(nums):
+def radix_sort(nums):
     cdef size_t n_samples = len(nums)
 
     cdef array.array h_in = array.array('I',nums)
@@ -11,8 +11,21 @@ def sort(nums):
     cdef unsigned int[:] h_out_py = h_out
 
 
-    radix_sort(h_in.data.as_uints, h_out.data.as_uints, n_samples)
+    radix_sort_kernel(h_in.data.as_uints, h_out.data.as_uints, n_samples)
 
     del h_in
     return h_out.tolist()
-    # return nums_sorted
+
+def sort(nums, method=None):
+    """
+
+    :param nums:
+    :param method: one of [radix, None], when method is None, use python's default `sorted` method
+    :return:
+    """
+    if method is None:
+        return sorted(nums)
+    elif method == 'radix':
+        return radix_sort(nums)
+    else:
+        raise Exception('Method %s not supported yet'%method)
