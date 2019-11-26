@@ -77,8 +77,8 @@ include_directories(
 
 #######################
 ## build cuda code
-set(CUML_CPP_TARGET "cuml++")
-  add_library(${CUML_CPP_TARGET} SHARED
+set(ALGO_CPP_TARGET "AlgoLibR++")
+  add_library(${ALGO_CPP_TARGET} SHARED
     src/gpu/enum_gpu.cu
     src/sort/sort.cu)
 
@@ -91,17 +91,17 @@ ${CUDA_cusparse_LIBRARY}
 ${CUDA_nvgraph_LIBRARY}
 ${ZLIB_LIBRARIES}
 )
-target_link_libraries(${CUML_CPP_TARGET} ${CUML_LINK_LIBRARIES})
+target_link_libraries(${ALGO_CPP_TARGET} ${CUML_LINK_LIBRARIES})
 
 
 ############
 ## build cpu code
-set(CUML_C_TARGET "cuml")
-add_library(${CUML_C_TARGET} SHARED
+set(ALGO_C_TARGET "AlgoLibR")
+add_library(${ALGO_C_TARGET} SHARED
     src/mul/mul.cpp
     src/demo/demo.cpp)
-target_link_libraries(${CUML_C_TARGET} ${CUML_CPP_TARGET})
+target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
 
 
-install(TARGETS ${CUML_CPP_TARGET} DESTINATION lib)
-# install(TARGETS ${CUML_C_TARGET} DESTINATION lib)
+install(TARGETS ${ALGO_CPP_TARGET} DESTINATION lib)
+ install(TARGETS ${ALGO_C_TARGET} DESTINATION lib)

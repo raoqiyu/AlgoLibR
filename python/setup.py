@@ -7,7 +7,7 @@ from distutils.sysconfig import get_python_lib
 from cmake_setuptools import CMakeBuildExt, CMakeExtension, \
     convert_to_manylinux, InstallHeaders, distutils_dir_name
 
-name = 'cumlLib'
+name = 'AlgoLibR'
 version = '0.1'
 
 install_requires = [
@@ -22,11 +22,11 @@ if os.environ.get('CUDA_HOME', False):
     cuda_lib_dir = os.path.join(os.environ.get('CUDA_HOME'), 'lib64')
     cuda_include_dir = os.path.join(os.environ.get('CUDA_HOME'), 'include')
 
-libs = ['cuda', 'cuml++','cuml']
+libs = ['cuda', 'AlgoLibR++','AlgoLibR']
 
 exc_list = []
 
-cython_files = ['cumlLib/**/**.pyx']
+cython_files = ['AlgoLibR/**/**.pyx']
 include_dirs = ['../cpp/src',cuda_include_dir]
 
 extensions = [
@@ -46,7 +46,7 @@ extensions = [
 shutil.rmtree('build', ignore_errors=True)
 
 setup(name=name,
-      description='cumlLib - ML Algorithms',
+      description='AlgoLibR - Algorithms Lib R',
       #long_description=open('README.md', encoding='UTF-8').read(),
       #long_description_content_type='text/markdown',
       #url='https://github.com/raoqiyu',
@@ -61,7 +61,7 @@ setup(name=name,
       setup_requires=['cython'],
       ext_modules=cythonize(extensions,
                             exclude=exc_list),
-      packages=find_packages(include=['cumlLib', 'cumlLib.*']),
+      packages=find_packages(include=['AlgoLibR', 'AlgoLibR.*']),
       license='Apache 2.0',
       install_requires=install_requires,
       # cmdclass=versioneer.get_cmdclass(),
@@ -73,5 +73,5 @@ setup(name=name,
       )
 
 # shutil.rmtree('build', ignore_errors=True)
-# shutil.rmtree('cumlLib.egg-info', ignore_errors=True)
+# shutil.rmtree('AlgoLibR.egg-info', ignore_errors=True)
 # shutil.rmtree('dist', ignore_errors=True)
