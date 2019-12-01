@@ -1,7 +1,8 @@
 # distutils: language = c++
-
+import cython
+cimport cython
 from cpython cimport array
-from csort cimport radix_sort_kernel
+from csort cimport radix_sort_kernel,bubbleSortKernel
 
 def radix_sort(nums):
     cdef size_t n_samples = len(nums)
@@ -16,6 +17,21 @@ def radix_sort(nums):
     del h_in
     return h_out.tolist()
 
+
+def bubble_sort(nums):
+    cdef size_t n_samples = len(nums)
+
+    cdef array.array h_in = array.array('i',nums)
+
+    if type(nums[0]) == int:
+        bubbleSortKernel(h_in.data.as_ints, n_samples)
+    else:
+        h_in = array.array('d',nums)
+        bubbleSortKernel[cython.double](h_in.data.as_doubles, n_samples)
+   
+    return h_in.tolist()
+
+
 def sort(nums, method=None):
     """
 
@@ -27,5 +43,7 @@ def sort(nums, method=None):
         return sorted(nums)
     elif method == 'radix':
         return radix_sort(nums)
+    elif method == 'bubble':
+        return bubble_sort(nums)
     else:
         raise Exception('Method %s not supported yet'%method)
