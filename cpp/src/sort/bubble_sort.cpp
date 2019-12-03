@@ -24,9 +24,20 @@ namespace SORT{
         }
     }
 
-    template  void bubbleSortKernel<unsigned int>(unsigned int arr[], int n);
+    template  void bubbleSortKernel<short>(short arr[], int n);
+    template  void bubbleSortKernel<unsigned short>(unsigned short arr[], int n);
+
     template  void bubbleSortKernel<int>(int arr[], int n);
+    template  void bubbleSortKernel<unsigned int>(unsigned int arr[], int n);
+
+    template  void bubbleSortKernel<long>(long arr[], int n);
+    template  void bubbleSortKernel<unsigned long>(unsigned long arr[], int n);
+
+    template  void bubbleSortKernel<long long>(long long arr[], int n);
+    template  void bubbleSortKernel<unsigned long long>(unsigned long long arr[], int n);
+
     template  void bubbleSortKernel<float>(float arr[], int n);
+
     template  void bubbleSortKernel<double>(double arr[], int n);
     }
 }

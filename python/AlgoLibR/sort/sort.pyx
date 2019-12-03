@@ -4,6 +4,20 @@ cimport cython
 from cpython cimport array
 from csort cimport radix_sort_kernel,bubbleSortKernel
 
+ctypedef fused real:
+    cython.short
+    cython.ushort
+    cython.int
+    cython.uint
+    cython.long
+    cython.ulong
+    cython.longlong
+    cython.ulonglong
+    cython.float
+    cython.double
+
+
+
 def radix_sort(nums):
     cdef size_t n_samples = len(nums)
 
@@ -18,19 +32,8 @@ def radix_sort(nums):
     return h_out.tolist()
 
 
-def bubble_sort(nums):
-    cdef size_t n_samples = len(nums)
-
-    cdef array.array h_in;
-
-    if type(nums[0]) == int:
-        h_in = array.array('i',nums)
-        bubbleSortKernel(h_in.data.as_ints, n_samples)
-    else:
-        h_in = array.array('d',nums)
-        bubbleSortKernel[cython.double](h_in.data.as_doubles, n_samples)
-
-    return h_in.tolist()
+def bubble_sort(real[:] nums):
+    bubbleSortKernel(&nums[0], nums.shape[0])
 
 
 def sort(nums, method=None):
@@ -45,6 +48,6 @@ def sort(nums, method=None):
     elif method == 'radix':
         return radix_sort(nums)
     elif method == 'bubble':
-        return bubble_sort(nums)
+        bubble_sort(nums)
     else:
         raise Exception('Method %s not supported yet'%method)
