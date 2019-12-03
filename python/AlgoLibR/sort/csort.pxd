@@ -7,3 +7,16 @@ cdef extern from "sort/radix_sort.h" namespace "SORT::RADIX_SORT":
 cdef extern from "sort/bubble_sort.h" namespace "SORT::BUBBLE_SORT":
     cdef void bubbleSortKernel[T](T *arr, int n)
 
+
+
+ctypedef fused real:
+    cython.short
+    cython.ushort
+    cython.int
+    cython.uint
+    cython.long
+    cython.ulong
+    cython.longlong
+    cython.ulonglong
+    cython.float
+    cython.double

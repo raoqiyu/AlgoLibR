@@ -1,44 +1,31 @@
 # distutils: language = c++
 import cython
 cimport cython
+import numpy as np
 from cpython cimport array
+from csort cimport real
 from csort cimport radix_sort_kernel,bubbleSortKernel
-
-ctypedef fused real:
-    cython.short
-    cython.ushort
-    cython.int
-    cython.uint
-    cython.long
-    cython.ulong
-    cython.longlong
-    cython.ulonglong
-    cython.float
-    cython.double
+from AlgoLibR.utils.memory import py_data_to_c_data,malloc_memory_from_data
 
 
 
 def radix_sort(nums):
-    cdef size_t n_samples = len(nums)
+    nums = py_data_to_c_data(nums,dtype=np.uint32, copy=False)
+    out = malloc_memory_from_data(nums,copy=False)
 
-    cdef array.array h_in = array.array('I',nums)
-    cdef array.array h_out = array.array('I',[0 for _ in range(n_samples)])
-    cdef unsigned int[:] h_out_py = h_out
+    cdef cython.uint[:] nums_memview = nums
+    cdef cython.uint[:] out_memview = out
 
+    radix_sort_kernel(&nums_memview[0], &out_memview[0], len(nums))
 
-    radix_sort_kernel(h_in.data.as_uints, h_out.data.as_uints, n_samples)
-
-    del h_in
-    return h_out.tolist()
-
+    return out
 
 def bubble_sort(real[:] nums):
     bubbleSortKernel(&nums[0], nums.shape[0])
-
+    return
 
 def sort(nums, method=None):
     """
-
     :param nums:
     :param method: one of [radix, None], when method is None, use python's default `sorted` method
     :return:
@@ -48,6 +35,8 @@ def sort(nums, method=None):
     elif method == 'radix':
         return radix_sort(nums)
     elif method == 'bubble':
+        nums = py_data_to_c_data(nums,copy=False)
         bubble_sort(nums)
+        return nums
     else:
         raise Exception('Method %s not supported yet'%method)
