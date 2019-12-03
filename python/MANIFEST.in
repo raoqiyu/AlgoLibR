@@ -1,2 +1,0 @@
-include versioneer.py
-include cumlRao/_version.py
