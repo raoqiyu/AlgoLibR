@@ -21,14 +21,15 @@ def radix_sort(nums):
 def bubble_sort(nums):
     cdef size_t n_samples = len(nums)
 
-    cdef array.array h_in = array.array('i',nums)
+    cdef array.array h_in;
 
     if type(nums[0]) == int:
+        h_in = array.array('i',nums)
         bubbleSortKernel(h_in.data.as_ints, n_samples)
     else:
         h_in = array.array('d',nums)
         bubbleSortKernel[cython.double](h_in.data.as_doubles, n_samples)
-   
+
     return h_in.tolist()
 
 
