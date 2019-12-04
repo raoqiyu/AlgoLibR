@@ -4,7 +4,7 @@ cimport cython
 import numpy as np
 from cpython cimport array
 from csort cimport real
-from csort cimport radix_sort_kernel,bubbleSortKernel
+from csort cimport radix_sort_kernel,bubbleSortKernel,quickSortKernel
 from AlgoLibR.utils.memory import py_data_to_c_data,malloc_memory_from_data
 
 
@@ -24,10 +24,15 @@ def bubble_sort(real[:] nums):
     bubbleSortKernel(&nums[0], nums.shape[0])
     return
 
+def quick_sort(real[:] nums):
+    cdef unsigned int n_samples = nums.shape[0]
+    quickSortKernel(&nums[0], n_samples)
+    return
+
 def sort(nums, method=None):
     """
-    :param nums:
-    :param method: one of [radix, None], when method is None, use python's default `sorted` method
+    :param nums: array of np.ndarray. if nums is a list, will create a new np.ndarray from it.
+    :param method: one of [radix, bubble], when method is None, use python's default `sorted` method
     :return:
     """
     if method is None:
@@ -37,6 +42,10 @@ def sort(nums, method=None):
     elif method == 'bubble':
         nums = py_data_to_c_data(nums,copy=False)
         bubble_sort(nums)
+        return nums
+    elif method == 'quick':
+        nums = py_data_to_c_data(nums,copy=False)
+        quick_sort(nums)
         return nums
     else:
         raise Exception('Method %s not supported yet'%method)
