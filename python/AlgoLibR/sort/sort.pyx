@@ -25,7 +25,9 @@ def bubble_sort(real[:] nums):
     return
 
 def quick_sort(real[:] nums):
-    cdef unsigned int n_samples = nums.shape[0]
+    cdef long n_samples = nums.shape[0]
+    print(nums)
+    print(n_samples)
     quickSortKernel(&nums[0], n_samples)
     return
 
@@ -50,6 +52,7 @@ def sort(nums, method=None):
         return nums
     elif method == 'quick':
         nums = py_data_to_c_data(nums,copy=False)
+        print(nums.dtype)
         quick_sort(nums)
         return nums
     elif method == 'selection':

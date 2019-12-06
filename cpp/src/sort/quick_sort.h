@@ -7,13 +7,13 @@ namespace SORT{
     namespace QUICK_SORT{
 
     template<typename T>
-    unsigned int partition(T arr[], unsigned int low, unsigned int high);
+    long partition(T arr[], long low, long high);
 
     template<typename T>
-    void quickSortKernel(T arr[], unsigned int n);
+    void quickSortKernel(T arr[], long n);
 
     template<typename T>
-    void quickSortKernel(T arr[], unsigned int low, unsigned int high);
+    void quickSortKernel(T arr[], long low, long high);
 
     }
 }
