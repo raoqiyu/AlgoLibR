@@ -103,6 +103,7 @@ add_library(${ALGO_C_TARGET} SHARED
     src/sort/bubble_sort.cpp
     src/sort/quick_sort.cpp
     src/sort/selection_sort.cpp
+    src/sort/insertion_sort.cpp
 )
 target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
 
