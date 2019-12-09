@@ -9,8 +9,8 @@ namespace SORT{
     2) Remaining subarray which is unsorted.
     */
     template<typename T>
-    void unstableSelectionSortKernel(T arr[], unsigned int n){
-        unsigned int i,j,min_ele_idx;
+    void unstableSelectionSortKernel(T arr[], size_t n){
+        size_t i,j,min_ele_idx;
         // a[0]...a[i-1] is the sorted subarray
         for(i = 0; i < n-1; i++){
             min_ele_idx = i;
@@ -28,8 +28,8 @@ namespace SORT{
         }
     }
     template<typename T>
-    void stableSelectionSortKernel(T arr[], unsigned int n){
-        unsigned int i,j,min_ele_idx;
+    void stableSelectionSortKernel(T arr[], size_t n){
+        size_t i,j,min_ele_idx;
         // a[0]...a[i-1] is the sorted subarray
         for(i = 0; i < n-1; i++){
             min_ele_idx = i;
@@ -57,23 +57,23 @@ namespace SORT{
     }
 
     template<typename T>
-    void selectionSortKernel(T arr[], unsigned int n){
+    void selectionSortKernel(T arr[], size_t n){
         unstableSelectionSortKernel(arr, n);
     }
-    template  void selectionSortKernel<short>(short arr[], unsigned int n);
-    template  void selectionSortKernel<unsigned short>(unsigned short arr[], unsigned int n);
+    template  void selectionSortKernel<short>(short arr[], size_t n);
+    template  void selectionSortKernel<unsigned short>(unsigned short arr[], size_t n);
 
-    template  void selectionSortKernel<int>(int arr[], unsigned int n);
-    template  void selectionSortKernel<unsigned int>(unsigned int arr[], unsigned int n);
+    template  void selectionSortKernel<int>(int arr[], size_t n);
+    template  void selectionSortKernel<unsigned int>(unsigned int arr[], size_t n);
 
-    template  void selectionSortKernel<long>(long arr[], unsigned int n);
-    template  void selectionSortKernel<unsigned long>(unsigned long arr[], unsigned int n);
+    template  void selectionSortKernel<long>(long arr[], size_t n);
+    template  void selectionSortKernel<unsigned long>(unsigned long arr[], size_t n);
 
-    template  void selectionSortKernel<long long>(long long arr[], unsigned int n);
-    template  void selectionSortKernel<unsigned long long>(unsigned long long arr[], unsigned int n);
+    template  void selectionSortKernel<long long>(long long arr[], size_t n);
+    template  void selectionSortKernel<unsigned long long>(unsigned long long arr[], size_t n);
 
-    template  void selectionSortKernel<float>(float arr[], unsigned int n);
-    template  void selectionSortKernel<double>(double arr[], unsigned int n);
+    template  void selectionSortKernel<float>(float arr[], size_t n);
+    template  void selectionSortKernel<double>(double arr[], size_t n);
     }
 }
 

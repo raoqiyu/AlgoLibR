@@ -24,7 +24,7 @@ namespace SORT{
 	In Binary insertion sort, it takes O(log n) comparisions.
 	*/
     template<typename T>
-    void binaryInsertionSortKernel(T arr[], long n){
+    void binaryInsertionSortKernel(T arr[], long n){ // use long n, not size_t n (Segmentation fault)
         long i,j,pos;
         T key;
         for(i = 1; i < n; i++){
@@ -42,8 +42,8 @@ namespace SORT{
 	/*Maintain an sorted array a[0...i-1] and insert element a[i] into it
 	*/
     template<typename T>
-    void sequentialInsertionSortKernel(T arr[], long n){
-        long i,j;
+    void sequentialInsertionSortKernel(T arr[], size_t n){
+        size_t i,j;
         T key;
         for(i = 1; i < n; i++){
             key = arr[i];//the element to be inserted into the sorted array arr[0...i-1]
@@ -58,25 +58,25 @@ namespace SORT{
     }
 
     template<typename T>
-    void insertionSortKernel(T arr[], long n){
-		binaryInsertionSortKernel(arr, n);
+    void insertionSortKernel(T arr[], size_t n){
+	    binaryInsertionSortKernel(arr, n);
 	}
 
-    template  void insertionSortKernel<short>(short arr[], long n);
-    template  void insertionSortKernel<unsigned short>(unsigned short arr[], long n);
+    template  void insertionSortKernel<short>(short arr[], size_t n);
+    template  void insertionSortKernel<unsigned short>(unsigned short arr[], size_t n);
 
-    template  void insertionSortKernel<int>(int arr[], long n);
-    template  void insertionSortKernel<unsigned int>(unsigned int arr[], long n);
+    template  void insertionSortKernel<int>(int arr[], size_t n);
+    template  void insertionSortKernel<unsigned int>(unsigned int arr[], size_t n);
 
-    template  void insertionSortKernel<long>(long arr[], long n);
-    template  void insertionSortKernel<unsigned long>(unsigned long arr[], long n);
+    template  void insertionSortKernel<long>(long arr[], size_t n);
+    template  void insertionSortKernel<unsigned long>(unsigned long arr[], size_t n);
 
-    template  void insertionSortKernel<long long>(long long arr[], long n);
-    template  void insertionSortKernel<unsigned long long>(unsigned long long arr[], long n);
+    template  void insertionSortKernel<long long>(long long arr[], size_t n);
+    template  void insertionSortKernel<unsigned long long>(unsigned long long arr[], size_t n);
 
-    template  void insertionSortKernel<float>(float arr[], long n);
+    template  void insertionSortKernel<float>(float arr[], size_t n);
 
-    template  void insertionSortKernel<double>(double arr[], long n);
+    template  void insertionSortKernel<double>(double arr[], size_t n);
     }
 }
 

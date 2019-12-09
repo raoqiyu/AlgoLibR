@@ -24,7 +24,7 @@ namespace SORT{
         }
 
         template<typename T>
-        void quickSortKernel(T arr[], long n){
+        void quickSortKernel(T arr[], size_t n){
             quickSortKernel(arr, 0, n-1);
         }
 
@@ -40,19 +40,19 @@ namespace SORT{
         }
 
 
-        template  void quickSortKernel<short>(short arr[], long n);
-        template  void quickSortKernel<unsigned short>(unsigned short arr[], long n);
+        template  void quickSortKernel<short>(short arr[], size_t n);
+        template  void quickSortKernel<unsigned short>(unsigned short arr[], size_t n);
 
-        template  void quickSortKernel<int>(int arr[], long n);
-        template  void quickSortKernel<unsigned int>(unsigned int arr[], long n);
+        template  void quickSortKernel<int>(int arr[], size_t n);
+        template  void quickSortKernel<unsigned int>(unsigned int arr[], size_t n);
 
-        template  void quickSortKernel<long>(long arr[], long n);
-        template  void quickSortKernel<unsigned long>(unsigned long arr[], long n);
+        template  void quickSortKernel<long>(long arr[], size_t n);
+        template  void quickSortKernel<unsigned long>(unsigned long arr[], size_t n);
 
-        template  void quickSortKernel<long long>(long long arr[], long n);
-        template  void quickSortKernel<unsigned long long>(unsigned long long arr[], long n);
+        template  void quickSortKernel<long long>(long long arr[], size_t n);
+        template  void quickSortKernel<unsigned long long>(unsigned long long arr[], size_t n);
 
-        template  void quickSortKernel<float>(float arr[], long n);
-        template  void quickSortKernel<double>(double arr[], long n);
+        template  void quickSortKernel<float>(float arr[], size_t n);
+        template  void quickSortKernel<double>(double arr[], size_t n);
     }
 }

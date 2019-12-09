@@ -1,6 +1,8 @@
 #ifndef SORT_UTILS_H
 #define SORT_UTILS_H
 
+#include<stdlib.h>
+
 namespace SORT{
     namespace UTILS{
 

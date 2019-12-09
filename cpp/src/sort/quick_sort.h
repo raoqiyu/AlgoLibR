@@ -10,7 +10,7 @@ namespace SORT{
     long partition(T arr[], long low, long high);
 
     template<typename T>
-    void quickSortKernel(T arr[], long n);
+    void quickSortKernel(T arr[], size_t n);
 
     template<typename T>
     void quickSortKernel(T arr[], long low, long high);

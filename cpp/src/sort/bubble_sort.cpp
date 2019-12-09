@@ -1,13 +1,11 @@
 #include "bubble_sort.h"
 
-
-
 namespace SORT{
     namespace BUBBLE_SORT{
 
     template<typename T>
-    void bubbleSortKernel(T arr[], int n){
-        int i,j;
+    void bubbleSortKernel(T arr[], size_t n){
+        size_t i,j;
         bool swapped;
         for(i = 0; i < n; i++){
             swapped = false;
@@ -24,21 +22,21 @@ namespace SORT{
         }
     }
 
-    template  void bubbleSortKernel<short>(short arr[], int n);
-    template  void bubbleSortKernel<unsigned short>(unsigned short arr[], int n);
+    template  void bubbleSortKernel<short>(short arr[], size_t n);
+    template  void bubbleSortKernel<unsigned short>(unsigned short arr[], size_t n);
 
-    template  void bubbleSortKernel<int>(int arr[], int n);
-    template  void bubbleSortKernel<unsigned int>(unsigned int arr[], int n);
+    template  void bubbleSortKernel<int>(int arr[], size_t n);
+    template  void bubbleSortKernel<unsigned int>(unsigned int arr[], size_t n);
 
-    template  void bubbleSortKernel<long>(long arr[], int n);
-    template  void bubbleSortKernel<unsigned long>(unsigned long arr[], int n);
+    template  void bubbleSortKernel<long>(long arr[], size_t n);
+    template  void bubbleSortKernel<unsigned long>(unsigned long arr[], size_t n);
 
-    template  void bubbleSortKernel<long long>(long long arr[], int n);
-    template  void bubbleSortKernel<unsigned long long>(unsigned long long arr[], int n);
+    template  void bubbleSortKernel<long long>(long long arr[], size_t n);
+    template  void bubbleSortKernel<unsigned long long>(unsigned long long arr[], size_t n);
 
-    template  void bubbleSortKernel<float>(float arr[], int n);
+    template  void bubbleSortKernel<float>(float arr[], size_t n);
 
-    template  void bubbleSortKernel<double>(double arr[], int n);
+    template  void bubbleSortKernel<double>(double arr[], size_t n);
     }
 }
 
