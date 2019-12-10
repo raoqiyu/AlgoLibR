@@ -2,22 +2,7 @@
 
 namespace SORT{
     namespace INSERTION_SORT{
-	
-	template<typename T>
-	long binarySearch(T arr[], long low, long high, T target){
-		if(low > high){
-			return (target > arr[low]) ? low+1:low;
-		}
-		long mid = low + (high-low)/2;
 
-		if(target == arr[mid]){
-			return mid;
-		} else if(target > arr[mid]){
-			return binarySearch(arr, mid+1, high, target);
-		} else {
-			return binarySearch(arr, low, mid-1, target);
-		}
-	}
 	/*Maintain an sorted array a[0...i-1] and insert element a[i] into it
 	Binary insertion sort use binary search to find the position to insert the key arr[i].
 	In sequential insertion sort, it takes O(n) comparisions (at each iteration) in worest case.
@@ -30,7 +15,7 @@ namespace SORT{
         for(i = 1; i < n; i++){
             key = arr[i];//the element to be inserted into the sorted array arr[0...i-1]
 			// find the position where arr[i] will be in
-			pos = binarySearch(arr, 0, i-1, key);
+			pos = SEARCH::BINARY_SEARCH::binarySearchKernel(arr, key, 0, i-1);
 			j = i-1;
 			while(j >= pos ){
 				arr[j+1] = arr[j];
