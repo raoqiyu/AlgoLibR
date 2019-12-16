@@ -38,22 +38,5 @@ namespace SORT{
 
     }
 
-
-    template  void sortKernel<short>(short arr[], size_t n, enum SORT_METHOD method);
-    template  void sortKernel<unsigned short>(unsigned short arr[], size_t n, enum SORT_METHOD method);
-
-    template  void sortKernel<int>(int arr[], size_t n, enum SORT_METHOD method);
-    template  void sortKernel<unsigned int>(unsigned int arr[], size_t n, enum SORT_METHOD method);
-
-    template  void sortKernel<long>(long arr[], size_t n, enum SORT_METHOD method);
-    template  void sortKernel<unsigned long>(unsigned long arr[], size_t n, enum SORT_METHOD method);
-
-    template  void sortKernel<long long>(long long arr[], size_t n, enum SORT_METHOD method);
-    template  void sortKernel<unsigned long long>(unsigned long long arr[], size_t n, enum SORT_METHOD method);
-
-    template  void sortKernel<float>(float arr[], size_t n, enum SORT_METHOD method);
-
-    template  void sortKernel<double>(double arr[], size_t n, enum SORT_METHOD method);
-
 }
 #endif
