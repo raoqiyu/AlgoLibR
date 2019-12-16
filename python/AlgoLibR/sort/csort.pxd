@@ -3,19 +3,6 @@ cimport cython
 cdef extern from "sort/radix_sort.h" namespace "SORT::RADIX_SORT":
     void radix_sort_kernel(unsigned int*  h_inputVals, unsigned int* h_outputVals, const size_t numElems)
 
-
-cdef extern from "sort/bubble_sort.h" namespace "SORT::BUBBLE_SORT":
-    cdef void bubbleSortKernel[T](T *arr, size_t n)
-
-cdef extern from "sort/quick_sort.h" namespace "SORT::QUICK_SORT":
-    cdef void quickSortKernel[T](T *arr, size_t n)
-
-cdef extern from "sort/selection_sort.h" namespace "SORT::SELECTION_SORT":
-    cdef void selectionSortKernel[T](T *arr, size_t n)
-
-cdef extern from "sort/insertion_sort.h" namespace "SORT::INSERTION_SORT":
-    cdef void insertionSortKernel[T](T *arr, size_t n)
-
 ctypedef fused real:
     cython.short
     cython.ushort
@@ -27,3 +14,13 @@ ctypedef fused real:
     cython.ulonglong
     cython.float
     cython.double
+
+cdef extern from "sort/utils.h" namespace "SORT":
+    cpdef enum SORT_METHOD:
+        BUBBLE_SORT_M,
+        INSERTION_SORT_M,
+        QUICK_SORT_M,
+        SELECTION_SORT_M
+
+cdef extern from "sort/sort.hpp" namespace "SORT":
+    cdef void sortKernel[T](T *arr, size_t n, SORT_METHOD method)

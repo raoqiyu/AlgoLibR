@@ -4,6 +4,10 @@
 #include<stdlib.h>
 
 namespace SORT{
+    enum SORT_METHOD{
+        BUBBLE_SORT_M=0, INSERTION_SORT_M, QUICK_SORT_M, SELECTION_SORT_M
+    };
+
     namespace UTILS{
 
     template<typename T>
