@@ -21,8 +21,6 @@ namespace SORT{
     template void SORT::QUICK_SORT::quickSortKernel<T>(T arr[], size_t n);              \
     template void SORT::SELECTION_SORT::selectionSortKernel<T>(T arr[], size_t n);
 
-}
-
 DEFINE_SORT_KERNELS(short);
 DEFINE_SORT_KERNELS(unsigned short);
 DEFINE_SORT_KERNELS(unsigned int);
@@ -32,5 +30,6 @@ DEFINE_SORT_KERNELS(long long);
 DEFINE_SORT_KERNELS(unsigned long long);
 DEFINE_SORT_KERNELS(float);
 DEFINE_SORT_KERNELS(double);
+}
 
 #endif //ALGO_SORT_KERNEL_IMPL_H_
