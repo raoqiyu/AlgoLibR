@@ -38,21 +38,5 @@ namespace SORT{
                 quickSortKernel(arr, pivot_index+1, high);
             }
         }
-
-
-        template  void quickSortKernel<short>(short arr[], size_t n);
-        template  void quickSortKernel<unsigned short>(unsigned short arr[], size_t n);
-
-        template  void quickSortKernel<int>(int arr[], size_t n);
-        template  void quickSortKernel<unsigned int>(unsigned int arr[], size_t n);
-
-        template  void quickSortKernel<long>(long arr[], size_t n);
-        template  void quickSortKernel<unsigned long>(unsigned long arr[], size_t n);
-
-        template  void quickSortKernel<long long>(long long arr[], size_t n);
-        template  void quickSortKernel<unsigned long long>(unsigned long long arr[], size_t n);
-
-        template  void quickSortKernel<float>(float arr[], size_t n);
-        template  void quickSortKernel<double>(double arr[], size_t n);
-    }
-}
+    } //QUICK_SORT
+} //SORT
