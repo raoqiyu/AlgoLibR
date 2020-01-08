@@ -19,22 +19,5 @@ namespace SEARCH{
         }
     }
 
-
-    template  size_t binarySearchKernel<short>(short arr[], short target, long low, long high);
-    template  size_t binarySearchKernel<unsigned short>(unsigned short arr[], unsigned short target, long low, long high);
-
-    template  size_t binarySearchKernel<int>(int arr[], int target, long low, long high);
-    template  size_t binarySearchKernel<unsigned int>(unsigned int arr[], unsigned int target, long low, long high);
-
-    template  size_t binarySearchKernel<long>(long arr[], long target, long low, long high);
-    template  size_t binarySearchKernel<unsigned long>(unsigned long arr[], unsigned long target, long low, long high);
-
-    template  size_t binarySearchKernel<long long>(long long arr[], long long target, long low, long high);
-    template  size_t binarySearchKernel<unsigned long long>(unsigned long long arr[], unsigned long long target, long low, long high);
-
-    template  size_t binarySearchKernel<float>(float arr[], float target, long low, long high);
-
-    template  size_t binarySearchKernel<double>(double arr[], double target, long low, long high);
-
 	} // end of namespace  BINARY_SEARCH
 }// end of namespace  SEARCH
