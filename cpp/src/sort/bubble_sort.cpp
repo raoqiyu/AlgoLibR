@@ -4,13 +4,13 @@ namespace SORT{
     namespace BUBBLE_SORT{
 
         template<typename T>
-        void bubbleSortKernel(T arr[], size_t n){
+        void bubbleSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc){
             size_t i,j;
             bool swapped;
             for(i = 0; i < n; i++){
                 swapped = false;
                 for( j = 0; j < n-i-1; j++){
-                    if(arr[j] > arr[j+1]){
+                    if(compFunc(arr, j, j+1)){
                         SORT::UTILS::swap<T>(&arr[j], &arr[j+1]);
                         swapped = true;
                     }

@@ -7,7 +7,7 @@ namespace SORT{
     namespace BUBBLE_SORT{
 
     template<typename T>
-    void bubbleSortKernel(T arr[], size_t n);
+    void bubbleSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);
 
     }
 }

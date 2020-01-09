@@ -24,13 +24,13 @@ def radix_sort(nums):
     return out
 
 # do not use cpdef : (Invalid use of fused types, type cannot be specialized)
-def sort_kernel(real[:] nums, method):
+def sort_kernel(real[:] nums, method, ascending):
     cdef size_t n_samples = nums.shape[0]
 
-    sortKernel(&nums[0], n_samples, sort_methods[method])
+    sortKernel(&nums[0], n_samples, sort_methods[method], ascending)
     return
 
-def sort(nums, method=None):
+def sort(nums, method=None, ascending=True):
     """
     :param nums: array of np.ndarray. if nums is a list, will create a new np.ndarray from it.
     :param method: one of [radix, bubble, insertion, quick, selection], when method is None, use python's default `sorted` method
@@ -44,5 +44,5 @@ def sort(nums, method=None):
         raise Exception('Unsupported method')
     else:
         nums = py_data_to_c_data(nums,copy=False)
-        sort_kernel(nums, method)
+        sort_kernel(nums, method, ascending)
         return nums

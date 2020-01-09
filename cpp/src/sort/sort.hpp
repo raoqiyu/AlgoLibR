@@ -11,14 +11,18 @@
 namespace SORT{
 
     template<typename T>
-    void sortKernel(T arr[], size_t n, enum SORT_METHOD method){
+    void sortKernel(T arr[], size_t n, enum SORT_METHOD method, bool ascending){
         if(n == 0){
             return ;
+        }
+        SORT::UTILS::CompareFunc compFunc = SORT::UTILS::less<T>;
+        if(ascending){
+            compFunc = SORT::UTILS::greater<T>;
         }
 
         switch(method){
             case BUBBLE_SORT_M:
-                SORT::BUBBLE_SORT::bubbleSortKernel(arr, n);
+                SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
                 break;
             case INSERTION_SORT_M:
                 SORT::INSERTION_SORT::insertionSortKernel(arr, n);
@@ -30,7 +34,7 @@ namespace SORT{
                 SORT::SELECTION_SORT::selectionSortKernel(arr, n);
                 break;
             default:
-                SORT::BUBBLE_SORT::bubbleSortKernel(arr, n);
+                SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
         };
 
     }
