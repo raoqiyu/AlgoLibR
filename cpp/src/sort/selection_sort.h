@@ -8,7 +8,7 @@ namespace SORT{
     namespace SELECTION_SORT{
 
     template<typename T>
-    void selectionSortKernel(T arr[], size_t n);
+    void selectionSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);
 
     }
 }

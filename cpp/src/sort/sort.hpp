@@ -31,7 +31,7 @@ namespace SORT{
                 SORT::QUICK_SORT::quickSortKernel(arr, n);
                 break;
             case SELECTION_SORT_M:
-                SORT::SELECTION_SORT::selectionSortKernel(arr, n);
+                SORT::SELECTION_SORT::selectionSortKernel(arr, n, compFunc);
                 break;
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
