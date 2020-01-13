@@ -7,13 +7,13 @@ namespace SORT{
     namespace QUICK_SORT{
 
     template<typename T>
-    long partition(T arr[], long low, long high, SORT::UTILS::CompareFunc compFunc);
+    long partition(T arr[], long low, long high, COMPARATOR::ARRAY::CompareFunc compFunc);
 
     template<typename T>
-    void quickSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);
+    void quickSortKernel(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc);
 
     template<typename T>
-    void quickSortKernel(T arr[], long low, long high, SORT::UTILS::CompareFunc compFunc);
+    void quickSortKernel(T arr[], long low, long high, COMPARATOR::ARRAY::CompareFunc compFunc);
 
     }
 }

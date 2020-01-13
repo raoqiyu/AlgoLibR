@@ -2,6 +2,7 @@
 #define SORT_UTILS_H
 
 #include<stdlib.h>
+#include"utils/comparator.hpp"
 
 namespace SORT{
     enum SORT_METHOD{
@@ -16,19 +17,6 @@ namespace SORT{
             *x = *y;
             *y = temp;
         }
-
-        typedef bool  (*CompareFunc) (void* data, size_t i, size_t j);    // Compare data[i] and data[j]
-
-        template<typename T>
-        bool greater(void *data, size_t i, size_t j){
-            return ((T*)data)[i] >= ((T*)data)[j];        
-        }
-        
-        template<typename T>
-        bool less(void *data, size_t i, size_t j){
-            return ((T*)data)[i] < ((T*)data)[j];        
-        }
-
     }
 }
 

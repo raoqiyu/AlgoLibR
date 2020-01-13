@@ -9,7 +9,7 @@ namespace SORT{
         2) Remaining subarray which is unsorted.
         */
         template<typename T>
-        void unstableSelectionSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc){
+        void unstableSelectionSortKernel(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc){
             size_t i,j,target_ele_idx;
             // a[0]...a[i-1] is the sorted subarray
             for(i = 0; i < n-1; i++){
@@ -28,7 +28,7 @@ namespace SORT{
             }
         }
         template<typename T>
-        void stableSelectionSortKernel(T arr[], size_t n){
+        void stableSelectionSortKernel(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc){
             size_t i,j,target_ele_idx;
             // a[0]...a[i-1] is the sorted subarray
             for(i = 0; i < n-1; i++){
@@ -57,7 +57,7 @@ namespace SORT{
         }
 
         template<typename T>
-        void selectionSortKernel(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc){
+        void selectionSortKernel(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc){
             unstableSelectionSortKernel(arr, n, compFunc);
         }
     } //SELECTION_SORT

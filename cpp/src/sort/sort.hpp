@@ -15,9 +15,9 @@ namespace SORT{
         if(n == 0){
             return ;
         }
-        SORT::UTILS::CompareFunc compFunc = SORT::UTILS::less<T>;
+        COMPARATOR::ARRAY::CompareFunc compFunc = COMPARATOR::ARRAY::less<T>;
         if(ascending){
-            compFunc = SORT::UTILS::greater<T>;
+            compFunc = COMPARATOR::ARRAY::greater<T>;
         }
 
         switch(method){
