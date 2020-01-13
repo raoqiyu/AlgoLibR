@@ -5,15 +5,15 @@
 
 namespace COMPARATOR{
     namespace ARRAY{
-        typedef bool  (*CompareFunc) (void* data, size_t i, size_t j);    // Compare data[i] and data[j]
+        typedef bool  (*CompareFunc) (void* data, long long i, long long  j);    // Compare data[i] and data[j]
 
         template<typename T>
-        bool greater(void *data, size_t i, size_t j){
-            return ((T*)data)[i] >= ((T*)data)[j];        
+        bool greater(void *data, long long  i, long long  j){
+            return ((T*)data)[i] > ((T*)data)[j];        
         }
         
         template<typename T>
-        bool less(void *data, size_t i, size_t j){
+        bool less(void *data, long long i, long long j){
             return ((T*)data)[i] < ((T*)data)[j];        
         }
     } // array 
