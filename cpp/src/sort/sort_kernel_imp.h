@@ -18,7 +18,7 @@ namespace SORT{
 #define DEFINE_SORT_KERNELS(T)                                                          \
     template void SORT::BUBBLE_SORT::bubbleSortKernel<T>(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);            \
     template void SORT::INSERTION_SORT::insertionSortKernel<T>(T arr[], size_t n);      \
-    template void SORT::QUICK_SORT::quickSortKernel<T>(T arr[], size_t n);              \
+    template void SORT::QUICK_SORT::quickSortKernel<T>(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);              \
     template void SORT::SELECTION_SORT::selectionSortKernel<T>(T arr[], size_t n, SORT::UTILS::CompareFunc compFunc);
 
 DEFINE_SORT_KERNELS(short);

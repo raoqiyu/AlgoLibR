@@ -28,7 +28,7 @@ namespace SORT{
                 SORT::INSERTION_SORT::insertionSortKernel(arr, n);
                 break;
             case QUICK_SORT_M:
-                SORT::QUICK_SORT::quickSortKernel(arr, n);
+                SORT::QUICK_SORT::quickSortKernel(arr, n, compFunc);
                 break;
             case SELECTION_SORT_M:
                 SORT::SELECTION_SORT::selectionSortKernel(arr, n, compFunc);
