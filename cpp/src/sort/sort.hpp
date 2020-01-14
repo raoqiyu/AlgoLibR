@@ -24,14 +24,20 @@ namespace SORT{
             case BUBBLE_SORT_M:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
                 break;
-            case INSERTION_SORT_M:
-                SORT::INSERTION_SORT::insertionSortKernel(arr, n);
-                break;
             case QUICK_SORT_M:
                 SORT::QUICK_SORT::quickSortKernel(arr, n, compFunc);
                 break;
             case SELECTION_SORT_M:
                 SORT::SELECTION_SORT::selectionSortKernel(arr, n, compFunc);
+                break;
+            case INSERTION_SORT_M:
+                COMPARATOR::NUMBER::CompareFunc<T> compFuncNum;
+                if(ascending){
+                    compFuncNum = COMPARATOR::NUMBER::greater<T>;
+                }else{
+                    compFuncNum = COMPARATOR::NUMBER::less<T>;
+                }
+                SORT::INSERTION_SORT::insertionSortKernel(arr, n, compFuncNum);
                 break;
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);

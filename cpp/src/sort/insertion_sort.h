@@ -9,7 +9,7 @@ namespace SORT{
     namespace INSERTION_SORT{
 
     template<typename T>
-    void insertionSortKernel(T arr[], size_t n);
+    void insertionSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
 
     }
 }

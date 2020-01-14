@@ -23,7 +23,7 @@ namespace COMPARATOR{
 
         template<typename T>
         bool greater(T x, T y){
-            return x >= y;        
+            return x > y;        
         }
         
         template<typename T>

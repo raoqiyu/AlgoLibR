@@ -27,14 +27,14 @@ namespace SORT{
         /*Maintain an sorted array a[0...i-1] and insert element a[i] into it
         */
         template<typename T>
-        void sequentialInsertionSortKernel(T arr[], size_t n){
-            size_t i,j;
+        void sequentialInsertionSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){
+            long i,j;
             T key;
             for(i = 1; i < n; i++){
                 key = arr[i];//the element to be inserted into the sorted array arr[0...i-1]
                 // find the position where arr[i] will be in
                 j = i-1;
-                while( j >= 0 && arr[j] > key){
+                while( j >= 0 && compFunc(arr[j],key)){
                     arr[ j+1] = arr[j];
                     j--;
                 }
@@ -43,8 +43,8 @@ namespace SORT{
         }
 
         template<typename T>
-        void insertionSortKernel(T arr[], size_t n){
-            binaryInsertionSortKernel(arr, n);
+        void insertionSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){
+            sequentialInsertionSortKernel(arr, n, compFunc);
         }
     } //INSERTION_SORT
 } //SORT
