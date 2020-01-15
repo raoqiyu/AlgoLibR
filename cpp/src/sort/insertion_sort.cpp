@@ -46,6 +46,10 @@ namespace SORT{
         void insertionSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){
             sequentialInsertionSortKernel(arr, n, compFunc);
         }
+
+        #define DEFINE_SORT_KERNELS(T) \
+            template void insertionSortKernel<T>(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
+        REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
     } //INSERTION_SORT
 } //SORT
 

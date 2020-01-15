@@ -21,6 +21,10 @@ namespace SORT{
                 }
             }
         }
+
+        #define DEFINE_SORT_KERNELS(T) \
+            template void bubbleSortKernel<T>(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc);
+        REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
     } // BUBBLE_SORT
 } //SORT
 

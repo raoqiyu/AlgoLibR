@@ -6,7 +6,10 @@
 #ifndef SORT_H
 #define SORT_H
 
-#include "sort_kernel_imp.h"
+#include "bubble_sort.h"
+#include "insertion_sort.h"
+#include "quick_sort.h"
+#include "selection_sort.h"
 
 namespace SORT{
 

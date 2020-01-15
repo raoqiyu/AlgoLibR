@@ -38,5 +38,10 @@ namespace SORT{
                 quickSortKernel(arr, pivot_index+1, high, compFunc);
             }
         }
+
+
+        #define DEFINE_SORT_KERNELS(T)  \
+            template void quickSortKernel<T>(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc);
+        REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
     } //QUICK_SORT
 } //SORT

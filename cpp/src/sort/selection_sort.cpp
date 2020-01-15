@@ -60,6 +60,11 @@ namespace SORT{
         void selectionSortKernel(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc){
             unstableSelectionSortKernel(arr, n, compFunc);
         }
+
+
+        #define DEFINE_SORT_KERNELS(T) \
+            template void selectionSortKernel<T>(T arr[], size_t n, COMPARATOR::ARRAY::CompareFunc compFunc);
+        REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
     } //SELECTION_SORT
 } //SORT
 

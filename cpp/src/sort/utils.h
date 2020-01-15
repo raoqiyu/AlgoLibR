@@ -3,6 +3,8 @@
 
 #include<stdlib.h>
 #include"utils/comparator.hpp"
+#include"utils/register_types.h"
+
 
 namespace SORT{
     enum SORT_METHOD{
