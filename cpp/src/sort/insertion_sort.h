@@ -2,7 +2,7 @@
 #define INSERTION_SORT_H
 
 #include "utils.h"
-#include "search/search_kernel_imp.h"
+#include "search/binary_search.h"
 
 
 namespace SORT{

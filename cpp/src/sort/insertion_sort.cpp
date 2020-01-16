@@ -9,13 +9,13 @@ namespace SORT{
         In Binary insertion sort, it takes O(log n) comparisions.
         */
         template<typename T>
-        void binaryInsertionSortKernel(T arr[], long n){ // use long n, not size_t n (Segmentation fault)
+        void binaryInsertionSortKernel(T arr[], long n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){ // use long n, not size_t n (Segmentation fault)
             long i,j,pos;
             T key;
             for(i = 1; i < n; i++){
                 key = arr[i];//the element to be inserted into the sorted array arr[0...i-1]
                 // find the position where arr[i] will be in
-                pos = SEARCH::BINARY_SEARCH::binarySearchKernel(arr, key, 0, i-1);
+                pos = SEARCH::BINARY_SEARCH::binarySearchKernel(arr, key, 0, i-1, compFunc);
                 j = i-1;
                 while(j >= pos ){
                     arr[j+1] = arr[j];
@@ -44,7 +44,7 @@ namespace SORT{
 
         template<typename T>
         void insertionSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){
-            sequentialInsertionSortKernel(arr, n, compFunc);
+            binaryInsertionSortKernel(arr, n, compFunc);
         }
 
         #define DEFINE_SORT_KERNELS(T) \
