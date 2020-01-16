@@ -7,7 +7,7 @@ namespace SEARCH{
     namespace BINARY_SEARCH{
 
     template<typename T>
-    size_t binarySearchKernel(T arr[], T target, long low, long high);
+    size_t binarySearchKernel(T arr[], T target, long low, long high, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
 
     }
 }
