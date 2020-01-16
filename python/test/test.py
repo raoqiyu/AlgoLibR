@@ -1,5 +1,5 @@
 '''
-Author: raoqiyu@mail.com
+Author: raoqiyu@gmail.com
 Date: 2020-01-13 17:59:08
 FilePath: /AlgoLibR/test.py
 Description: 

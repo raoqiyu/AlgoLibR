@@ -1,5 +1,5 @@
 /*
- * @Author: raoqiyu@mail.com
+ * @Author: raoqiyu@gmail.com
  * @Date: 2020-01-16 11:16:01
  * @FilePath: /AlgoLibR/cpp/src/search/search.h
  * @Description: 
