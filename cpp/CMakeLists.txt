@@ -100,13 +100,13 @@ set(ALGO_C_TARGET "AlgoLibR")
 add_library(${ALGO_C_TARGET} SHARED
     src/mul/mul.cpp
     src/demo/demo.cpp
+    src/utils/comparator.hpp
     src/sort/sort.hpp
     src/sort/bubble_sort.cpp
     src/sort/quick_sort.cpp
     src/sort/selection_sort.cpp
     src/sort/insertion_sort.cpp
     src/search/binary_search.cpp
-    src/utils/comparator.hpp
 )
 target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
 
