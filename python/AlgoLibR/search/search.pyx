@@ -2,14 +2,16 @@
 import cython
 cimport cython
 import numpy as np
-from csearch cimport real, SEARCH_METHOD, searchKernel
+from csearch cimport SEARCH_METHOD, searchKernel
 from AlgoLibR.utils.memory import py_data_to_c_data,malloc_memory_from_data
-
-search_methods = {'binary_search':SEARCH_METHOD.BINARY_SEARCH_M,  
-                 }
+from AlgoLibR.utils.data_types cimport real_number
 
 
-def search_kernel(real[:] nums, real target, method, ascending, isExist):
+search_methods = {'binary_search':SEARCH_METHOD.BINARY_SEARCH_M,
+                 }  
+
+
+def search_kernel(real_number[:] nums, real_number target, method, ascending, isExist):
     cdef size_t n_samples = nums.shape[0]
 
     pos = searchKernel(&nums[0], target, n_samples, search_methods[method], ascending, isExist)

@@ -2,9 +2,9 @@
 import cython
 cimport cython
 import numpy as np
-from csort cimport real,SORT_METHOD
-from csort cimport radix_sort_kernel,sortKernel
+from csort cimport SORT_METHOD, radix_sort_kernel,sortKernel
 from AlgoLibR.utils.memory import py_data_to_c_data,malloc_memory_from_data
+from AlgoLibR.utils.data_types cimport real_number
 
 sort_methods = {'insertion':SORT_METHOD.INSERTION_SORT_M,
                 'bubble':SORT_METHOD.BUBBLE_SORT_M,
@@ -24,7 +24,7 @@ def radix_sort(nums):
     return out
 
 # do not use cpdef : (Invalid use of fused types, type cannot be specialized)
-def sort_kernel(real[:] nums, method, ascending):
+def sort_kernel(real_number[:] nums, method, ascending):
     cdef size_t n_samples = nums.shape[0]
 
     sortKernel(&nums[0], n_samples, sort_methods[method], ascending)

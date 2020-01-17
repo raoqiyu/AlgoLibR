@@ -1,18 +1,6 @@
 cimport cython
 from libcpp cimport bool
 
-ctypedef fused real:
-    cython.short
-    cython.ushort
-    cython.int
-    cython.uint
-    cython.long
-    cython.ulong
-    cython.longlong
-    cython.ulonglong
-    cython.float
-    cython.double
-
 cdef extern from "search/utils.h" namespace "SEARCH":
     cdef enum SEARCH_METHOD:
         BINARY_SEARCH_M

@@ -23,6 +23,7 @@ def py_data_to_c_data(data, dtype=None, copy=False):
                 data_py = data
     return data_py
 
+
 def malloc_memory_from_data(data, dtype=None, copy=False):
     """
 
