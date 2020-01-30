@@ -4,33 +4,34 @@ Date: 2020-01-13 17:59:08
 FilePath: /AlgoLibR/test.py
 Description: 
 '''
-
 import numpy as np
 from AlgoLibR.sort.sort import sort
 from AlgoLibR.search.search import search
 
 
 def test_sort(test_count=10):
-    for sort_method in ['bubble', 'quick', 'insertion', 'selection']:
+    for sort_method in ['bubble', 'quick', 'insertion', 'selection', 'count', 'radix']:
         sucess_cnt, failure_cnt = 0, 0
         for _ in range(test_count):
-            nums = np.random.randint(1,100000,300)
+            nums = np.random.randint(1,100000,30)
             nums_np_sorted = nums.copy()
             nums_np_sorted.sort()
-
             nums_sorted = sort(nums.copy(), method=sort_method, ascending=False)
             if np.all(nums_np_sorted[::-1] == nums_sorted):
                 sucess_cnt += 1
             else:
                 failure_cnt += 1
                 print(sort_method, 'descending failure')
+                print(nums)
+                print(nums_np_sorted[::-1])
+                print(nums_sorted)
             nums_sorted = sort(nums.copy(), method=sort_method, ascending=True)
             if np.all(nums_np_sorted == nums_sorted):
                 sucess_cnt += 1
             else:
                 failure_cnt += 1
                 print(sort_method, 'ascending failure') 
-        print(sort_method, '_sort sucess count %d/%d'%(sucess_cnt, test_count*2))
+        print(sort_method, 'sort sucess count %d/%d'%(sucess_cnt, test_count*2))
 
 def test_seach(test_count=10):
     for search_method in ['binary_search']:

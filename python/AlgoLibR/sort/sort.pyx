@@ -2,14 +2,16 @@
 import cython
 cimport cython
 import numpy as np
-from csort cimport SORT_METHOD, radix_sort_kernel,sortKernel
+from csort cimport SORT_METHOD, radix_sort_kernel,sortKernel,sortIntegerKernel
 from AlgoLibR.utils.memory import py_data_to_c_data,malloc_memory_from_data
-from AlgoLibR.utils.data_types cimport real_number
+from AlgoLibR.utils.data_types cimport real_number,integer_number
 
 sort_methods = {'insertion':SORT_METHOD.INSERTION_SORT_M,
                 'bubble':SORT_METHOD.BUBBLE_SORT_M,
                 'quick':SORT_METHOD.QUICK_SORT_M,
-                'selection':SORT_METHOD.SELECTION_SORT_M,}
+                'selection':SORT_METHOD.SELECTION_SORT_M,
+                'count':SORT_METHOD.COUNT_SORT_M,
+                'radix':SORT_METHOD.RADIX_SORT_M}
 
 
 def radix_sort(nums):
@@ -30,6 +32,12 @@ def sort_kernel(real_number[:] nums, method, ascending):
     sortKernel(&nums[0], n_samples, sort_methods[method], ascending)
     return
 
+def sort_integer_kernel(integer_number[:] nums, method, ascending):
+    cdef size_t n_samples = nums.shape[0]
+
+    sortIntegerKernel(&nums[0], n_samples, sort_methods[method], ascending)
+    return
+
 def sort(nums, method=None, ascending=True):
     """
     :param nums: array of np.ndarray. if nums is a list, will create a new np.ndarray from it.
@@ -38,11 +46,12 @@ def sort(nums, method=None, ascending=True):
     """
     if method is None:
         return sorted(nums)
-    elif method == 'radix':
-        return radix_sort(nums)
     elif method not in sort_methods:
         raise Exception('Unsupported method')
     else:
         nums = py_data_to_c_data(nums,copy=False)
-        sort_kernel(nums, method, ascending)
+        if method in ['radix','count']:
+            sort_integer_kernel(nums, method, ascending)
+        else:
+            sort_kernel(nums, method, ascending)
         return nums

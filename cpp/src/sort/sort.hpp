@@ -1,4 +1,10 @@
 /*
+ * @Author: raoqiyu@gmail.com
+ * @Date: 2020-01-15 09:15:31
+ * @FilePath: /AlgoLibR/cpp/src/sort/sort.hpp
+ * @Description: 
+ */
+/*
 @Author: raoqiyu@gmail.com
 @Time: 2019-12-13 17:10:09
 @File: sort.h
@@ -10,6 +16,9 @@
 #include "insertion_sort.h"
 #include "quick_sort.h"
 #include "selection_sort.h"
+#include "count_sort.h"
+#include "radix_sort_cpu.h"
+
 
 namespace SORT{
 
@@ -45,7 +54,23 @@ namespace SORT{
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
         };
+    }
 
+    template<typename T>
+    void sortIntegerKernel(T arr[], size_t n, enum SORT_METHOD method, bool ascending){
+        if(n == 0){
+            return ;
+        }
+        switch(method){
+             case COUNT_SORT_M:
+                SORT::COUNT_SORT::countSortKernel(arr, n, ascending);
+                break;
+            case RADIX_SORT_M:
+                SORT::RADIX_SORT_CPU::radixSortKernel(arr, n, ascending);
+                break;
+            default:
+                SORT::COUNT_SORT::countSortKernel(arr, n, ascending);      
+        }
     }
 
 } //SORT
