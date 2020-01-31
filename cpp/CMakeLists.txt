@@ -101,7 +101,7 @@ add_library(${ALGO_C_TARGET} SHARED
     src/mul/mul.cpp
     src/demo/demo.cpp
     src/utils/comparator.hpp
-    src/sort/sort.hpp
+    src/sort/sort.cpp
     src/sort/bubble_sort.cpp
     src/sort/quick_sort.cpp
     src/sort/selection_sort.cpp

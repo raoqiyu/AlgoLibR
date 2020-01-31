@@ -9,9 +9,8 @@
 @Time: 2019-12-13 17:10:09
 @File: sort.h
 */
-#ifndef SORT_H
-#define SORT_H
 
+#include "sort/sort.h"
 #include "bubble_sort.h"
 #include "insertion_sort.h"
 #include "quick_sort.h"
@@ -72,6 +71,11 @@ namespace SORT{
                 SORT::COUNT_SORT::countSortKernel(arr, n, ascending);      
         }
     }
+    #define DEFINE_SORT_KERNELS(T) \
+        template void sortKernel<T>(T arr[], size_t n, enum SORT_METHOD method, bool ascending);
+    REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
 
+    #define DEFINE_SORT_KERNELS(T) \
+        template void sortIntegerKernel<T>(T arr[], size_t n, enum SORT_METHOD method, bool ascending);
+    REGISTER_INTEGRAL_TYPES(DEFINE_SORT_KERNELS);
 } //SORT
-#endif

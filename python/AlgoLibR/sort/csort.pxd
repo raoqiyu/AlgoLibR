@@ -15,6 +15,6 @@ cdef extern from "sort/utils.h" namespace "SORT":
         COUNT_SORT_M,
         RADIX_SORT_M
 
-cdef extern from "sort/sort.hpp" namespace "SORT":
+cdef extern from "sort/sort.h" namespace "SORT":
     cdef void sortKernel[T](T *arr, size_t n, SORT_METHOD method, bool ascending)
     cdef void sortIntegerKernel[T](T *arr, size_t n, SORT_METHOD method, bool ascending)
