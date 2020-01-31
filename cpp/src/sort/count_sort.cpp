@@ -78,6 +78,6 @@ namespace SORT{
         #define DEFINE_SORT_KERNELS(T) \
             template void countSortKernel<T>(T arr[], size_t n, bool ascending); \
             template void radixCountSortKernel<T>(T arr[], size_t n, int exp, bool ascending);
-        REGISTER_INTEGRAL_TYPES(DEFINE_SORT_KERNELS);
+        REGISTER_INTEGER_TYPES(DEFINE_SORT_KERNELS);
     } // COMPARATOR
 } //SORT

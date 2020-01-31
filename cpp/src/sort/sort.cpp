@@ -77,5 +77,5 @@ namespace SORT{
 
     #define DEFINE_SORT_KERNELS(T) \
         template void sortIntegerKernel<T>(T arr[], size_t n, enum SORT_METHOD method, bool ascending);
-    REGISTER_INTEGRAL_TYPES(DEFINE_SORT_KERNELS);
+    REGISTER_INTEGER_TYPES(DEFINE_SORT_KERNELS);
 } //SORT
