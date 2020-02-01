@@ -111,6 +111,7 @@ add_library(${ALGO_C_TARGET} SHARED
     src/array/compare.cpp
     src/search/binary_search.cpp
     src/search/search.cpp
+    src/data_structure/heap.cpp
 )
 target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
 
