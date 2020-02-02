@@ -17,24 +17,25 @@ namespace DATA_STRUCTURE{
         void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true){
             while(true){
                 size_t target_pos = i;
-                if(i*2 <= n){
+                size_t left_child_pos=i*2+1, right_child_pos=i*2+2;
+                if(left_child_pos < n){
                     if(is_max_heap){
                         // max heap
                         // parent less than child
-                        if(arr[i] < arr[i*2])
-                            target_pos = i*2;
-                    }else if(arr[i] > arr[i*2]){
+                        if(arr[i] < arr[left_child_pos])
+                            target_pos = left_child_pos;
+                    }else if(arr[i] > arr[left_child_pos]){
                         // min heap
                         // parent greater than child
-                        target_pos = i*2;
+                        target_pos = left_child_pos;
                     }
                 }
-                if((i*2+1) <= n){
+                if(right_child_pos < n){
                     if(is_max_heap){
-                        if(arr[target_pos] < arr[i*2+1])
-                           target_pos = i*2+1; 
-                    }else if(arr[target_pos] > arr[i*2+1]){
-                        target_pos = i*2+1;
+                        if(arr[target_pos] < arr[right_child_pos])
+                           target_pos = right_child_pos; 
+                    }else if(arr[target_pos] > arr[right_child_pos]){
+                        target_pos = right_child_pos;
                     }
                 }
                 // do not need to heapify the rest if arr[i] is in the right position
@@ -48,14 +49,14 @@ namespace DATA_STRUCTURE{
 
         template<typename T>
         void build_heap(T arr[], size_t n, bool is_max_heap){
-            for(size_t i = n/2; i >= 1; --i){
+            for(long long i = n/2-1; i >= 0; --i){
                 heapify(arr, n, i, is_max_heap);
             }
         }
 
         template<class T>
         HeapImp<T>::HeapImp(size_t capacity, bool is_max_heap){
-            this->arr = new T[capacity+1];
+            this->arr = new T[capacity];
             this->capacity = capacity;
             this->heap_size = 0;
             this->is_max_heap = is_max_heap;
@@ -70,11 +71,11 @@ namespace DATA_STRUCTURE{
             if(this->heap_size >= this->capacity){
                 return ;
             }
-            ++this->heap_size;
-            this->arr[this->heap_size] = data;
-            size_t i = this->heap_size;
-            while(i/2 > 0){
-                if( (this->arr[i/2] > this->arr[i])){
+            this->arr[this->heap_size++] = data;
+            long long i = this->heap_size-1;
+            long long parent_pos = (i-1)/2;
+            while(i != 0){
+                if( (this->arr[parent_pos] > this->arr[i])){
                     // parent node greater than child node
                     // if this is a max_heap, break
                     // if this is a min_heap, swap parent and child
@@ -88,34 +89,36 @@ namespace DATA_STRUCTURE{
                     break;
                 }
                 
-                std::cout << "arr[" << i << "]: " <<  this->arr[i]  << ", arr[" << i/2 << "]: " <<  this->arr[i/2] << std::endl;
-                SORT::UTILS::swap<T>(&this->arr[i], &this->arr[i/2]);
-                i /= 2;
+                // std::cout << "arr[" << i << "]: " <<  this->arr[i]  << ", arr[" << parent_pos << "]: " <<  this->arr[parent_pos] << std::endl;
+                SORT::UTILS::swap<T>(&this->arr[i], &this->arr[parent_pos]);
+                i = parent_pos;
+                parent_pos = (i-1)/2;
+
             }
-            for(auto i = 0; i < this->heap_size; i++){
-                std::cout << this->arr[i+1] << ' ';
-            }
+            //for(auto i = 0; i < this->heap_size; i++){
+            //    std::cout << this->arr[i] << ' ';
+            //}
             std::cout << std::endl;
         }
 
         template<class T>
         void HeapImp<T>::remove(){
             if(this->heap_size == 0) return;
-            this->arr[1] = this->arr[this->heap_size];
+            this->arr[0] = this->arr[this->heap_size];
             --this->heap_size;
-            heapify(this->arr, this->heap_size, 1, this->is_max_heap);
+            heapify(this->arr, this->heap_size, 0, this->is_max_heap);
         }
 
         template<typename T>
         T HeapImp<T>::get(){
-            if(this->is_max_heap){
-                std::cout << "max_heap\n";
-            }else{
-                std::cout <<"min_heap\n";
-            }
+            //if(this->is_max_heap){
+            //    std::cout << "max_heap\n";
+            //}else{
+            //    std::cout <<"min_heap\n";
+            //}
             
             if(this->heap_size == 0) return -1;
-            return this->arr[1];
+            return this->arr[0];
         }
 
         template<typename T>
