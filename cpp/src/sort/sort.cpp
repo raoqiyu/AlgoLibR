@@ -17,6 +17,7 @@
 #include "selection_sort.h"
 #include "count_sort.h"
 #include "radix_sort_cpu.h"
+#include "heap_sort.h"
 
 
 namespace SORT{
@@ -49,6 +50,9 @@ namespace SORT{
                     compFuncNum = COMPARATOR::NUMBER::less<T>;
                 }
                 SORT::INSERTION_SORT::insertionSortKernel(arr, n, compFuncNum);
+                break;
+            case HEAP_SORT_M:
+                SORT::HEAP_SORT::heapSortKernel(arr, n, ascending);
                 break;
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);

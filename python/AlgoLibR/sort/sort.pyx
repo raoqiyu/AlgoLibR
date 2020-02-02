@@ -11,7 +11,8 @@ sort_methods = {'insertion':SORT_METHOD.INSERTION_SORT_M,
                 'quick':SORT_METHOD.QUICK_SORT_M,
                 'selection':SORT_METHOD.SELECTION_SORT_M,
                 'count':SORT_METHOD.COUNT_SORT_M,
-                'radix':SORT_METHOD.RADIX_SORT_M}
+                'radix':SORT_METHOD.RADIX_SORT_M,
+                'heap':SORT_METHOD.HEAP_SORT_M}
 
 
 def radix_sort(nums):

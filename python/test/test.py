@@ -10,7 +10,7 @@ from AlgoLibR.search.search import search
 
 
 def test_sort(test_count=10):
-    for sort_method in ['bubble', 'quick', 'insertion', 'selection', 'count', 'radix']:
+    for sort_method in ['bubble', 'quick', 'insertion', 'selection', 'count', 'radix', 'heap']:
         sucess_cnt, failure_cnt = 0, 0
         for _ in range(test_count):
             nums = np.random.randint(1,100000,30)
@@ -31,7 +31,7 @@ def test_sort(test_count=10):
             else:
                 failure_cnt += 1
                 print(sort_method, 'ascending failure') 
-        print(sort_method, 'sort sucess count %d/%d'%(sucess_cnt, test_count*2))
+        print(sort_method, 'sort success count %d/%d'%(sucess_cnt, test_count*2))
 
 def test_seach(test_count=10):
     for search_method in ['binary_search']:
@@ -49,7 +49,7 @@ def test_seach(test_count=10):
                 print(target_index)
                 print(candidate_index)
                 print(nums[target_index-2:target_index+2])
-        print(search_method, 'sucess count %d/%d'%(sucess_cnt, test_count))
+        print(search_method, 'success count %d/%d'%(sucess_cnt, test_count))
 
 
 if  __name__ == '__main__':
