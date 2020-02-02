@@ -8,7 +8,7 @@
 #include "data_structure/heap.h"
 #include "sort/utils.h"
 #include "utils/register_types.h"
-#include <stdio.h>
+#include <iostream>
 
 namespace DATA_STRUCTURE{
     namespace HEAP{
@@ -18,11 +18,22 @@ namespace DATA_STRUCTURE{
             while(true){
                 size_t target_pos = i;
                 if(i*2 <= n){
-                    if( (is_max_heap && arr[i] < arr[i*2]) || arr[i] > arr[i*2])
+                    if(is_max_heap){
+                        // max heap
+                        // parent less than child
+                        if(arr[i] < arr[i*2])
+                            target_pos = i*2;
+                    }else if(arr[i] > arr[i*2]){
+                        // min heap
+                        // parent greater than child
                         target_pos = i*2;
+                    }
                 }
                 if((i*2+1) <= n){
-                    if( (is_max_heap && arr[target_pos] < arr[i*2+1]) || arr[target_pos] > arr[i*2+1]){
+                    if(is_max_heap){
+                        if(arr[target_pos] < arr[i*2+1])
+                           target_pos = i*2+1; 
+                    }else if(arr[target_pos] > arr[i*2+1]){
                         target_pos = i*2+1;
                     }
                 }
@@ -62,11 +73,29 @@ namespace DATA_STRUCTURE{
             ++this->heap_size;
             this->arr[this->heap_size] = data;
             size_t i = this->heap_size;
-            while(i/2 > 0 && ( (this->is_max_heap && this->arr[i] > this->arr[i/2]) ||
-                                            (this->arr[i] < this->arr[i/2]) ) ){
+            while(i/2 > 0){
+                if( (this->arr[i/2] > this->arr[i])){
+                    // parent node greater than child node
+                    // if this is a max_heap, break
+                    // if this is a min_heap, swap parent and child
+                    if(this->is_max_heap){
+                        break;
+                    }
+                }else if(!this->is_max_heap){
+                    // parent node less than child node
+                    // if this is a min heap, break
+                    // if this ia a max heap, swap parent and child
+                    break;
+                }
+                
+                std::cout << "arr[" << i << "]: " <<  this->arr[i]  << ", arr[" << i/2 << "]: " <<  this->arr[i/2] << std::endl;
                 SORT::UTILS::swap<T>(&this->arr[i], &this->arr[i/2]);
                 i /= 2;
             }
+            for(auto i = 0; i < this->heap_size; i++){
+                std::cout << this->arr[i+1] << ' ';
+            }
+            std::cout << std::endl;
         }
 
         template<class T>
@@ -80,9 +109,9 @@ namespace DATA_STRUCTURE{
         template<typename T>
         T HeapImp<T>::get(){
             if(this->is_max_heap){
-                printf('max_heap');
+                std::cout << "max_heap\n";
             }else{
-                printf('min_heap');
+                std::cout <<"min_heap\n";
             }
             
             if(this->heap_size == 0) return -1;
