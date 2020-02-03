@@ -54,6 +54,54 @@ namespace DATA_STRUCTURE{
             }
         }
 
+        template<typename T>
+        bool insert_heap(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap){
+            if(heap_size >= n) return false;
+            arr[heap_size++] = data;
+            long long i = heap_size-1;
+            long long parent_pos = (i-1)/2;
+            while(i != 0){
+                if( (arr[parent_pos] > arr[i])){
+                    // parent node greater than child node
+                    // if this is a max_heap, break
+                    // if this is a min_heap, swap parent and child
+                    if(is_max_heap){
+                        break;
+                    }
+                }else if(!is_max_heap){
+                    // parent node less than child node
+                    // if this is a min heap, break
+                    // if this ia a max heap, swap parent and child
+                    break;
+                }
+                
+                // std::cout << "arr[" << i << "]: " <<  this->arr[i]  << ", arr[" << parent_pos << "]: " <<  this->arr[parent_pos] << std::endl;
+                SORT::UTILS::swap<T>(&arr[i], &arr[parent_pos]);
+                i = parent_pos;
+                parent_pos = (i-1)/2;
+
+            }
+            //for(auto i = 0; i < this->heap_size; i++){
+            //    std::cout << this->arr[i] << ' ';
+            //}
+            //std::cout << std::endl;
+            return true;
+        }
+
+        template<typename T>
+        bool remove_heap(T arr[], size_t n, size_t heap_size, bool is_max_heap){
+            if(heap_size == 0) return false;
+            arr[0] = arr[heap_size];
+            heapify(arr, heap_size, 0, is_max_heap);
+            return true;
+        }
+
+        template<typename T>
+        T get_heap(T arr[], size_t heap_size){
+            if(heap_size == 0) return (T)-1;
+            return arr[0];
+        }
+
         template<class T>
         HeapImp<T>::HeapImp(size_t capacity, bool is_max_heap){
             this->arr = new T[capacity];
@@ -66,50 +114,20 @@ namespace DATA_STRUCTURE{
         HeapImp<T>::~HeapImp(){
             delete this->arr;
         }
+
         template<class T>
         void HeapImp<T>::insert(T data){
-            if(this->heap_size >= this->capacity){
-                return ;
-            }
-            this->arr[this->heap_size++] = data;
-            long long i = this->heap_size-1;
-            long long parent_pos = (i-1)/2;
-            while(i != 0){
-                if( (this->arr[parent_pos] > this->arr[i])){
-                    // parent node greater than child node
-                    // if this is a max_heap, break
-                    // if this is a min_heap, swap parent and child
-                    if(this->is_max_heap){
-                        break;
-                    }
-                }else if(!this->is_max_heap){
-                    // parent node less than child node
-                    // if this is a min heap, break
-                    // if this ia a max heap, swap parent and child
-                    break;
-                }
-                
-                // std::cout << "arr[" << i << "]: " <<  this->arr[i]  << ", arr[" << parent_pos << "]: " <<  this->arr[parent_pos] << std::endl;
-                SORT::UTILS::swap<T>(&this->arr[i], &this->arr[parent_pos]);
-                i = parent_pos;
-                parent_pos = (i-1)/2;
-
-            }
-            //for(auto i = 0; i < this->heap_size; i++){
-            //    std::cout << this->arr[i] << ' ';
-            //}
-            std::cout << std::endl;
+            bool is_inserted = insert_heap(this->arr, data, this->capacity, this->heap_size, this->is_max_heap);
+            if(is_inserted) this->heap_size++;
         }
 
         template<class T>
         void HeapImp<T>::remove(){
-            if(this->heap_size == 0) return;
-            this->arr[0] = this->arr[this->heap_size];
-            --this->heap_size;
-            heapify(this->arr, this->heap_size, 0, this->is_max_heap);
+            bool is_removed = remove_heap(this->arr, this->capacity, this->heap_size, this->is_max_heap);
+            if(is_removed) this->heap_size--;
         }
 
-        template<typename T>
+        template<class T>
         T HeapImp<T>::get(){
             //if(this->is_max_heap){
             //    std::cout << "max_heap\n";
@@ -117,8 +135,7 @@ namespace DATA_STRUCTURE{
             //    std::cout <<"min_heap\n";
             //}
             
-            if(this->heap_size == 0) return -1;
-            return this->arr[0];
+            return get_heap(this->arr, this->heap_size);
         }
 
         template<typename T>
@@ -129,11 +146,10 @@ namespace DATA_STRUCTURE{
         #define DEFINE_HEAMPIMP(T) \
             template void heapify<T>(T arr[], size_t n, size_t i, bool is_max_heap=true); \
             template void build_heap<T>(T arr[], size_t n, bool is_max_heap); \
+            template bool insert_heap<T>(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap); \
+            template bool remove_heap<T>(T arr[], size_t n, size_t heap_size, bool is_max_heap); \
+            template T    get_heap<T>(T arr[], size_t heap_size); \
             template class HeapImp<T>; 
-            //template HeapImp<T>::HeapImp(size_t capacity, bool is_max_heap); \
-            //template HeapImp<T>::~HeapImp(); \
-            //template void HeapImp<T>::insert(T data); \
-            //template void HeapImp<T>::remove();
         REGISTER_REAL_NUMBER_TYPES(DEFINE_HEAMPIMP);
     } // HEAP
 } // DATA_STRUCTURE:w

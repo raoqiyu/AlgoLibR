@@ -18,7 +18,15 @@ namespace DATA_STRUCTURE{
 
         template<typename T>
         void build_heap(T arr[], size_t n, bool is_max_heap);
+        
+        template<typename T>
+        bool insert_heap(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap);
 
+        template<typename T>
+        bool remove_heap(T arr[], size_t n, size_t heap_size, bool is_max_heap);
+
+        template<typename T>
+        T get_heap(T arr[], size_t heap_size);
         template<class T>
         class HeapImp{
         private:
