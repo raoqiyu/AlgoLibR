@@ -9,3 +9,4 @@ cdef extern from "data_structure/heap.h" namespace "DATA_STRUCTURE::HEAP":
         void remove()
         T    get()
         size_t size()
+        T*   values()
