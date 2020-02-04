@@ -91,7 +91,7 @@ namespace DATA_STRUCTURE{
         template<typename T>
         bool remove_heap(T arr[], size_t n, size_t heap_size, bool is_max_heap){
             if(heap_size == 0) return false;
-            arr[0] = arr[heap_size];
+            arr[0] = arr[heap_size-1];
             heapify(arr, heap_size, 0, is_max_heap);
             return true;
         }
@@ -136,6 +136,11 @@ namespace DATA_STRUCTURE{
             //}
             
             return get_heap(this->arr, this->heap_size);
+        }
+
+        template<class T>
+        T* HeapImp<T>::values(){
+            return this->arr;
         }
 
         template<typename T>

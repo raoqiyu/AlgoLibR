@@ -42,7 +42,7 @@ namespace DATA_STRUCTURE{
             void remove();
             T    get();
             size_t size();
-            void print();
+            T*   values();
         };
         
 
