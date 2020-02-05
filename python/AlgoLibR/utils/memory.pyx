@@ -37,5 +37,12 @@ def malloc_memory_from_data(data, dtype=None, copy=False):
     return data_py
 
 
+def malloc_memory(size, dtype):
+    """
+    """
+    data_py = np.zeros(size,dtype=dtype)
+    return data_py
+
+
 
 
