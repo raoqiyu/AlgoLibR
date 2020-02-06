@@ -71,7 +71,7 @@ namespace SORT{
         void mergeSortKernel(T arr[], size_t low, size_t high, bool ascending){
             COMPARATOR::NUMBER::CompareFunc<T> compFunc = COMPARATOR::NUMBER::less_equal<T>; 
             if(ascending){
-                compFunc = COMPARATOR::NUMBER::greater<T>;
+                compFunc = COMPARATOR::NUMBER::greater_equal<T>;
             }
             mergeSortKernel(arr, low, high, compFunc);
             
