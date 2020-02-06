@@ -53,7 +53,7 @@ namespace SORT{
                 SORT::HEAP_SORT::heapSortKernel(arr, n, ascending);
                 break;
             case MERGE_SORT_M:
-                SORT::MERGE_SORT::mergeSortKernel(arr, n, compFuncNum);
+                SORT::MERGE_SORT::mergeSortKernel(arr, n, ascending);
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
         };

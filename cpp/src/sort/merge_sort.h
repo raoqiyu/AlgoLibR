@@ -22,7 +22,7 @@ namespace SORT{
         void mergeSortKernel(T arr[], size_t low, size_t high, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
 
         template<typename T>
-        void mergeSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
+        void mergeSortKernel(T arr[], size_t n, bool ascending);
 
 
     } // MERGE_SORT

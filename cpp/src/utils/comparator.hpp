@@ -1,3 +1,9 @@
+/*
+ * @Author: raoqiyu@gmail.com
+ * @Date: 2020-01-14 14:38:56
+ * @FilePath: /AlgoLibR/cpp/src/utils/comparator.hpp
+ * @Description: 
+ */
 #ifndef COMPARATOR_H
 #define COMPARATOR_H
 
@@ -25,10 +31,21 @@ namespace COMPARATOR{
         bool greater(T x, T y){
             return x > y;        
         }
-        
+
+        template<typename T>
+        bool greater_equal(T x, T y){
+            return x >= y;        
+        }
+
+
         template<typename T>
         bool less(T x, T y){
             return x < y;        
+        }
+
+        template<typename T>
+        bool less_equal(T x, T y){
+            return x <= y;        
         }
     } // number 
 

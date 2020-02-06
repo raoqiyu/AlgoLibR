@@ -36,6 +36,7 @@ namespace SORT{
             // merge two temp arrays back into arr[low:high]
             i=0, j=0, k=low; // initialize array inedx, k start from low
             while(i < left_size && j < right_size){
+                // stable sort: use less equal or greater equal
                 if( compFunc(left[i], right[j]) ){
                     arr[k] = left[i++];
                 }else{
@@ -65,19 +66,34 @@ namespace SORT{
             }
         }
 
+
+        template<typename T>
+        void mergeSortKernel(T arr[], size_t low, size_t high, bool ascending){
+            COMPARATOR::NUMBER::CompareFunc<T> compFunc = COMPARATOR::NUMBER::less_equal<T>; 
+            if(ascending){
+                compFunc = COMPARATOR::NUMBER::greater<T>;
+            }
+            mergeSortKernel(arr, low, high, compFunc);
+            
+        }
         
         template<typename T>
-        void mergeSortKernel(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc){
+        void mergeSortKernel(T arr[], size_t n, bool ascending){
             if(n <= 0){
                 return;
+            }
+            COMPARATOR::NUMBER::CompareFunc<T> compFunc = COMPARATOR::NUMBER::less_equal<T>; 
+            if(ascending){
+                compFunc = COMPARATOR::NUMBER::greater_equal<T>;
             }
             mergeSortKernel(arr, 0, n-1, compFunc);
         }
 
+
          #define DEFINE_SORT_KERNELS(T) \
             template void merge<T>(T arr[], size_t low, size_t middle, size_t high, COMPARATOR::NUMBER::CompareFunc<T> compFunc);  \
             template void mergeSortKernel<T>(T arr[], size_t low, size_t high, COMPARATOR::NUMBER::CompareFunc<T> compFunc);  \
-            template void mergeSortKernel<T>(T arr[], size_t n, COMPARATOR::NUMBER::CompareFunc<T> compFunc);
+            template void mergeSortKernel<T>(T arr[], size_t n, bool ascending);
         REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
 
     } // MERGE_SORT
