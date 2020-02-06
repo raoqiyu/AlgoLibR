@@ -15,7 +15,7 @@ Description:
 namespace SORT{
     enum SORT_METHOD{
         BUBBLE_SORT_M=0, INSERTION_SORT_M, QUICK_SORT_M, SELECTION_SORT_M, COUNT_SORT_M,
-        RADIX_SORT_M, HEAP_SORT_M
+        RADIX_SORT_M, HEAP_SORT_M, MERGE_SORT_M
     };
 
     namespace UTILS{

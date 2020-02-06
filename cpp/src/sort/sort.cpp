@@ -18,6 +18,7 @@
 #include "count_sort.h"
 #include "radix_sort_cpu.h"
 #include "heap_sort.h"
+#include "merge_sort.h"
 
 
 namespace SORT{
@@ -28,8 +29,11 @@ namespace SORT{
             return ;
         }
         COMPARATOR::ARRAY::CompareFunc compFunc = COMPARATOR::ARRAY::less<T>;
+        COMPARATOR::NUMBER::CompareFunc<T> compFuncNum = COMPARATOR::NUMBER::less<T>; 
         if(ascending){
             compFunc = COMPARATOR::ARRAY::greater<T>;
+            compFuncNum = COMPARATOR::NUMBER::greater<T>;
+
         }
 
         switch(method){
@@ -43,17 +47,13 @@ namespace SORT{
                 SORT::SELECTION_SORT::selectionSortKernel(arr, n, compFunc);
                 break;
             case INSERTION_SORT_M:
-                COMPARATOR::NUMBER::CompareFunc<T> compFuncNum;
-                if(ascending){
-                    compFuncNum = COMPARATOR::NUMBER::greater<T>;
-                }else{
-                    compFuncNum = COMPARATOR::NUMBER::less<T>;
-                }
                 SORT::INSERTION_SORT::insertionSortKernel(arr, n, compFuncNum);
                 break;
             case HEAP_SORT_M:
                 SORT::HEAP_SORT::heapSortKernel(arr, n, ascending);
                 break;
+            case MERGE_SORT_M:
+                SORT::MERGE_SORT::mergeSortKernel(arr, n, compFuncNum);
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
         };

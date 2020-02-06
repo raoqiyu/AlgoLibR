@@ -10,7 +10,7 @@ from AlgoLibR.search.search import search
 
 
 def test_sort(test_count=10):
-    for sort_method in ['bubble', 'quick', 'insertion', 'selection', 'count', 'radix', 'heap']:
+    for sort_method in ['bubble', 'quick', 'insertion', 'selection', 'count', 'radix', 'heap', 'merge']:
         sucess_cnt, failure_cnt = 0, 0
         for _ in range(test_count):
             nums = np.random.randint(1,100000,30)

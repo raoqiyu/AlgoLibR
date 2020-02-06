@@ -109,6 +109,7 @@ add_library(${ALGO_C_TARGET} SHARED
     src/sort/count_sort.cpp
     src/sort/radix_sort.cpp
     src/sort/heap_sort.cpp
+    src/sort/merge_sort.cpp
     src/array/compare.cpp
     src/search/binary_search.cpp
     src/search/search.cpp
