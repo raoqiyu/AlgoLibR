@@ -19,6 +19,7 @@
 #include "radix_sort_cpu.h"
 #include "heap_sort.h"
 #include "merge_sort.h"
+#include "tim_sort.h"
 
 
 namespace SORT{
@@ -54,6 +55,8 @@ namespace SORT{
                 break;
             case MERGE_SORT_M:
                 SORT::MERGE_SORT::mergeSortKernel(arr, n, ascending);
+            case TIM_SORT_M:
+                SORT::TIM_SORT::timSortKernel(arr, n, ascending);
             default:
                 SORT::BUBBLE_SORT::bubbleSortKernel(arr, n, compFunc);
         };

@@ -47,6 +47,26 @@ namespace COMPARATOR{
         bool less_equal(T x, T y){
             return x <= y;        
         }
+
+        template<typename T>
+        bool max(T x, T y){
+            if(x > y){
+                return x;
+            }else{
+                return y;
+            }         
+        }
+
+        template<typename T>
+        bool min(T x, T y){
+            if(x < y){
+                return x;
+            }else{
+                return y;
+            }
+        }
+        
+
     } // number 
 
 } // COMPARATOR
