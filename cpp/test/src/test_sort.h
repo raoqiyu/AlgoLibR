@@ -1,11 +1,18 @@
+/*
+Author: raoqiyu@gmail.com
+Date: 2020-01-09 14:55:06
+FilePath: /AlgoLibR/cpp/test/src/test_sort.h
+Description: 
+ */
 //#include "common/utils.h"
+#include "sort/utils.h"
 #include "sort/radix_sort.h"
-#include "sort/bubble_sort.h"
+#include "sort/sort.h"
 #include <stdio.h>
 #define N 5
 
 void test_uints(){
-    printf("\nTest unsigned int array\n");
+    printf("\nTest sort unsigned int array: radix sort(GPU) and bubble sort\n");
     unsigned int h_in[5] = {71422,72452,54329,77510,80669};
     unsigned int h_outs[N];
 
@@ -16,7 +23,7 @@ void test_uints(){
     }
     printf("\n");
 
-    SORT::BUBBLE_SORT::bubbleSortKernel<unsigned int>(h_in, (size_t) N);
+    SORT::sortKernel<unsigned int>(h_in, (size_t) N, SORT::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%d ",h_in[i]);
@@ -26,7 +33,7 @@ void test_uints(){
 
 
 void test_float(){
-    printf("\nTest float array\n");
+    printf("\nTest sort float array: bubble sort\n");
     float h_in[5] = {16516.1,123.56,14.2,1455.1,14.87};
 
     for(int i = 0; i < 5; i++){
@@ -34,7 +41,7 @@ void test_float(){
     }
     printf("\n");
 
-    SORT::BUBBLE_SORT::bubbleSortKernel(h_in, (size_t) N);
+    SORT::sortKernel(h_in, (size_t) N, SORT::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%f ",h_in[i]);
@@ -42,8 +49,7 @@ void test_float(){
     printf("\n");
 }
 
-int main(int argc, char *argv[]){
+void test_sort(){
     test_uints();
     test_float();
-
 }

@@ -4,28 +4,14 @@
  * @FilePath: /AlgoLibR/cpp/test/README.md
  * @Description: 
  -->
-Test CUDA Code
+Test Code
 
 
-
-
-```bash
-# test gpu radix sort
-nvcc --include-path=../../../cpp/src  -c sort.o sort.cu
-
-nvcc ../../src/sort/sort.o test_sort.cu -o test_sort --include-path=../../../cpp/src
-
-./test_sort
-
-2 5 14 16 16 21 21 61 65 651
-```
----
 
 ```bash
 # test cpp 
-g++ -I../src -L/usr/local/lib/ -lAlgoLibR test.cpp -o test
-
-./test
+ g++ -std=c++11 -I/usr/local/cuda/include -I../src -L/usr/local/lib/ -lAlgoLibR -lAlgoLibR++ test.cpp -o test
+(base) [root@ennew-gpu-148 test]# ./test
 Test Heap
 Current max: 100
 Current max: 45
@@ -33,5 +19,13 @@ Current max: 6
 Current max: 2
 Current max: 1
 
+
+Test sort unsigned int array: radix sort(GPU) and bubble sort
+54329 71422 72452 77510 80669
+54329 71422 72452 77510 80669
+
+Test sort float array: bubble sort
+16516.099609 123.559998 14.200000 1455.099976 14.870000
+14.200000 14.870000 123.559998 1455.099976 16516.099609
 
 ```
