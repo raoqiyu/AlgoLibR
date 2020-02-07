@@ -10,8 +10,8 @@ Test Code
 
 ```bash
 # test cpp 
- g++ -std=c++11 -I/usr/local/cuda/include -I../src -L/usr/local/lib/ -lAlgoLibR -lAlgoLibR++ test.cpp -o test
-(base) [root@ennew-gpu-148 test]# ./test
+g++ -std=c++11 -I/usr/local/cuda/include -I../src -L/usr/local/lib/ -lAlgoLibR -lAlgoLibR++ test.cpp -o test
+./test
 Test Heap
 Current max: 100
 Current max: 45
