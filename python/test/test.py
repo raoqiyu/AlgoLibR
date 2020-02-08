@@ -1,9 +1,10 @@
 '''
 Author: raoqiyu@gmail.com
 Date: 2020-01-13 17:59:08
-FilePath: /AlgoLibR/test.py
+FilePath: /AlgoLibR/python/test/test.py
 Description: 
 '''
+
 import numpy as np
 from AlgoLibR.sort.sort import sort
 from AlgoLibR.search.search import search
@@ -51,10 +52,23 @@ def test_seach(test_count=10):
                 print(nums[target_index-2:target_index+2])
         print(search_method, 'success count %d/%d'%(sucess_cnt, test_count))
 
+def test_demo():
+    print('\nTest demo')
+    from AlgoLibR.demo.adapter import PyMyDemo
+    a = PyMyDemo(20000)
+    print(a.mul(20000))
+    a.sayHello(b'ni')
+
+def test_device():
+    print('\nTest device')
+    from AlgoLibR.device.gpu.enum_gpu import enum_gpu_info
+    enum_gpu_info()
 
 if  __name__ == '__main__':
     test_sort()
     test_seach()
+    test_demo() 
+    test_device()
 
 
 

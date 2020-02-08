@@ -1,4 +1,10 @@
 # distutils: language = c++
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-01-09 14:55:06
+FilePath: /AlgoLibR/python/AlgoLibR/demo/adapter.pyx
+Description: 
+'''
 
 from cdemo cimport MyDemo
 

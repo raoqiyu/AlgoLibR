@@ -72,15 +72,15 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 #########################################
 
 include_directories(
-  src
+  ./
 )
 
 #######################
 ## build cuda code
 set(ALGO_CPP_TARGET "AlgoLibR++")
   add_library(${ALGO_CPP_TARGET} SHARED
-    src/gpu/enum_gpu.cu
-    src/sort/radix_sort.cu)
+    AlgoLibR/device/gpu/enum_gpu.cu
+    AlgoLibR/sort/radix_sort.cu)
 
 set(CUML_LINK_LIBRARIES
 ${CUDA_cublas_LIBRARY}
@@ -98,23 +98,23 @@ target_link_libraries(${ALGO_CPP_TARGET} ${CUML_LINK_LIBRARIES})
 ## build cpu code
 set(ALGO_C_TARGET "AlgoLibR")
 add_library(${ALGO_C_TARGET} SHARED
-    src/mul/mul.cpp
-    src/demo/demo.cpp
-    src/utils/comparator.hpp
-    src/sort/sort.cpp
-    src/sort/bubble_sort.cpp
-    src/sort/quick_sort.cpp
-    src/sort/selection_sort.cpp
-    src/sort/insertion_sort.cpp
-    src/sort/count_sort.cpp
-    src/sort/radix_sort.cpp
-    src/sort/heap_sort.cpp
-    src/sort/merge_sort.cpp
-    src/sort/tim_sort.cpp
-    src/array/compare.cpp
-    src/search/binary_search.cpp
-    src/search/search.cpp
-    src/data_structure/heap.cpp
+    AlgoLibR/demo/mul.cpp
+    AlgoLibR/demo/demo.cpp
+    AlgoLibR/framework/comparator.hpp
+    AlgoLibR/sort/sort.cpp
+    AlgoLibR/sort/bubble_sort.cpp
+    AlgoLibR/sort/quick_sort.cpp
+    AlgoLibR/sort/selection_sort.cpp
+    AlgoLibR/sort/insertion_sort.cpp
+    AlgoLibR/sort/count_sort.cpp
+    AlgoLibR/sort/radix_sort.cpp
+    AlgoLibR/sort/heap_sort.cpp
+    AlgoLibR/sort/merge_sort.cpp
+    AlgoLibR/sort/tim_sort.cpp
+    AlgoLibR/array/compare.cpp
+    AlgoLibR/search/binary_search.cpp
+    AlgoLibR/search/search.cpp
+    AlgoLibR/data_structure/heap.cpp
 )
 target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
 

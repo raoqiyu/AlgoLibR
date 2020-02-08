@@ -1,4 +1,11 @@
 # distutils: language = c++
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-01-09 14:55:06
+FilePath: /AlgoLibR/python/AlgoLibR/sort/sort.pyx
+Description: 
+'''
+
 import cython
 cimport cython
 import numpy as np

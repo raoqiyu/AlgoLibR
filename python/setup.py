@@ -27,7 +27,7 @@ libs = ['cuda', 'AlgoLibR++','AlgoLibR']
 exc_list = []
 
 cython_files = ['AlgoLibR/**/**.pyx']
-include_dirs = ['../cpp/src',cuda_include_dir]
+include_dirs = ['../cpp/',cuda_include_dir]
 
 extensions = [
     Extension("*",

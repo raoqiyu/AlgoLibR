@@ -1,12 +1,19 @@
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-01-09 14:55:06
+FilePath: /AlgoLibR/python/AlgoLibR/sort/csort.pxd
+Description: 
+'''
+
 cimport cython
 from libcpp cimport bool
 
 
-cdef extern from "sort/radix_sort.h" namespace "SORT::RADIX_SORT":
+cdef extern from "AlgoLibR/sort/radix_sort.h" namespace "AlgoLibR::sort::radix_sort":
     void radix_sort_kernel(unsigned int*  h_inputVals, unsigned int* h_outputVals, const size_t numElems)
 
 
-cdef extern from "sort/utils.h" namespace "SORT":
+cdef extern from "AlgoLibR/sort/utils.h" namespace "AlgoLibR::sort":
     cdef enum SORT_METHOD:
         BUBBLE_SORT_M,
         INSERTION_SORT_M,
@@ -18,6 +25,6 @@ cdef extern from "sort/utils.h" namespace "SORT":
         MERGE_SORT_M,
         TIM_SORT_M
 
-cdef extern from "sort/sort.h" namespace "SORT":
+cdef extern from "AlgoLibR/sort/sort.h" namespace "AlgoLibR::sort":
     cdef void sortKernel[T](T *arr, size_t n, SORT_METHOD method, bool ascending)
     cdef void sortIntegerKernel[T](T *arr, size_t n, SORT_METHOD method, bool ascending)

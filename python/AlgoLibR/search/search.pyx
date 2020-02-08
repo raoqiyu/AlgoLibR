@@ -1,4 +1,11 @@
 # distutils: language = c++
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-01-16 11:34:39
+FilePath: /AlgoLibR/python/AlgoLibR/search/search.pyx
+Description: 
+'''
+
 import cython
 cimport cython
 import numpy as np

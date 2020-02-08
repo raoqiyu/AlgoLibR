@@ -1,13 +1,15 @@
-cdef extern from "mul/mul.cpp":
-    pass
-cdef extern from "mul/mul.h" namespace "mul":
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-01-09 14:55:06
+FilePath: /AlgoLibR/python/AlgoLibR/demo/cdemo.pxd
+Description: 
+'''
+
+cdef extern from "AlgoLibR/demo/mul.h" namespace "AlgoLibR::demo":
     int mul(int a, int b)
 
-cdef extern from "demo/demo.cpp":
-    pass
-
 # Decalre the class with cdef
-cdef extern from "demo/demo.h" namespace "demo":
+cdef extern from "AlgoLibR/demo/demo.h" namespace "AlgoLibR::demo":
     cdef cppclass MyDemo:
         MyDemo() except +
         MyDemo(int) except +

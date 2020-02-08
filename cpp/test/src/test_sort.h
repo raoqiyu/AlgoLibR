@@ -1,13 +1,13 @@
 /*
 Author: raoqiyu@gmail.com
 Date: 2020-01-09 14:55:06
-FilePath: /AlgoLibR/cpp/test/src/test_sort.h
+FilePath: /AlgoLibR/cpp/test/AlgoLibR/test_sort.h
 Description: 
  */
-//#include "common/utils.h"
-#include "sort/utils.h"
-#include "sort/radix_sort.h"
-#include "sort/sort.h"
+//#include "AlgoLibR/common/utils.h"
+#include "AlgoLibR/sort/utils.h"
+#include "AlgoLibR/sort/radix_sort.h"
+#include "AlgoLibR/sort/sort.h"
 #include <stdio.h>
 #define N 5
 
@@ -16,14 +16,14 @@ void test_uints(){
     unsigned int h_in[5] = {71422,72452,54329,77510,80669};
     unsigned int h_outs[N];
 
-    SORT::RADIX_SORT::radix_sort_kernel(h_in, h_outs,  (size_t) N);
+    AlgoLibR::sort::radix_sort::radix_sort_kernel(h_in, h_outs,  (size_t) N);
 
     for(int i = 0; i < N; i++){
         printf("%d ",h_outs[i]);
     }
     printf("\n");
 
-    SORT::sortKernel<unsigned int>(h_in, (size_t) N, SORT::BUBBLE_SORT_M, true);
+    AlgoLibR::sort::sortKernel<unsigned int>(h_in, (size_t) N, AlgoLibR::sort::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%d ",h_in[i]);
@@ -41,7 +41,7 @@ void test_float(){
     }
     printf("\n");
 
-    SORT::sortKernel(h_in, (size_t) N, SORT::BUBBLE_SORT_M, true);
+    AlgoLibR::sort::sortKernel(h_in, (size_t) N, AlgoLibR::sort::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%f ",h_in[i]);
