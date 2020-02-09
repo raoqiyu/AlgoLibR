@@ -6,8 +6,8 @@ Description:
 '''
 
 import numpy as np
-from AlgoLibR.sort.sort import sort
-from AlgoLibR.search.search import search
+from AlgoLibR.sort import sort
+from AlgoLibR.search import search
 
 
 def test_sort(test_count=10):
@@ -54,14 +54,14 @@ def test_seach(test_count=10):
 
 def test_demo():
     print('\nTest demo')
-    from AlgoLibR.demo.adapter import PyMyDemo
+    from AlgoLibR.demo import PyMyDemo
     a = PyMyDemo(20000)
     print(a.mul(20000))
     a.sayHello(b'ni')
 
 def test_device():
     print('\nTest device')
-    from AlgoLibR.device.gpu.enum_gpu import enum_gpu_info
+    from AlgoLibR.device.gpu import enum_gpu_info
     enum_gpu_info()
 
 if  __name__ == '__main__':

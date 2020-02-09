@@ -1,3 +1,9 @@
+###
+ # @Author: raoqiyu@gmail.com
+ # @Date: 2020-01-09 14:55:06
+ # @FilePath: /AlgoLibR/setup.sh
+ # @Description: 
+ ###
 #!/bin/bash
 
 cd cpp
@@ -10,7 +16,7 @@ cd ../../
 rm -rf build
 
 cd python
-python setup.py build_ext
+# python setup.py build_ext
 python setup.py install
 rm -rf AlgoLibR.egg-info build dist
 

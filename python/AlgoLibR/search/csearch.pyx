@@ -1,10 +1,13 @@
-# distutils: language = c++
 '''
 Author: raoqiyu@gmail.com
 Date: 2020-01-16 11:34:39
-FilePath: /AlgoLibR/python/AlgoLibR/search/search.pyx
+FilePath: /AlgoLibR/python/AlgoLibR/search/csearch.pyx
 Description: 
 '''
+# cython: profile=False
+# distutils: language = c++
+# cython: language_level = 3
+
 
 import cython
 cimport cython
@@ -25,16 +28,13 @@ def search_kernel(real_number[:] nums, real_number target, method, ascending, is
     return pos
 
 
-def search(nums, target, method=None, ascending=True, isExist=True):
+def search(nums, target, method='binary_search', ascending=True, isExist=True):
     """
     :param nums: array of np.ndarray. if nums is a list, will create a new np.ndarray from it.
-    :param method: one of [radix, bubble, insertion, quick, selection], when method is None, use python's default `sorted` method
+    :param method: use binary search as default method
     :return:
     """
-    if method is None:
-        print('Using defeault method')
-        return sorted(nums)
-    elif method not in search_methods:
+    if method not in search_methods:
         raise Exception('Unsupported method')
     else:
         nums = py_data_to_c_data(nums,copy=False)
