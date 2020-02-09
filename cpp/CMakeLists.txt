@@ -3,13 +3,13 @@ set (CMAKE_FIND_NO_INSTALL_PREFIX TRUE FORCE)
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 cmake_policy(SET CMP0079 NEW)
 
-project(CUML VERSION 0.10.0 LANGUAGES CXX CUDA)
+project(AlgoLibR VERSION 0.10.0 LANGUAGES CXX CUDA)
 
 ###################################################################################################
 # - build type ------------------------------------------------------------------------------------
 
 # Set a default build type if none was specified
-set(DEFAULT_BUILD_TYPE "Release")
+set(DEFAULT_BUILD_TYPE "Debug")
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' since none specified.")
@@ -23,13 +23,10 @@ endif()
 ###################################################################################################
 # - Requirements ----------------------------------------------------------------------------------
 
-find_package(CUDA 8.0 REQUIRED)
-
-option(DISABLE_OPENMP "Disable OpenMP" ON)
+find_package(CUDA 10.0 REQUIRED)
 
 ###################################################################################################
 # - Compiler Options  -----------------------------------------------------------------------------
-# TODO: Update to c++14, github issue
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -69,54 +66,42 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   endif(NOT CMAKE_CXX11_ABI)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
-#########################################
-
+#######################
 include_directories(
   ./
 )
 
+
 #######################
 ## build cuda code
-set(ALGO_CPP_TARGET "AlgoLibR++")
-  add_library(${ALGO_CPP_TARGET} SHARED
-    AlgoLibR/device/gpu/enum_gpu.cu
-    AlgoLibR/sort/radix_sort.cu)
+file(GLOB_RECURSE CUDA_SOURCES "AlgoLibR/*.cu")
+set(ALGO_CUDA_TARGET "AlgoLibR")
+  add_library(${ALGO_CUDA_TARGET} SHARED
+  ${CUDA_SOURCES}
+  )
 
 set(CUML_LINK_LIBRARIES
-${CUDA_cublas_LIBRARY}
-${CUDA_curand_LIBRARY}
-${CUDA_cusolver_LIBRARY}
-${CUDA_CUDART_LIBRARY}
-${CUDA_cusparse_LIBRARY}
-${CUDA_nvgraph_LIBRARY}
-${ZLIB_LIBRARIES}
+  ${CUDA_cublas_LIBRARY}
+  ${CUDA_curand_LIBRARY}
+  ${CUDA_cusolver_LIBRARY}
+  ${CUDA_CUDART_LIBRARY}
+  ${CUDA_cusparse_LIBRARY}
+  ${CUDA_nvgraph_LIBRARY}
 )
-target_link_libraries(${ALGO_CPP_TARGET} ${CUML_LINK_LIBRARIES})
+target_link_libraries(${ALGO_CUDA_TARGET} ${CUML_LINK_LIBRARIES})
 
 
 ############
 ## build cpu code
-set(ALGO_C_TARGET "AlgoLibR")
-add_library(${ALGO_C_TARGET} SHARED
-    AlgoLibR/demo/mul.cpp
-    AlgoLibR/demo/demo.cpp
-    AlgoLibR/framework/comparator.hpp
-    AlgoLibR/sort/sort.cpp
-    AlgoLibR/sort/bubble_sort.cpp
-    AlgoLibR/sort/quick_sort.cpp
-    AlgoLibR/sort/selection_sort.cpp
-    AlgoLibR/sort/insertion_sort.cpp
-    AlgoLibR/sort/count_sort.cpp
-    AlgoLibR/sort/radix_sort.cpp
-    AlgoLibR/sort/heap_sort.cpp
-    AlgoLibR/sort/merge_sort.cpp
-    AlgoLibR/sort/tim_sort.cpp
-    AlgoLibR/search/binary_search.cpp
-    AlgoLibR/search/search.cpp
-    AlgoLibR/data_structure/heap.cpp
+file(GLOB_RECURSE CPP_SOURCES "AlgoLibR/*.cpp")
+set(ALGO_CPP_TARGET "AlgoLibR++")
+add_library(${ALGO_CPP_TARGET} SHARED
+    ${CPP_SOURCES}
 )
-target_link_libraries(${ALGO_C_TARGET} ${ALGO_CPP_TARGET})
+target_link_libraries(${ALGO_CPP_TARGET} ${ALGO_CUDA_TARGET})
 
 
+#############
+## install
+install(TARGETS ${ALGO_CUDA_TARGET} DESTINATION lib)
 install(TARGETS ${ALGO_CPP_TARGET} DESTINATION lib)
- install(TARGETS ${ALGO_C_TARGET} DESTINATION lib)
