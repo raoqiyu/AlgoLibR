@@ -15,7 +15,7 @@ namespace sort{
 namespace bubble_sort{
 
 template<typename T>
-void bubbleSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc);
+void bubbleSortKernel(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc);
 
 } // namespace bubble_sort
 } // namespace sort

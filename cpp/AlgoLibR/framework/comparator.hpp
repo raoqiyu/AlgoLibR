@@ -13,16 +13,44 @@ namespace AlgoLibR{
 namespace comparator{
 namespace array{
 
-typedef bool  (*CompareFunc) (void* data, long long i, long long  j);    // Compare data[i] and data[j]
+// typedef bool  (*CompareFunc) (void* data, long long i, long long  j);    // Compare data[i] and data[j]
+
+// template<typename T>
+// bool greater(void *data, long long  i, long long  j){
+//     return ((T*)data)[i] > ((T*)data)[j];        
+// }
+
+// template<typename T>
+// bool less(void *data, long long i, long long j){
+//     return ((T*)data)[i] < ((T*)data)[j];        
+// }
 
 template<typename T>
-bool greater(void *data, long long  i, long long  j){
-    return ((T*)data)[i] > ((T*)data)[j];        
+T max(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] > target){
+            target = arr[i];
+        }
+    } // for
+    return target;
 }
 
 template<typename T>
-bool less(void *data, long long i, long long j){
-    return ((T*)data)[i] < ((T*)data)[j];        
+T min(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] < target){
+            target = arr[i];
+        }
+    } // for
+    return target;
 }
 
 } // namespace array 
@@ -39,7 +67,6 @@ template<typename T>
 bool greater_equal(T x, T y){
     return x >= y;        
 }
-
 
 template<typename T>
 bool less(T x, T y){

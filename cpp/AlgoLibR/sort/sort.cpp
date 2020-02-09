@@ -25,12 +25,9 @@ void sortKernel(T arr[], size_t n, enum SORT_METHOD method, bool ascending){
     if(n == 0){
         return ;
     }
-    comparator::array::CompareFunc compFunc = comparator::array::less<T>;
-    comparator::number::CompareFunc<T> compFuncNum = comparator::number::less<T>; 
+    comparator::number::CompareFunc<T> compFunc = comparator::number::less<T>; 
     if(ascending){
-        compFunc = comparator::array::greater<T>;
-        compFuncNum = comparator::number::greater<T>;
-
+        compFunc = comparator::number::greater<T>;
     }
 
     switch(method){
@@ -44,7 +41,7 @@ void sortKernel(T arr[], size_t n, enum SORT_METHOD method, bool ascending){
             sort::selection_sort::selectionSortKernel(arr, n, compFunc);
             break;
         case INSERTION_SORT_M:
-            sort::insertion_sort::insertionSortKernel(arr, n, compFuncNum);
+            sort::insertion_sort::insertionSortKernel(arr, n, compFunc);
             break;
         case HEAP_SORT_M:
             sort::heap_sort::heapSortKernel(arr, n, ascending);

@@ -6,6 +6,7 @@
  */
 
 #include "AlgoLibR/sort/radix_sort_cpu.h"
+#include "AlgoLibR/framework/comparator.hpp"
 
 namespace AlgoLibR{
 namespace sort{
@@ -13,7 +14,7 @@ namespace radix_sort_cpu{
 
 template<typename T>
 void radixSortKernel(T arr[], size_t n, bool ascending){
-    T max_ele = array::COMPARE::max(arr, n);
+    T max_ele = comparator::array::max(arr, n);
     int max_exp = 1;
     while(max_ele/max_exp > 0){
         max_exp *=10;

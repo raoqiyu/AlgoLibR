@@ -12,13 +12,13 @@ namespace sort{
 namespace bubble_sort{
 
 template<typename T>
-void bubbleSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc){
+void bubbleSortKernel(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc){
     size_t i,j;
     bool swapped;
     for(i = 0; i < n; i++){
         swapped = false;
         for( j = 0; j < n-i-1; j++){
-            if(compFunc(arr, j, j+1)){
+            if(compFunc(arr[j], arr[j+1])){
                 sort::UTILS::swap<T>(&arr[j], &arr[j+1]);
                 swapped = true;
             }
@@ -31,7 +31,7 @@ void bubbleSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc
 }
 
 #define DEFINE_SORT_KERNELS(T) \
-    template void bubbleSortKernel<T>(T arr[], size_t n, comparator::array::CompareFunc compFunc);
+    template void bubbleSortKernel<T>(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc);
 REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
 
 } // namespace bubble_sort

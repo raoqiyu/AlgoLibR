@@ -15,7 +15,7 @@ namespace sort{
 namespace selection_sort{
 
 template<typename T>
-void selectionSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc);
+void selectionSortKernel(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc);
 
 } // namespace selection_sort
 } // namespace sort

@@ -15,12 +15,12 @@ namespace quick_sort{
 array, and places all smaller (small than pivot) to the left of pivot and all greater elements to the right.
 */
 template<typename T>
-long partition(T arr[], long low, long high, comparator::array::CompareFunc compFunc){
+long partition(T arr[], long low, long high, comparator::number::CompareFunc<T>compFunc){
     size_t pivot_index = high; // pivot
     long i = low-1; //index of the smaller elements
     for( auto j = low; j < high; j++){
         // if current element is small than the pivot
-        if(compFunc(arr, pivot_index, j)){
+        if(compFunc(arr[pivot_index], arr[j])){
             i++; // increment index of smaller elements
             sort::UTILS::swap<T>(&arr[i], &arr[j]);
         }
@@ -32,12 +32,12 @@ long partition(T arr[], long low, long high, comparator::array::CompareFunc comp
 }
 
 template<typename T>
-void quickSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc){
+void quickSortKernel(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc){
     quickSortKernel(arr, 0, n-1, compFunc);
 }
 
 template<typename T>
-void quickSortKernel(T arr[], long low, long high, comparator::array::CompareFunc compFunc){
+void quickSortKernel(T arr[], long low, long high, comparator::number::CompareFunc<T>compFunc){
     if (low < high){
         // arr[pivot_index] is at the right place
         long pivot_index = partition(arr, low, high, compFunc);
@@ -49,7 +49,7 @@ void quickSortKernel(T arr[], long low, long high, comparator::array::CompareFun
 
 
 #define DEFINE_SORT_KERNELS(T)  \
-    template void quickSortKernel<T>(T arr[], size_t n, comparator::array::CompareFunc compFunc);
+    template void quickSortKernel<T>(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc);
 REGISTER_REAL_NUMBER_TYPES(DEFINE_SORT_KERNELS);
 
 } // namespace quick_sort

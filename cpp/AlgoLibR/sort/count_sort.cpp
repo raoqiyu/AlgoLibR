@@ -7,6 +7,8 @@
 
 #include <string.h> 
 #include "AlgoLibR/sort/count_sort.h"
+#include "AlgoLibR/framework/comparator.hpp"
+#include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
 namespace sort{
@@ -15,8 +17,8 @@ namespace count_sort{
 template<typename T>
 void countSortKernel(T arr[],size_t n, bool ascending){
     T output_arr[n];
-    T max_ele = array::COMPARE::max(arr, n);
-    T min_ele = array::COMPARE::min(arr, n);
+    T max_ele = comparator::array::max(arr, n);
+    T min_ele = comparator::array::min(arr, n);
     T count[max_ele - min_ele + 1];
     memset(count, 0, sizeof(count));  
 

@@ -111,7 +111,6 @@ add_library(${ALGO_C_TARGET} SHARED
     AlgoLibR/sort/heap_sort.cpp
     AlgoLibR/sort/merge_sort.cpp
     AlgoLibR/sort/tim_sort.cpp
-    AlgoLibR/array/compare.cpp
     AlgoLibR/search/binary_search.cpp
     AlgoLibR/search/search.cpp
     AlgoLibR/data_structure/heap.cpp

@@ -8,8 +8,7 @@
 #ifndef COUNT_SORT_H
 #define COUNT_SORT_H
 
-#include "AlgoLibR/sort/utils.h"
-#include "AlgoLibR/array/compare.h"
+#include <stdlib.h>
 
 namespace AlgoLibR{
 namespace sort{

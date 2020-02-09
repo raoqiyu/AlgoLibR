@@ -8,7 +8,7 @@
 #ifndef RADIX_SORT_CPU_H
 #define RADIX_SORT_CPU_H
 
-#include "AlgoLibR/array/compare.h"
+#include <stdlib.h>
 #include "AlgoLibR/sort/count_sort.h"
 #include "AlgoLibR/framework/register_types.h"
 

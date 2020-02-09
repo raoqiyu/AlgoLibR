@@ -15,13 +15,13 @@ namespace sort{
 namespace quick_sort{
 
 template<typename T>
-long partition(T arr[], long low, long high, comparator::array::CompareFunc compFunc);
+long partition(T arr[], long low, long high, comparator::number::CompareFunc<T>compFunc);
 
 template<typename T>
-void quickSortKernel(T arr[], size_t n, comparator::array::CompareFunc compFunc);
+void quickSortKernel(T arr[], size_t n, comparator::number::CompareFunc<T>compFunc);
 
 template<typename T>
-void quickSortKernel(T arr[], long low, long high, comparator::array::CompareFunc compFunc);
+void quickSortKernel(T arr[], long low, long high, comparator::number::CompareFunc<T>compFunc);
 
 } // namespace quick_sort
 } // namespace sort
