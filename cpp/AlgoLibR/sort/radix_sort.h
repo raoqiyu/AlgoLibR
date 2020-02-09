@@ -8,7 +8,7 @@
 #ifndef RADIX_SORT_H
 #define RADIX_SORT_H
 #include <cuda_runtime.h>
-#include "AlgoLibR/common/utils.h"
+#include "AlgoLibR/device/gpu/utils.h"
 
 namespace AlgoLibR{
 namespace sort{
