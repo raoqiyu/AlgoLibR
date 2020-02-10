@@ -2,6 +2,14 @@
 '''
 Author: raoqiyu@gmail.com
 Date: 2020-02-06 18:37:54
+FilePath: /AlgoLibR/python/AlgoLibR/data_structure/cheap.pyx
+Description: 
+'''
+
+# distutils: language = c++
+'''
+Author: raoqiyu@gmail.com
+Date: 2020-02-06 18:37:54
 FilePath: /AlgoLibR/python/AlgoLibR/data_structure/heap.pyx
 Description: 
 '''
@@ -25,28 +33,28 @@ def get(real_number[:] arr, size_t heap_size):
 class Heap:
     def __init__(self, capacity=100, is_max_heap=True, dtype=np.int32):
         self.dtype = dtype
-        self.arr = malloc_memory(capacity, dtype)
-        self.heap_size = 0
-        self.capacity = capacity
-        self.is_max_heap = is_max_heap
+        self.__arr = malloc_memory(capacity, dtype)
+        self.__heap_size = 0
+        self.__capacity = capacity
+        self.__is_max_heap = is_max_heap
 
     def insert(self, data):
         is_inserted = insert(self.arr, data, self.capacity, self.heap_size, self.is_max_heap)
         if is_inserted:
-            self.heap_size += 1
+            self.__heap_size += 1
 
     def remove(self):
-        if self.heap_size == 0:
+        if self.__heap_size == 0:
             return
         is_removed = remove(self.arr, self.capacity, self.heap_size, self.is_max_heap)
         if is_removed:
-            self.heap_size -= 1
+            self.__heap_size -= 1
     
     def get(self):
         return get(self.arr, self.heap_size)
 
     def size(self):
-        return self.heap_size
+        return self.__heap_size
     
     def values(self):
-        return self.arr
+        return self.__arr[:self.__heap_size]
