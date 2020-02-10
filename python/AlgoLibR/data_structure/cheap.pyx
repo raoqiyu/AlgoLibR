@@ -2,14 +2,6 @@
 '''
 Author: raoqiyu@gmail.com
 Date: 2020-02-06 18:37:54
-FilePath: /AlgoLibR/python/AlgoLibR/data_structure/cheap.pyx
-Description: 
-'''
-
-# distutils: language = c++
-'''
-Author: raoqiyu@gmail.com
-Date: 2020-02-06 18:37:54
 FilePath: /AlgoLibR/python/AlgoLibR/data_structure/heap.pyx
 Description: 
 '''
