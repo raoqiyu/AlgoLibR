@@ -11,6 +11,6 @@
 
 
 int main(){
-    test_heap();
+    test_ds();
     test_sort();
 }
