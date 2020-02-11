@@ -79,7 +79,7 @@ bool less_equal(T x, T y){
 }
 
 template<typename T>
-bool max(T x, T y){
+T max(T x, T y){
     if(x > y){
         return x;
     }else{
@@ -88,7 +88,7 @@ bool max(T x, T y){
 }
 
 template<typename T>
-bool min(T x, T y){
+T min(T x, T y){
     if(x < y){
         return x;
     }else{
