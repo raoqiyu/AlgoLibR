@@ -8,15 +8,11 @@
 #ifndef SEARCH_UTILS_H
 #define SEARCH_UTILS_H
 
-#include <stdlib.h>
-#include "AlgoLibR/framework/comparator.hpp"
-#include "AlgoLibR/framework/register_types.h"
-
 namespace AlgoLibR{
 namespace search{
 
 enum SEARCH_METHOD{
-    BINARY_SEARCH_M=0
+    BINARY_SEARCH_M=0, JUMP_SEARCH_M
 };
 
 } // namespace search

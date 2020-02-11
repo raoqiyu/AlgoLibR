@@ -6,30 +6,31 @@
  */
 
 #include "AlgoLibR/search/utils.h"
+#include "AlgoLibR/framework/register_types.h"
 #include "AlgoLibR/search/binary_search.h"
+#include "AlgoLibR/search/jump_search.h"
+
 
 namespace AlgoLibR{
 namespace search{
 
 template<typename T>
-long long searchKernel(T arr[], T target, size_t n, enum SEARCH_METHOD method, bool ascending, bool isExist){
+long long searchKernel(T arr[], T target, size_t n, enum SEARCH_METHOD method, bool ascending, bool isExist=true){
     if(n == 0){
         return -1;
     }
     
     long long find_position;
 
-    comparator::number::CompareFunc<T> compFunc = comparator::number::less<T>;
-    if(ascending){
-        compFunc = comparator::number::greater<T>;
-    }
-
     switch(method){
         case BINARY_SEARCH_M:
-            find_position = search::binary_search::binarySearchKernel(arr, target, n, isExist, compFunc);
+            find_position = search::binary_search::binarySearchKernel(arr, target, n, isExist, ascending);
+            break;
+        case JUMP_SEARCH_M:
+            find_position = search::jump_search::jumpSearchKernel(arr, target, n, ascending);
             break;
         default:
-            find_position = search::binary_search::binarySearchKernel(arr, target, n, isExist, compFunc);
+            find_position = search::binary_search::binarySearchKernel(arr, target, n, isExist, ascending);
             break; 
     }; // switch
 

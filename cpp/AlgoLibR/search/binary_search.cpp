@@ -6,6 +6,8 @@
  */
 
 #include "AlgoLibR/search/binary_search.h"
+#include "AlgoLibR/framework/comparator.hpp"
+#include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
 namespace search{
@@ -25,6 +27,16 @@ size_t binarySearchKernel(T arr[], T target, long low, long high, comparator::nu
     } else {
         return binarySearchKernel(arr, target, low, mid-1, compFunc);
     }
+}
+
+template<typename T>
+size_t binarySearchKernel(T arr[], T target, long low, long high, bool ascending){
+    comparator::number::CompareFunc<T> compFunc = comparator::number::less<T>;
+    if(ascending){
+        compFunc = comparator::number::greater<T>;
+    }
+
+    return binarySearchKernel(arr, target, low, high, compFunc);
 }
 
 template<typename T>
@@ -53,11 +65,24 @@ long long binarySearchKernel(T arr[], T target, size_t n, bool isExist, comparat
     return binarySearchKernel(arr, target, 0, n-1, isExist, compFunc);
 }
 
+template<typename T>
+long long binarySearchKernel(T arr[], T target, size_t n, bool isExist, bool ascending){
+    comparator::number::CompareFunc<T> compFunc = comparator::number::less<T>;
+    if(ascending){
+        compFunc = comparator::number::greater<T>;
+    }
+ 
+    return binarySearchKernel(arr, target, 0, n-1, isExist, compFunc);
+}
+
+
 
 #define DEFINE_SEARCH_KERNELS(T) \
     template size_t binarySearchKernel<T>(T arr[], T target, long low, long high, comparator::number::CompareFunc<T> compFunc); \
+    template size_t binarySearchKernel<T>(T arr[], T target, long low, long high, bool ascending); \
     template long long  binarySearchKernel<T>(T arr[], T target, long low, long high, bool isExist, comparator::number::CompareFunc<T> compFunc); \
-    template long long binarySearchKernel<T>(T arr[], T target, size_t n, bool isExist, comparator::number::CompareFunc<T> compFunc);
+    template long long binarySearchKernel<T>(T arr[], T target, size_t n, bool isExist, comparator::number::CompareFunc<T> compFunc); \
+    template long long binarySearchKernel<T>(T arr[], T target, size_t n, bool isExist, bool ascending);
 REGISTER_REAL_NUMBER_TYPES(DEFINE_SEARCH_KERNELS);
 
 } //namespace binary_search

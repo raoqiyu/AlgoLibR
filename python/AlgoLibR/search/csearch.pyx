@@ -18,6 +18,7 @@ from AlgoLibR.utils.data_types cimport real_number
 
 
 search_methods = {'binary_search':SEARCH_METHOD.BINARY_SEARCH_M,
+                  'jump_search':SEARCH_METHOD.JUMP_SEARCH_M,
                  }  
 
 

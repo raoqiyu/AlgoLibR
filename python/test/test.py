@@ -35,7 +35,7 @@ def test_sort(test_count=10):
         print(sort_method, 'sort success count %d/%d'%(sucess_cnt, test_count*2))
 
 def test_seach(test_count=10):
-    for search_method in ['binary_search']:
+    for search_method in ['binary_search', 'jump_search']:
         sucess_cnt = 0
         for _ in range(test_count):
             nums = np.random.randint(1, 10000, 300)
@@ -50,7 +50,19 @@ def test_seach(test_count=10):
                 print(target_index)
                 print(candidate_index)
                 print(nums[target_index-2:target_index+2])
-        print(search_method, 'success count %d/%d'%(sucess_cnt, test_count))
+
+            target_index = np.random.choice(nums.shape[0])
+            nums = nums[::-1]
+            target = nums[target_index]
+            candidate_index = search(nums, target, method=search_method, ascending=False,isExist=True)
+            if candidate_index == target_index:
+                sucess_cnt += 1
+            else:
+                print(target_index)
+                print(candidate_index)
+                print(nums[target_index-2:target_index+2])
+
+        print(search_method, 'success count %d/%d'%(sucess_cnt, test_count*2))
 
 def test_demo():
     print('\nTest demo')
