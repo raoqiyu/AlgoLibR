@@ -21,15 +21,15 @@ const int kTrieCharCount = 26;
 template<class T>
 class TrieNode{
 public:
-    size_t cnt;
     T value;
     bool is_ending_char;
     std::map<char, TrieNode*> child_nodes;
+    TrieNode *parent;
 
     TrieNode();
-    TrieNode(T value);
-    void AddChild(char key);
-    // void RemoveChild(TrieNode *child);
+    TrieNode(const TrieNode* parent);
+    ~TrieNode();
+    void AddChild(const char key, const TrieNode<T>* parent);
 };
 
 template<class T>
@@ -42,8 +42,9 @@ public:
     ~Trie();
 
     void Add(const char key[], T value);
-    bool Search(const char key[]);
-    // void Remove(const char[] key);
+    TrieNode<T>* FindNode(const char key[]);
+    bool Search(const char key[], T &value);
+    void Remove(const char key[]);
 };
 
 } // namespace trie
