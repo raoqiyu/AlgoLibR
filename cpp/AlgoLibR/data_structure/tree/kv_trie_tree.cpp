@@ -7,24 +7,27 @@
 
 #include <iostream>
 #include <cstring>
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
+#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
 #include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
 namespace data_structure{
 namespace tree{
-namespace trie{
+namespace kv_trie{
 
 
-TrieNode::TrieNode(){
+template<typename T>
+KVTrieNode<T>::KVTrieNode(){
     parent = NULL;
 }
 
-TrieNode::TrieNode(const TrieNode* parent){
+template<typename T>
+KVTrieNode<T>::KVTrieNode(const KVTrieNode* parent){
     parent = parent;
 }
 
-TrieNode::~TrieNode(){
+template<typename T>
+KVTrieNode<T>::~KVTrieNode(){
     auto iter = child_nodes.begin();
     while(iter != child_nodes.end()){
         delete iter->second;
@@ -35,42 +38,48 @@ TrieNode::~TrieNode(){
     delete parent;
 }
 
-void TrieNode::AddChild(const char key, const TrieNode* parent){
+template<typename T>
+void KVTrieNode<T>::AddChild(const char key, const KVTrieNode<T>* parent){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
-    child_nodes[key] = new TrieNode(parent);
+    child_nodes[key] = new KVTrieNode<T>(parent);
 }
 
-Trie::Trie(){
-    root = new TrieNode();
+template<typename T>
+KVTrie<T>::KVTrie(){
+    root = new KVTrieNode<T>();
 }
 
-Trie::~Trie(){
+template<typename T>
+KVTrie<T>::~KVTrie(){
     delete root;
 }
 
-void Trie::Add(const char key[]){
+template<typename T>
+void KVTrie<T>::Add(const char key[], T value){
     size_t key_len = strlen(key);
     if(key_len <= 0){
         return ;
     }
 
-    TrieNode* p = root;
+    KVTrieNode<T>* p = root;
     for(size_t i = 0; i < key_len; i++){
         p->AddChild(key[i], p);
         p = p->child_nodes[key[i]];
     }
+    p->value = value;
     p->is_ending_char=true;
 }
 
-TrieNode* Trie::FindNode(const char key[]){
+template<typename T>
+KVTrieNode<T>* KVTrie<T>::FindNode(const char key[]){
     size_t key_len = strlen(key);
     if(key_len <= 0){
         return NULL;
     }
 
-    TrieNode* p = root;
+    KVTrieNode<T>* p = root;
     for(size_t i = 0; i < key_len; i++){
         if(p->child_nodes.find(key[i]) == p->child_nodes.end()){
             return NULL;
@@ -81,18 +90,22 @@ TrieNode* Trie::FindNode(const char key[]){
     return p;
 }
 
-bool Trie::Search(const char key[]){
+template<typename T>
+bool KVTrie<T>::Search(const char key[], T &value){
 
-    TrieNode* p = FindNode(key);
+    KVTrieNode<T>* p = FindNode(key);
     if(p && p->is_ending_char){
+        value = p->value;
         return true;
     }
+
     return false;
 }
 
-void Trie::Remove(const char key[]){
-    TrieNode* node = FindNode(key);
-    TrieNode* parent;
+template<typename T>
+void KVTrie<T>::Remove(const char key[]){
+    KVTrieNode<T>* node = FindNode(key);
+    KVTrieNode<T>* parent;
     if(node && node->is_ending_char){
         node->is_ending_char=false;
     }
@@ -107,7 +120,13 @@ void Trie::Remove(const char key[]){
     }
 }
 
-} // namespace trie
+
+#define DEFINE_TRIE(T) \
+    template class KVTrieNode<T>; \
+    template class KVTrie<T>; 
+REGISTER_REAL_NUMBER_TYPES(DEFINE_TRIE)
+
+} // namespace kv_trie
 } // namespace tree
 } // namespace data_struceture
 } // namespace AlgoLibR

@@ -16,12 +16,8 @@ namespace data_structure{
 namespace tree{
 namespace trie{
 
-const int kTrieCharCount = 26;
-
-template<class T>
 class TrieNode{
 public:
-    T value;
     bool is_ending_char;
     std::map<char, TrieNode*> child_nodes;
     TrieNode *parent;
@@ -29,21 +25,20 @@ public:
     TrieNode();
     TrieNode(const TrieNode* parent);
     ~TrieNode();
-    void AddChild(const char key, const TrieNode<T>* parent);
+    void AddChild(const char key, const TrieNode* parent);
 };
 
-template<class T>
 class Trie{
 private:
-    TrieNode<T> *root;
+    TrieNode *root;
 
 public:
     Trie();
     ~Trie();
 
-    void Add(const char key[], T value);
-    TrieNode<T>* FindNode(const char key[]);
-    bool Search(const char key[], T &value);
+    void Add(const char key[]);
+    TrieNode* FindNode(const char key[]);
+    bool Search(const char key[]);
     void Remove(const char key[]);
 };
 

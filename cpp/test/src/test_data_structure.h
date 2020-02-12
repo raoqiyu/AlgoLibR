@@ -9,7 +9,7 @@ Description:
 #include <iostream>
 #include "AlgoLibR/data_structure/heap.h"
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
-
+#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
 
 
 void test_heap(){
@@ -40,7 +40,65 @@ void test_heap(){
 void test_Trie(){
     std::cout << "Test Trie" << std::endl;
 
-    AlgoLibR::data_structure::tree::trie::Trie<int> str_trie;
+    AlgoLibR::data_structure::tree::trie::Trie str_trie;
+
+
+    str_trie.Add("hello");
+    str_trie.Add("world");
+
+    if(!str_trie.Search("hello")){
+        std::cout << "Wrong! : hello" << std::endl;
+    }
+
+    if(!str_trie.Search("world")){
+        std::cout << "Wrong!: world" << std::endl;
+    }
+    
+    if(str_trie.Search("he")){
+        std::cout << "Wrong! : he" << std::endl;
+    }
+
+    if(str_trie.Search("wor")){
+        std::cout << "Wrong! : wor" << std::endl;
+    }
+
+    if(str_trie.Search("word")){
+        std::cout << "Wrong! : word" << std::endl;
+    }
+
+
+    str_trie.Add("hi");
+    str_trie.Add("hi");
+    if(!str_trie.Search("hi")){
+        std::cout << "Wrong!   hi should exist" << std::endl;
+    }
+
+    str_trie.Add("hi LiSi");
+    if(!str_trie.Search("hi")){
+        std::cout << "Wrong!   hi should exist" << std::endl;
+    }
+
+    str_trie.Remove("hi");
+    if(str_trie.Search("hi")){
+        std::cout << "Wrong!   hi should not exist" << std::endl;
+    }
+    
+    str_trie.Remove("hi");
+    if(str_trie.Search("hi")){
+        std::cout << "Wrong!   hi should not exist" << std::endl;
+    }
+
+    if(!str_trie.Search("hi LiSi")){
+        std::cout << "Wrong!   hi LiSi should exist" << std::endl;
+    }
+
+    std::cout << "\n" << std::endl;
+}
+
+void test_KVTrie(){
+    std::cout << "Test KVTrie" << std::endl;
+
+    AlgoLibR::data_structure::tree::kv_trie::KVTrie<int> str_trie;
 
     bool is_in;
     int ret;
@@ -111,4 +169,5 @@ void test_Trie(){
 void test_ds(){
     test_heap();
     test_Trie();
+    test_KVTrie();
 }
