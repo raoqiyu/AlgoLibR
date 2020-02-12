@@ -98,13 +98,13 @@ void test_Trie(){
 void test_KVTrie(){
     std::cout << "Test KVTrie" << std::endl;
 
-    AlgoLibR::data_structure::tree::kv_trie::KVTrie<int> str_trie;
+    AlgoLibR::data_structure::tree::kv_trie::KVTrie<char*> str_trie;
 
     bool is_in;
-    int ret;
+    char* ret;
 
-    str_trie.Add("hello", 1);
-    str_trie.Add("world", 1);
+    str_trie.Add("hello", "world");
+    str_trie.Add("world", "!");
 
     if(!str_trie.Search("hello", ret)){
         std::cout << "Wrong!" << std::endl;
@@ -127,18 +127,18 @@ void test_KVTrie(){
     }
 
 
-    str_trie.Add("hi", 100);
+    str_trie.Add("hi", "this is a test");
     str_trie.Search("hi", ret);
     std::cout << "hi : " << ret << std::endl;
 
-    str_trie.Add("hi", 0);
+    str_trie.Add("hi", " Done");
     str_trie.Search("hi", ret);
     std::cout << "hi : " << ret << std::endl;
     if(!str_trie.Search("hi", ret)){
         std::cout << "Wrong!   hi should exist" << std::endl;
     }
 
-    str_trie.Add("hi LiSi", 400);
+    str_trie.Add("hi LiSi", "How are you?");
     if(!str_trie.Search("hi", ret)){
         std::cout << "Wrong!   hi should exist" << std::endl;
     }

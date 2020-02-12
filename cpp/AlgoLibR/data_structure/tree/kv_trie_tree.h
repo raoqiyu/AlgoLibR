@@ -40,7 +40,7 @@ public:
     KVTrie();
     ~KVTrie();
 
-    void Add(const char key[], T value);
+    void Add(const char key[], const T value);
     KVTrieNode<T>* FindNode(const char key[]);
     bool Search(const char key[], T &value);
     void Remove(const char key[]);

@@ -57,7 +57,7 @@ KVTrie<T>::~KVTrie(){
 }
 
 template<typename T>
-void KVTrie<T>::Add(const char key[], T value){
+void KVTrie<T>::Add(const char key[], const T value){
     size_t key_len = strlen(key);
     if(key_len <= 0){
         return ;
@@ -125,6 +125,9 @@ void KVTrie<T>::Remove(const char key[]){
     template class KVTrieNode<T>; \
     template class KVTrie<T>; 
 REGISTER_REAL_NUMBER_TYPES(DEFINE_TRIE)
+REGISTER_char(DEFINE_TRIE)
+REGISTER_charptr(DEFINE_TRIE) 
+
 
 } // namespace kv_trie
 } // namespace tree

@@ -21,6 +21,8 @@
 #define REGISTER_long(func) func(long)
 #define REGISTER_long_long(func) func(long long)
 
+#define REGISTER_char(func) func(char)
+#define REGISTER_charptr(func) func(char*)
 
 #define REGISTER_SIGNED_INTEGER_TYPES(func)                                      \
   REGISTER_short(func) REGISTER_int(func) REGISTER_long(func) REGISTER_long_long(func) 
