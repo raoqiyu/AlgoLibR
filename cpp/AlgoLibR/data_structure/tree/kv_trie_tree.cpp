@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-11 19:27:41
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/trie_tree.cpp
+ * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/kv_trie_tree.cpp
  * @Description: 
  */
 
@@ -17,13 +17,15 @@ namespace kv_trie{
 
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(){
+KVTrieNode<T>::KVTrieNode(const char key){
+    this->key = key;
     parent = NULL;
 }
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(const KVTrieNode* parent){
-    parent = parent;
+KVTrieNode<T>::KVTrieNode(const char key, KVTrieNode* parent){
+    this->key = key;
+    this->parent = parent;
 }
 
 template<typename T>
@@ -35,20 +37,32 @@ KVTrieNode<T>::~KVTrieNode(){
         child_nodes.erase(iter++);
     }
 
-    delete parent;
+    parent = NULL;
 }
 
 template<typename T>
-void KVTrieNode<T>::AddChild(const char key, const KVTrieNode<T>* parent){
+void KVTrieNode<T>::AddChild(const char key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
-    child_nodes[key] = new KVTrieNode<T>(parent);
+    child_nodes[key] = new KVTrieNode<T>(key, this);
 }
 
 template<typename T>
+void KVTrieNode<T>::RemoveChild(const char key){
+    auto iter = child_nodes.find(key);
+    if( iter == child_nodes.end()){
+        return;
+    }
+    delete iter->second;
+    iter->second= NULL;
+    child_nodes.erase(key);
+}
+
+
+template<typename T>
 KVTrie<T>::KVTrie(){
-    root = new KVTrieNode<T>();
+    root = new KVTrieNode<T>('/');
 }
 
 template<typename T>
@@ -65,7 +79,7 @@ void KVTrie<T>::Add(const char key[], const T value){
 
     KVTrieNode<T>* p = root;
     for(size_t i = 0; i < key_len; i++){
-        p->AddChild(key[i], p);
+        p->AddChild(key[i]);
         p = p->child_nodes[key[i]];
     }
     p->value = value;
@@ -106,14 +120,18 @@ template<typename T>
 void KVTrie<T>::Remove(const char key[]){
     KVTrieNode<T>* node = FindNode(key);
     KVTrieNode<T>* parent;
-    if(node && node->is_ending_char){
+    if(!node){
+        return;
+    }
+    if(node->is_ending_char){
         node->is_ending_char=false;
     }
 
     while(node){
         if(node->child_nodes.size()==0){
             parent = node->parent;
-            delete node;
+            parent->RemoveChild(node->key);
+            node = parent;
         }else{
             break;
         }

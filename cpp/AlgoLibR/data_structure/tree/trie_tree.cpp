@@ -16,34 +16,45 @@ namespace tree{
 namespace trie{
 
 
-TrieNode::TrieNode(){
+TrieNode::TrieNode(const char key){
+    this->key = key;
     parent = NULL;
 }
 
-TrieNode::TrieNode(const TrieNode* parent){
-    parent = parent;
+TrieNode::TrieNode(const char key, TrieNode* parent){
+    this->key = key;
+    this->parent = parent;
 }
 
 TrieNode::~TrieNode(){
-    auto iter = child_nodes.begin();
-    while(iter != child_nodes.end()){
+    auto iter = this->child_nodes.begin();
+    while(iter != this->child_nodes.end()){
         delete iter->second;
         iter->second = NULL;
         child_nodes.erase(iter++);
     }
-
-    delete parent;
+    parent=NULL;
 }
 
-void TrieNode::AddChild(const char key, const TrieNode* parent){
+void TrieNode::AddChild(const char key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
-    child_nodes[key] = new TrieNode(parent);
+    child_nodes[key] = new TrieNode(key, this);
+}
+
+void TrieNode::RemoveChild(const char key){
+    auto iter = child_nodes.find(key);
+    if( iter == child_nodes.end()){
+        return;
+    }
+    delete iter->second;
+    iter->second= NULL;
+    child_nodes.erase(key);
 }
 
 Trie::Trie(){
-    root = new TrieNode();
+    root = new TrieNode('/');
 }
 
 Trie::~Trie(){
@@ -58,7 +69,7 @@ void Trie::Add(const char key[]){
 
     TrieNode* p = root;
     for(size_t i = 0; i < key_len; i++){
-        p->AddChild(key[i], p);
+        p->AddChild(key[i]);
         p = p->child_nodes[key[i]];
     }
     p->is_ending_char=true;
@@ -93,14 +104,18 @@ bool Trie::Search(const char key[]){
 void Trie::Remove(const char key[]){
     TrieNode* node = FindNode(key);
     TrieNode* parent;
-    if(node && node->is_ending_char){
-        node->is_ending_char=false;
+    if(!node){
+        return;
     }
 
+    if(node->is_ending_char){
+        node->is_ending_char=false;
+    }
     while(node){
         if(node->child_nodes.size()==0){
             parent = node->parent;
-            delete node;
+            parent->RemoveChild(node->key);
+            node = parent;
         }else{
             break;
         }

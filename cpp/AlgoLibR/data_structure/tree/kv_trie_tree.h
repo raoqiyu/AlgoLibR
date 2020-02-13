@@ -1,7 +1,7 @@
 /*
 Author: raoqiyu@gmail.com
 Date: 2020-02-11 18:34:27
-FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/trie_tree.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/kv_trie_tree.h
 Description: 
  */
 
@@ -20,15 +20,17 @@ namespace kv_trie{
 template<class T>
 class KVTrieNode{
 public:
+    char key;
     T value;
     bool is_ending_char;
     std::map<char, KVTrieNode*> child_nodes;
     KVTrieNode *parent;
 
-    KVTrieNode();
-    KVTrieNode(const KVTrieNode* parent);
+    KVTrieNode(const char key);
+    KVTrieNode(const char key, KVTrieNode* parent);
     ~KVTrieNode();
-    void AddChild(const char key, const KVTrieNode<T>* parent);
+    void AddChild(const char key);
+    void RemoveChild(const char key);
 };
 
 template<class T>

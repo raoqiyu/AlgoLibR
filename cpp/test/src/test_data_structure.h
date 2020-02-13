@@ -46,6 +46,8 @@ void test_Trie(){
     str_trie.Add("hello");
     str_trie.Add("world");
 
+    std::cout << "Searching" << std::endl; 
+
     if(!str_trie.Search("hello")){
         std::cout << "Wrong! : hello" << std::endl;
     }
@@ -66,7 +68,7 @@ void test_Trie(){
         std::cout << "Wrong! : word" << std::endl;
     }
 
-
+    std::cout << "Searching Stage 2" << std::endl; 
     str_trie.Add("hi");
     str_trie.Add("hi");
     if(!str_trie.Search("hi")){
@@ -92,12 +94,24 @@ void test_Trie(){
         std::cout << "Wrong!   hi LiSi should exist" << std::endl;
     }
 
-    std::cout << "\n" << std::endl;
+    std::cout << "Searching Stage 3" << std::endl; 
+
+    str_trie.Add("hit");
+    if(!str_trie.Search("hit")){
+        std::cout << "Wrong!   hit should exist" << std::endl;
+    }
+    std::cout << "Remove" << std::endl; 
+    str_trie.Remove("hit");
+    // if(str_trie.Search("hit")){
+        // std::cout << "Wrong!   hi LiSi should exist" << std::endl;
+    // }
+
+    std::cout << "End\n" << std::endl;
 }
 
 void test_KVTrie(){
-    std::cout << "Test KVTrie" << std::endl;
-
+    std::cout << "Test KVTrie" << std::endl <<     std::flush;
+;
     AlgoLibR::data_structure::tree::kv_trie::KVTrie<char*> str_trie;
 
     bool is_in;
@@ -162,7 +176,18 @@ void test_KVTrie(){
         std::cout << "Wrong!   hi LiSi should exist" << std::endl;
     }
 
-    std::cout << "\n" << std::endl;
+    str_trie.Add("hit", "Begin");
+    is_in = str_trie.Search("hit", ret);
+    if(!is_in){
+        std::cout << "Wrong!   hit should exist" << std::endl;
+    }
+    std::cout << "Remove" << std::endl; 
+    str_trie.Remove("hit");
+    // if(str_trie.Search("hit")){
+        // std::cout << "Wrong!   hi LiSi should exist" << std::endl;
+    // }
+
+    std::cout << "End\n" << std::endl;
 }
 
 

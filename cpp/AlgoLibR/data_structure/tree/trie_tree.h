@@ -18,14 +18,16 @@ namespace trie{
 
 class TrieNode{
 public:
+    char key;
     bool is_ending_char;
     std::map<char, TrieNode*> child_nodes;
     TrieNode *parent;
 
-    TrieNode();
-    TrieNode(const TrieNode* parent);
+    TrieNode(const char key);
+    TrieNode(const char key, TrieNode* parent);
     ~TrieNode();
-    void AddChild(const char key, const TrieNode* parent);
+    void AddChild(const char key);
+    void RemoveChild(const char key);
 };
 
 class Trie{
