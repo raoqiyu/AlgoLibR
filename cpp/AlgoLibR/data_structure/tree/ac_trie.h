@@ -42,17 +42,17 @@ public:
     ~ACTrie();
     
     void Add(const char key[]);
-    ACTrieNode* FindNode(const char key[]);
     bool Search(const char key[]);
     void Remove(const char key[]);
-
-    void BuildFailurePtr();
-    std::string GetKeyFromNode(const ACTrieNode *p);
-    ACTrieNode* GetNextNode(const ACTrieNode *p, const char key);
     std::vector<std::pair<int,std::string>> ParseText(const char keys[]);
 
+private:
+    void BuildFailurePtr();
+    ACTrieNode* FindNode(const char key[]);
+    std::string GetKeyFromNode(const ACTrieNode *p);
+    void CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<int,std::string>> &words);
+    ACTrieNode* GetNextNode(const ACTrieNode *p, const char key);
 };
-
 
 } // namespace ac_trie
 } // namespace tree
