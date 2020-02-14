@@ -218,16 +218,6 @@ void test_ACTrie(){
         std::cout << "Wrong!   she should exist" << std::endl; 
     }
 
-    is_in = ac_trie.Search("sh");
-    if(is_in){
-        std::cout << "Wrong!   sh should not exist" << std::endl; 
-    }
-
-    is_in = ac_trie.Search("s");
-    if(is_in){
-        std::cout << "Wrong!   s should not exist" << std::endl; 
-    }
-
     std::cout << "Searching" << std::endl;
     is_in = ac_trie.Search("shi");
     if(is_in){

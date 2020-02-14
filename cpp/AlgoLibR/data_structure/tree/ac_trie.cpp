@@ -195,7 +195,7 @@ ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
 
 std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
     BuildFailurePtr();
-    std::cout << "After build failure" << std::endl;
+    // std::cout << "After build failure" << std::endl;
 
     size_t keys_len = strlen(keys);
     int i = 0;
@@ -204,14 +204,14 @@ std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
     std::string word;
 
     for(i = 0; i < keys_len; i++){
-        std::cout << "Parse: "<< keys[i] << std::endl;
-        std::cout << "p->key: "<< p->key << std::endl;
-        if(p->failure)
-            std::cout << "p->failure->key: "<< p->failure->key << std::endl;
+        // std::cout << "Parse: "<< keys[i] << std::endl;
+        // std::cout << "p->key: "<< p->key << std::endl;
+        // if(p->failure)
+            // std::cout << "p->failure->key: "<< p->failure->key << std::endl;
         if(p->is_ending_char){
             word = GetKeyFromNode(p);
             if(!word.empty()){
-                std::cout << "p->is_ending: " << word << std::endl << std::flush;
+                // std::cout << "p->is_ending: " << word << std::endl << std::flush;
                 words.push_back(std::make_pair(i,word));
             } 
         }
@@ -221,8 +221,8 @@ std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
             if(failure_node->is_ending_char){
                word = GetKeyFromNode(failure_node);
                if(!word.empty()){
-                   std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
-                   std::cout << "failure->is_ending: " << word << std::endl << std::flush;
+                //    std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
+                //    std::cout << "failure->is_ending: " << word << std::endl << std::flush;
                    words.push_back(std::make_pair(i,word));
                }
             }
@@ -251,7 +251,7 @@ std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
     if(p->is_ending_char){
         word = GetKeyFromNode(p);
         if(!word.empty()){
-            std::cout << "p->is_ending: " << word << std::endl << std::flush;
+            // std::cout << "p->is_ending: " << word << std::endl << std::flush;
             words.push_back(std::make_pair(i,word));
         } 
     }
@@ -261,8 +261,8 @@ std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
         if(failure_node->is_ending_char){
             word = GetKeyFromNode(failure_node);
             if(!word.empty()){
-                std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
-                std::cout << "failure->is_ending: " << word << std::endl << std::flush;
+                // std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
+                // std::cout << "failure->is_ending: " << word << std::endl << std::flush;
                 words.push_back(std::make_pair(i,word));
             }
         }
