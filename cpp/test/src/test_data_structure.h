@@ -7,10 +7,12 @@ Description:
 
 #include <stdio.h>
 #include <iostream>
+#include <vector>
+#include <string>
 #include "AlgoLibR/data_structure/heap.h"
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
 #include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
-
+#include "AlgoLibR/data_structure/tree/ac_trie.h"
 
 void test_heap(){
     printf("Test Heap\n");
@@ -111,7 +113,6 @@ void test_Trie(){
 
 void test_KVTrie(){
     std::cout << "Test KVTrie" << std::endl <<     std::flush;
-;
     AlgoLibR::data_structure::tree::kv_trie::KVTrie<char*> str_trie;
 
     bool is_in;
@@ -190,9 +191,74 @@ void test_KVTrie(){
     std::cout << "End\n" << std::endl;
 }
 
+void test_ACTrie(){
+    std::cout << "Test AC Trie" << std::endl;
+    AlgoLibR::data_structure::tree::ac_trie::ACTrie ac_trie;
+
+    bool is_in;
+    std::cout << "Add word" << std::endl;
+    ac_trie.Add("hers");
+    ac_trie.Add("his");
+    ac_trie.Add("she");
+    ac_trie.Add("he");
+    ac_trie.Add("sh");
+    ac_trie.Add("s");
+    ac_trie.Add("h");
+    ac_trie.Add("hr");
+
+
+    std::cout << "Searching" << std::endl;
+    is_in = ac_trie.Search("his");
+    if(!is_in){
+        std::cout << "Wrong!   his should exist" << std::endl; 
+    }
+
+    is_in = ac_trie.Search("she");
+    if(!is_in){
+        std::cout << "Wrong!   she should exist" << std::endl; 
+    }
+
+    is_in = ac_trie.Search("sh");
+    if(is_in){
+        std::cout << "Wrong!   sh should not exist" << std::endl; 
+    }
+
+    is_in = ac_trie.Search("s");
+    if(is_in){
+        std::cout << "Wrong!   s should not exist" << std::endl; 
+    }
+
+    std::cout << "Searching" << std::endl;
+    is_in = ac_trie.Search("shi");
+    if(is_in){
+        std::cout << "Wrong!   hi should not exist" << std::endl; 
+    }
+
+    std::cout << "Parsing" << std::endl;
+    std::vector<std::pair<int,std::string>> parsed = ac_trie.ParseText("ushers");
+    std::cout << "output" << std::endl;
+    for(auto i = 0; i < parsed.size(); i++){
+        std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
+    }
+    std::cout << std::endl;
+
+    ac_trie.Add("算法");
+    ac_trie.Add("描述");
+    ac_trie.Add("问题");
+    ac_trie.Add("策略");
+    ac_trie.Add("方案");
+    ac_trie.Add("描述");
+    parsed = ac_trie.ParseText("算法（Algorithm）是指解题方案的准确而完整的描述，是一系列解决问题的清晰指令，算法代表着用系统的方法描述解决问题的策略机制。");
+    for(auto i = 0; i < parsed.size(); i++){
+        std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
+    }
+    std::cout << std::endl;
+}
+
 
 void test_ds(){
     test_heap();
     test_Trie();
     test_KVTrie();
+    test_ACTrie();
 }
