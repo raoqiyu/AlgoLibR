@@ -71,8 +71,13 @@ void test_Trie(){
     }
 
     std::cout << "Searching Stage 2" << std::endl; 
+    str_trie.Add("his");
     str_trie.Add("hi");
-    str_trie.Add("hi");
+    if(!str_trie.Search("hi")){
+        std::cout << "Wrong!   hi should exist" << std::endl;
+    }
+    
+    str_trie.Remove("his");
     if(!str_trie.Search("hi")){
         std::cout << "Wrong!   hi should exist" << std::endl;
     }
@@ -155,8 +160,19 @@ void test_KVTrie(){
 
     str_trie.Add("hi LiSi", "How are you?");
     if(!str_trie.Search("hi", ret)){
-        std::cout << "Wrong!   hi should exist" << std::endl;
+        std::cout << "Wrong!   hi should exist after add hi LiSi" << std::endl;
     }
+
+    str_trie.Remove("hi LiSi");
+    if(!str_trie.Search("hi", ret)){
+        std::cout << "Wrong!   hi should exist after remove LiSi" << std::endl;
+    }
+
+    if(str_trie.Search("hi LiSi", ret)){
+        std::cout << "Wrong!   hi LiSi should not exist" << std::endl;
+    }
+    str_trie.Add("hi LiSi", "I'm back");
+
     str_trie.Remove("hi");
     is_in = str_trie.Search("hi", ret);
     std::cout << "hi : " << ret << std::endl;
@@ -205,7 +221,14 @@ void test_ACTrie(){
     ac_trie.Add("s");
     ac_trie.Add("h");
     ac_trie.Add("hr");
+    ac_trie.Add("hi");
 
+    ac_trie.Remove("his");
+    is_in = ac_trie.Search("hi");
+    if(!is_in){
+        std::cout << "Wrong!   hi should exist after remove his" << std::endl; 
+    } 
+    ac_trie.Add("his");
 
     std::cout << "Searching" << std::endl;
     is_in = ac_trie.Search("his");
@@ -232,13 +255,13 @@ void test_ACTrie(){
     }
     std::cout << std::endl;
 
-    ac_trie.Add("算法");
-    ac_trie.Add("描述");
-    ac_trie.Add("问题");
-    ac_trie.Add("策略");
-    ac_trie.Add("方案");
-    ac_trie.Add("描述");
-    parsed = ac_trie.ParseText("算法（Algorithm）是指解题方案的准确而完整的描述，是一系列解决问题的清晰指令，算法代表着用系统的方法描述解决问题的策略机制。");
+    ac_trie.Add("algorithm");
+    ac_trie.Add("defines");
+    ac_trie.Add("functions");
+    ac_trie.Add("designed");
+    ac_trie.Add("elements");
+    ac_trie.Add("header");
+    parsed = ac_trie.ParseText("The header <algorithm> defines a collection of functions especially designed to be used on ranges of elements.");
     for(auto i = 0; i < parsed.size(); i++){
         std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
     }

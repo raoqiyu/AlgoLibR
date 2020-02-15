@@ -112,7 +112,7 @@ void Trie::Remove(const char key[]){
         node->is_ending_char=false;
     }
     while(node){
-        if(node->child_nodes.size()==0){
+        if(node->child_nodes.size()==0 && !node->is_ending_char){
             parent = node->parent;
             parent->RemoveChild(node->key);
             node = parent;
