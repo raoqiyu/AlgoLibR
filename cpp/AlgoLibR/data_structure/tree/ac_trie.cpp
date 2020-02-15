@@ -59,87 +59,15 @@ void ACTrieNode::RemoveChild(const char key){
     child_nodes.erase(key);
 }
 
-
-
-ACTrie::ACTrie(){
-    root = new ACTrieNode('/');
-}
-
-ACTrie::~ACTrie(){
-    delete root;
-}
-
-void ACTrie::Add(const char key[]){
-    size_t key_len = strlen(key);
-    if(key_len <= 0){
-        return ;
-    }
-
-    ACTrieNode* p = root;
-    for(size_t i = 0; i < key_len; i++){
-        p->AddChild(key[i]);
-        p = p->child_nodes[key[i]];
-    }
-    p->is_ending_char=true;
-}
-
-ACTrieNode* ACTrie::FindNode(const char key[]){
-    size_t key_len = strlen(key);
-    if(key_len <= 0){
-        return NULL;
-    }
-
-    ACTrieNode* p = root;
-    for(size_t i = 0; i < key_len; i++){
-        if(p->child_nodes.find(key[i]) == p->child_nodes.end()){
-            return NULL;
-        }
-        p = p->child_nodes[key[i]];
-    }
-
-    return p;
-}
-
-bool ACTrie::Search(const char key[]){
-
-    ACTrieNode* p = FindNode(key);
-    if(p && p->is_ending_char){
-        return true;
-    }
-    return false;
-}
-
-void ACTrie::Remove(const char key[]){
-    ACTrieNode* node = FindNode(key);
-    ACTrieNode* parent;
-    if(!node){
-        return;
-    }
-
-    if(node->is_ending_char){
-        node->is_ending_char=false;
-    }
-    while(node){
-        if(node->child_nodes.size()==0 && node->is_ending_char){
-            parent = node->parent;
-            parent->RemoveChild(node->key);
-            node = parent;
-        }else{
-            break;
-        }
-    }
-}
-
-
 void ACTrie::BuildFailurePtr(){
     if(is_failure_built){
          return;
     }
 
     std::queue<ACTrieNode*> nodes;
-    // Step 1: set root's child nodes (node's depth is 1)
-    for(auto iter = root->child_nodes.begin(); iter != root->child_nodes.end(); iter++){
-        iter->second->failure = root;
+    // Step 1: set this->root's child nodes (node's depth is 1)
+    for(auto iter = this->root->child_nodes.begin(); iter != this->root->child_nodes.end(); iter++){
+        iter->second->failure = this->root;
         nodes.push(iter->second);
     }
     // Step 2: set other nodes (node's depth > 1)
@@ -158,7 +86,7 @@ void ACTrie::BuildFailurePtr(){
                 failure_node = failure_node->failure;
             }
             if(!failure_node){
-                target_node->failure = root;
+                target_node->failure = this->root;
             }else{
                 target_node->failure = failure_node->child_nodes.find(target_node->key)->second;
             }
@@ -171,7 +99,7 @@ void ACTrie::BuildFailurePtr(){
 std::string ACTrie::GetKeyFromNode(const ACTrieNode *p){
     const ACTrieNode *node  = p;
     std::string word;
-    while(node != root){
+    while(node != this->root){
         word.insert(0, 1, node->key);
         node = node->parent;
     }
@@ -212,7 +140,7 @@ void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::
 ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
     ACTrieNode *next;
     if(!p){
-        return root;
+        return this->root;
     }
 
     auto iter = p->child_nodes.find(key);
@@ -228,7 +156,7 @@ ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
     if(p){
         next = iter->second;
     }else{
-        next = root;
+        next = this->root;
     }
     return next;
 }
@@ -238,7 +166,7 @@ std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
 
     size_t keys_len = strlen(keys);
     int i = 0;
-    ACTrieNode *p = root, *failure_node;
+    ACTrieNode *p = this->root, *failure_node;
     std::vector<std::pair<int,std::string>> words;
     std::string word;
 

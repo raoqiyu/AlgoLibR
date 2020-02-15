@@ -10,6 +10,7 @@ Description:
 
 #include <map>
 #include <stdlib.h>
+#include "AlgoLibR/data_structure/tree/trie_tree.h"
 
 namespace AlgoLibR{
 namespace data_structure{
@@ -33,19 +34,11 @@ public:
     void RemoveChild(const char key);
 };
 
-template<class T>
-class KVTrie{
-private:
-    KVTrieNode<T> *root;
-
+template<typename T>
+class KVTrie : public trie::Trie<KVTrieNode<T>>{
 public:
-    KVTrie();
-    ~KVTrie();
-
-    void Add(const char key[], const T value);
-    KVTrieNode<T>* FindNode(const char key[]);
+    void Add(const char key[], T value);
     bool Search(const char key[], T &value);
-    void Remove(const char key[]);
 };
 
 } // namespace kv_trie

@@ -8,13 +8,14 @@
 #include <iostream>
 #include <cstring>
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
+#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
+#include "AlgoLibR/data_structure/tree/ac_trie.h"
 #include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
 namespace data_structure{
 namespace tree{
 namespace trie{
-
 
 TrieNode::TrieNode(const char key){
     this->key = key;
@@ -53,21 +54,24 @@ void TrieNode::RemoveChild(const char key){
     child_nodes.erase(key);
 }
 
-Trie::Trie(){
-    root = new TrieNode('/');
+template<typename NODETYPE>
+Trie<NODETYPE>::Trie(){
+    root = new NODETYPE('/');
 }
 
-Trie::~Trie(){
+template<typename NODETYPE>
+Trie<NODETYPE>::~Trie(){
     delete root;
-}
+}    
 
-void Trie::Add(const char key[]){
+template<typename NODETYPE>
+void Trie<NODETYPE>::Add(const char key[]){
     size_t key_len = strlen(key);
     if(key_len <= 0){
         return ;
     }
 
-    TrieNode* p = root;
+    NODETYPE* p = root;
     for(size_t i = 0; i < key_len; i++){
         p->AddChild(key[i]);
         p = p->child_nodes[key[i]];
@@ -75,13 +79,14 @@ void Trie::Add(const char key[]){
     p->is_ending_char=true;
 }
 
-TrieNode* Trie::FindNode(const char key[]){
+template<typename NODETYPE>
+NODETYPE* Trie<NODETYPE>::FindNode(const char key[]){
     size_t key_len = strlen(key);
     if(key_len <= 0){
         return NULL;
     }
 
-    TrieNode* p = root;
+    NODETYPE* p = root;
     for(size_t i = 0; i < key_len; i++){
         if(p->child_nodes.find(key[i]) == p->child_nodes.end()){
             return NULL;
@@ -92,18 +97,20 @@ TrieNode* Trie::FindNode(const char key[]){
     return p;
 }
 
-bool Trie::Search(const char key[]){
+template<typename NODETYPE>
+bool Trie<NODETYPE>::Search(const char key[]){
 
-    TrieNode* p = FindNode(key);
+    NODETYPE* p = FindNode(key);
     if(p && p->is_ending_char){
         return true;
     }
     return false;
 }
 
-void Trie::Remove(const char key[]){
-    TrieNode* node = FindNode(key);
-    TrieNode* parent;
+template<typename NODETYPE>
+void Trie<NODETYPE>::Remove(const char key[]){
+    NODETYPE* node = FindNode(key);
+    NODETYPE* parent;
     if(!node){
         return;
     }
@@ -121,6 +128,16 @@ void Trie::Remove(const char key[]){
         }
     }
 }
+
+// register Trie
+template class Trie<TrieNode>; 
+template class Trie<ac_trie::ACTrieNode>;
+
+#define DEFINE_TRIE(T) \
+    template class Trie<kv_trie::KVTrieNode<T>>; 
+REGISTER_REAL_NUMBER_TYPES(DEFINE_TRIE)
+REGISTER_char(DEFINE_TRIE)
+REGISTER_charptr(DEFINE_TRIE) 
 
 } // namespace trie
 } // namespace tree

@@ -59,17 +59,6 @@ void KVTrieNode<T>::RemoveChild(const char key){
     child_nodes.erase(key);
 }
 
-
-template<typename T>
-KVTrie<T>::KVTrie(){
-    root = new KVTrieNode<T>('/');
-}
-
-template<typename T>
-KVTrie<T>::~KVTrie(){
-    delete root;
-}
-
 template<typename T>
 void KVTrie<T>::Add(const char key[], const T value){
     size_t key_len = strlen(key);
@@ -77,7 +66,7 @@ void KVTrie<T>::Add(const char key[], const T value){
         return ;
     }
 
-    KVTrieNode<T>* p = root;
+    KVTrieNode<T>* p = this->root;
     for(size_t i = 0; i < key_len; i++){
         p->AddChild(key[i]);
         p = p->child_nodes[key[i]];
@@ -87,55 +76,15 @@ void KVTrie<T>::Add(const char key[], const T value){
 }
 
 template<typename T>
-KVTrieNode<T>* KVTrie<T>::FindNode(const char key[]){
-    size_t key_len = strlen(key);
-    if(key_len <= 0){
-        return NULL;
-    }
-
-    KVTrieNode<T>* p = root;
-    for(size_t i = 0; i < key_len; i++){
-        if(p->child_nodes.find(key[i]) == p->child_nodes.end()){
-            return NULL;
-        }
-        p = p->child_nodes[key[i]];
-    }
-
-    return p;
-}
-
-template<typename T>
 bool KVTrie<T>::Search(const char key[], T &value){
 
-    KVTrieNode<T>* p = FindNode(key);
+    KVTrieNode<T>* p = this->FindNode(key);
     if(p && p->is_ending_char){
         value = p->value;
         return true;
     }
 
     return false;
-}
-
-template<typename T>
-void KVTrie<T>::Remove(const char key[]){
-    KVTrieNode<T>* node = FindNode(key);
-    KVTrieNode<T>* parent;
-    if(!node){
-        return;
-    }
-    if(node->is_ending_char){
-        node->is_ending_char=false;
-    }
-
-    while(node){
-        if(node->child_nodes.size()==0 && node->is_ending_char){
-            parent = node->parent;
-            parent->RemoveChild(node->key);
-            node = parent;
-        }else{
-            break;
-        }
-    }
 }
 
 

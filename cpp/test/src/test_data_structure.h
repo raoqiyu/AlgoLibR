@@ -42,7 +42,7 @@ void test_heap(){
 void test_Trie(){
     std::cout << "Test Trie" << std::endl;
 
-    AlgoLibR::data_structure::tree::trie::Trie str_trie;
+    AlgoLibR::data_structure::tree::trie::Trie<AlgoLibR::data_structure::tree::trie::TrieNode> str_trie;
 
 
     str_trie.Add("hello");

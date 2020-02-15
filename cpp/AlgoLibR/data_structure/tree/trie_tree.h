@@ -30,16 +30,18 @@ public:
     void RemoveChild(const char key);
 };
 
+
+template<typename NODETYPE>
 class Trie{
-private:
-    TrieNode *root;
+protected:
+    NODETYPE* root;
 
 public:
     Trie();
     ~Trie();
 
     void Add(const char key[]);
-    TrieNode* FindNode(const char key[]);
+    NODETYPE* FindNode(const char key[]);
     bool Search(const char key[]);
     void Remove(const char key[]);
 };

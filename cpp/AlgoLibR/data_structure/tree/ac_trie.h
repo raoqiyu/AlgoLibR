@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include "AlgoLibR/data_structure/tree/trie_tree.h"
 
 namespace AlgoLibR{
 namespace data_structure{
@@ -32,18 +33,11 @@ public:
 
 };
 
-class ACTrie{
+class ACTrie : public trie::Trie<ACTrieNode>{
 private:
-    ACTrieNode *root;
     bool is_failure_built=false;
 
 public:
-    ACTrie();
-    ~ACTrie();
-    
-    void Add(const char key[]);
-    bool Search(const char key[]);
-    void Remove(const char key[]);
     std::vector<std::pair<int,std::string>> ParseText(const char keys[]);
 
 private:
