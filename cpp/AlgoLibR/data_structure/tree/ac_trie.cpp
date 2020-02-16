@@ -118,7 +118,9 @@ void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::
         word = GetKeyFromNode(p);
         if(!word.empty()){
             // std::cout << "p->is_ending: " << word << std::endl << std::flush;
+            if(!words.empty() && (pos-word.length() <= words.back().first)) words.pop_back();            
             words.push_back(std::make_pair(pos,word));
+            return;
         } 
     }
 
@@ -129,7 +131,9 @@ void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::
             if(!word.empty()){
                 // std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
                 // std::cout << "failure->is_ending: " << word << std::endl << std::flush;
+                if(!words.empty() && (pos-word.length() <= words.back().first)) words.pop_back();
                 words.push_back(std::make_pair(pos,word));
+                return;
             }
         }
         failure_node = failure_node->failure;
