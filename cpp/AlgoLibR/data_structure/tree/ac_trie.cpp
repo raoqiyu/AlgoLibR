@@ -93,7 +93,7 @@ void ACTrie::BuildFailurePtr(){
         }
     }
 
-    is_failure_built = true;
+    // is_failure_built = true;
 }
 
 std::string ACTrie::GetKeyFromNode(const ACTrieNode *p){
@@ -107,7 +107,7 @@ std::string ACTrie::GetKeyFromNode(const ACTrieNode *p){
     return word;
 }
 
-void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<int,std::string>> &words){
+void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<size_t,std::string>> &words){
     // check pointer is not NULL
     if(!p) return;
 
@@ -117,8 +117,8 @@ void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::
     if(p->is_ending_char){
         word = GetKeyFromNode(p);
         if(!word.empty()){
-            // std::cout << "p->is_ending: " << word << std::endl << std::flush;
-            if(!words.empty() && (pos-word.length() <= words.back().first)) words.pop_back();            
+            // std::cout << "current: " << pos << " " << word << std::endl;
+            if(!words.empty() && (pos-word.length() < words.back().first)) words.pop_back();            
             words.push_back(std::make_pair(pos,word));
             return;
         } 
@@ -129,9 +129,8 @@ void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::
         if(failure_node->is_ending_char){
             word = GetKeyFromNode(failure_node);
             if(!word.empty()){
-                // std::cout << "failure->key:  " << failure_node->key << std::endl << std::flush;
-                // std::cout << "failure->is_ending: " << word << std::endl << std::flush;
-                if(!words.empty() && (pos-word.length() <= words.back().first)) words.pop_back();
+                // std::cout << "current: " << pos << " " << word << std::endl;
+                if(!words.empty() && (pos-word.length() < words.back().first)) words.pop_back();
                 words.push_back(std::make_pair(pos,word));
                 return;
             }
@@ -165,13 +164,13 @@ ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
     return next;
 }
 
-std::vector<std::pair<int,std::string>> ACTrie::ParseText(const char keys[]){
+std::vector<std::pair<size_t,std::string>> ACTrie::ParseText(const char keys[]){
     BuildFailurePtr();
 
     size_t keys_len = strlen(keys);
     int i = 0;
     ACTrieNode *p = this->root, *failure_node;
-    std::vector<std::pair<int,std::string>> words;
+    std::vector<std::pair<size_t,std::string>> words;
     std::string word;
 
     for(i = 0; i < keys_len; i++){

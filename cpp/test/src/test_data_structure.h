@@ -248,7 +248,7 @@ void test_ACTrie(){
     }
 
     std::cout << "Parsing" << std::endl;
-    std::vector<std::pair<int,std::string>> parsed = ac_trie.ParseText("ushers");
+    std::vector<std::pair<size_t,std::string>> parsed = ac_trie.ParseText("ushers");
     std::cout << "output" << std::endl;
     for(auto i = 0; i < parsed.size(); i++){
         std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
@@ -261,7 +261,10 @@ void test_ACTrie(){
     ac_trie.Add("designed");
     ac_trie.Add("elements");
     ac_trie.Add("header");
-    parsed = ac_trie.ParseText("The header <algorithm> defines a collection of functions especially designed to be used on ranges of elements.");
+    ac_trie.Add("lo");
+    ac_trie.Add("love");
+    ac_trie.Add("china");
+    parsed = ac_trie.ParseText("The header <algorithm> defines a collection of functions especially designed to be used on ranges of elements Ilovechina. ");
     for(auto i = 0; i < parsed.size(); i++){
         std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
     }

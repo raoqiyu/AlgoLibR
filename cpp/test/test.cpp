@@ -8,9 +8,11 @@
 
 #include "src/test_sort.h"
 #include "src/test_data_structure.h"
+#include "src/test_segment.h"
 
 
 int main(){
     test_ds();
     test_sort();
+    test_ac_segment();
 }

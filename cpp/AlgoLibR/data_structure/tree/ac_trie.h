@@ -9,6 +9,7 @@
 #define DS_TREE_ACTRIE_H
 
 #include <string>
+#include <stdlib.h>
 #include <vector>
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
 
@@ -38,13 +39,13 @@ private:
     bool is_failure_built=false;
 
 public:
-    std::vector<std::pair<int,std::string>> ParseText(const char keys[]);
+    std::vector<std::pair<size_t,std::string>> ParseText(const char keys[]);
 
 private:
     void BuildFailurePtr();
     ACTrieNode* FindNode(const char key[]);
     std::string GetKeyFromNode(const ACTrieNode *p);
-    void CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<int,std::string>> &words);
+    void CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<size_t,std::string>> &words);
     ACTrieNode* GetNextNode(const ACTrieNode *p, const char key);
 };
 
