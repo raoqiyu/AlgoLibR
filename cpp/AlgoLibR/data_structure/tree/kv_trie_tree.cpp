@@ -17,15 +17,11 @@ namespace kv_trie{
 
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(const char key){
-    this->key = key;
-    parent = NULL;
+KVTrieNode<T>::KVTrieNode(const char key) : key(key), parent(NULL){
 }
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(const char key, KVTrieNode* parent){
-    this->key = key;
-    this->parent = parent;
+KVTrieNode<T>::KVTrieNode(const char key, KVTrieNode* parent) : key(key), parent(parent){
 }
 
 template<typename T>

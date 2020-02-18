@@ -9,7 +9,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "AlgoLibR/framework/string.h"
 #include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
 #include<locale>
 

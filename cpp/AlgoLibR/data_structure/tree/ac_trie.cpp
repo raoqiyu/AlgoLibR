@@ -18,18 +18,12 @@ namespace data_structure{
 namespace tree{
 namespace ac_trie{
 
-ACTrieNode::ACTrieNode(const char key){
-    this->key =key;
-    parent = NULL;
-    failure = NULL;
-    is_ending_key=false;
+ACTrieNode::ACTrieNode(const char key) : 
+            key(key), parent(NULL), failure(NULL), is_ending_key(false){
 }
 
-ACTrieNode::ACTrieNode(const char key, ACTrieNode* parent){
-    this->key = key;
-    this->parent = parent;
-    failure=NULL;
-    is_ending_key=false;
+ACTrieNode::ACTrieNode(const char key, ACTrieNode* parent) : 
+            key(key), parent(parent), failure(NULL), is_ending_key(false){
 }
 
 ACTrieNode::~ACTrieNode(){
@@ -144,27 +138,23 @@ void ACTrieBase<NODETYPE>::CollectKeysFromNode(const NODETYPE *p, int pos, std::
 
 template<typename NODETYPE>
 NODETYPE* ACTrieBase<NODETYPE>::GetNextNode(const NODETYPE *p, const char key){
-    NODETYPE *next;
     if(!p){
         return this->root;
     }
 
     auto iter = p->child_nodes.find(key);
-    while(iter == p->child_nodes.end()){
-        p = p->failure;
-        if(p){
-            iter = p->child_nodes.find(key);
+    while(true){
+        if(iter == p->child_nodes.end()){
+            p = p->failure;
+            if(p){
+                iter = p->child_nodes.find(key);
+            }else{
+                return this->root;
+            }
         }else{
-            break;
+            return iter->second;
         }
     }
-
-    if(p){
-        next = iter->second;
-    }else{
-        next = this->root;
-    }
-    return next;
 }
 
 template<typename NODETYPE>

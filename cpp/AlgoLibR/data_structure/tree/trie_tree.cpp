@@ -18,14 +18,10 @@ namespace data_structure{
 namespace tree{
 namespace trie{
 
-TrieNode::TrieNode(const char key){
-    this->key = key;
-    parent = NULL;
+TrieNode::TrieNode(const char key) : key(key), parent(NULL){
 }
 
-TrieNode::TrieNode(const char key, TrieNode* parent){
-    this->key = key;
-    this->parent = parent;
+TrieNode::TrieNode(const char key, TrieNode* parent) : key(key), parent(parent){
 }
 
 TrieNode::~TrieNode(){
@@ -56,9 +52,8 @@ void TrieNode::RemoveChild(const char key){
 }
 
 template<typename NODETYPE>
-Trie<NODETYPE>::Trie(){
+Trie<NODETYPE>::Trie() : root(NULL), is_keys_added(false){
     root = new NODETYPE('/');
-    is_keys_added=false;
 }
 
 template<typename NODETYPE>
