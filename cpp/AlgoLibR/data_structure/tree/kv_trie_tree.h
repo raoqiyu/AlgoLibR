@@ -23,7 +23,7 @@ class KVTrieNode{
 public:
     char key;
     T value;
-    bool is_ending_char;
+    bool is_ending_key;
     std::map<char, KVTrieNode*> child_nodes;
     KVTrieNode *parent;
 

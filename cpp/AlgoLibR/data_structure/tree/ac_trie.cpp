@@ -9,6 +9,7 @@
 #include <queue>
 #include <cstring>
 #include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
 
 #include <iostream>
 
@@ -21,14 +22,14 @@ ACTrieNode::ACTrieNode(const char key){
     this->key =key;
     parent = NULL;
     failure = NULL;
-    is_ending_char=false;
+    is_ending_key=false;
 }
 
 ACTrieNode::ACTrieNode(const char key, ACTrieNode* parent){
     this->key = key;
     this->parent = parent;
     failure=NULL;
-    is_ending_char=false;
+    is_ending_key=false;
 }
 
 ACTrieNode::~ACTrieNode(){
@@ -59,19 +60,20 @@ void ACTrieNode::RemoveChild(const char key){
     child_nodes.erase(key);
 }
 
-void ACTrie::BuildFailurePtr(){
-    if(is_failure_built){
+template<typename NODETYPE>
+void ACTrieBase<NODETYPE>::BuildFailurePtr(){
+    if(!this->is_keys_added){
          return;
     }
 
-    std::queue<ACTrieNode*> nodes;
+    std::queue<NODETYPE*> nodes;
     // Step 1: set this->root's child nodes (node's depth is 1)
     for(auto iter = this->root->child_nodes.begin(); iter != this->root->child_nodes.end(); iter++){
         iter->second->failure = this->root;
         nodes.push(iter->second);
     }
     // Step 2: set other nodes (node's depth > 1)
-    ACTrieNode *current_node, *target_node, *failure_node;
+    NODETYPE *current_node, *target_node, *failure_node;
     while(!nodes.empty()){
         current_node = nodes.front();
         nodes.pop();
@@ -92,12 +94,12 @@ void ACTrie::BuildFailurePtr(){
             }
         }
     }
-
-    // is_failure_built = true;
+    this->is_keys_added = false;
 }
 
-std::string ACTrie::GetKeyFromNode(const ACTrieNode *p){
-    const ACTrieNode *node  = p;
+template<typename NODETYPE>
+std::string ACTrieBase<NODETYPE>::GetKeyFromNode(const NODETYPE *p){
+    const NODETYPE *node  = p;
     std::string word;
     while(node != this->root){
         word.insert(0, 1, node->key);
@@ -107,41 +109,42 @@ std::string ACTrie::GetKeyFromNode(const ACTrieNode *p){
     return word;
 }
 
-void ACTrie::CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<size_t,std::string>> &words){
+template<typename NODETYPE>
+void ACTrieBase<NODETYPE>::CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::string>> &words){
     // check pointer is not NULL
     if(!p) return;
 
-    ACTrieNode *failure_node;
+    NODETYPE *failure_node;
     std::string word;
 
-    if(p->is_ending_char){
+    if(p->is_ending_key){
         word = GetKeyFromNode(p);
         if(!word.empty()){
             // std::cout << "current: " << pos << " " << word << std::endl;
-            if(!words.empty() && (pos-word.length() < words.back().first)) words.pop_back();            
+            // if(!words.empty() && (pos+1-word.length() < words.back().first)) words.pop_back();            
             words.push_back(std::make_pair(pos,word));
-            return;
+            // return;
         } 
     }
 
     failure_node = p->failure;
     while( failure_node){
-        if(failure_node->is_ending_char){
+        if(failure_node->is_ending_key){
             word = GetKeyFromNode(failure_node);
             if(!word.empty()){
                 // std::cout << "current: " << pos << " " << word << std::endl;
-                if(!words.empty() && (pos-word.length() < words.back().first)) words.pop_back();
+                // if(!words.empty() && (pos+1-word.length() < words.back().first)) words.pop_back();
                 words.push_back(std::make_pair(pos,word));
-                return;
+                // return;
             }
         }
         failure_node = failure_node->failure;
     }
 }
 
-
-ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
-    ACTrieNode *next;
+template<typename NODETYPE>
+NODETYPE* ACTrieBase<NODETYPE>::GetNextNode(const NODETYPE *p, const char key){
+    NODETYPE *next;
     if(!p){
         return this->root;
     }
@@ -164,20 +167,22 @@ ACTrieNode* ACTrie::GetNextNode(const ACTrieNode *p, const char key){
     return next;
 }
 
-std::vector<std::pair<size_t,std::string>> ACTrie::ParseText(const char keys[]){
+template<typename NODETYPE>
+std::vector<std::pair<size_t,std::string>> ACTrieBase<NODETYPE>::ParseText(const char keys[]){
     BuildFailurePtr();
-
-    size_t keys_len = strlen(keys);
-    int i = 0;
-    ACTrieNode *p = this->root, *failure_node;
     std::vector<std::pair<size_t,std::string>> words;
+    size_t keys_len = strlen(keys);
+    if(keys_len == 0) return words;
+
+    int i = 0;
+    NODETYPE *p = GetNextNode(this->root, keys[0]);
     std::string word;
 
-    for(i = 0; i < keys_len; i++){
+    for(i = 0; i < keys_len-1; i++){
         // Collect words ends with position i
         CollectKeysFromNode(p, i, words);
 
-        p = GetNextNode(p, keys[i]);
+        p = GetNextNode(p, keys[i+1]);
     }
 
     // Collect words ends with position i
@@ -185,6 +190,9 @@ std::vector<std::pair<size_t,std::string>> ACTrie::ParseText(const char keys[]){
 
     return words;
 }
+
+template class ACTrieBase<ACTrieNode>;
+template class ACTrieBase<AlgoLibR::ai::nlp::seg::ACSegNode>;
 
 } // namespace ac_trie
 } // namespace tree

@@ -21,7 +21,7 @@ namespace ac_trie{
 class ACTrieNode{
 public:
     char key;
-    bool is_ending_char;
+    bool is_ending_key;
     ACTrieNode *parent=NULL;
     ACTrieNode *failure=NULL;
     std::map<char, ACTrieNode*> child_nodes;
@@ -34,19 +34,23 @@ public:
 
 };
 
-class ACTrie : public trie::Trie<ACTrieNode>{
-private:
-    bool is_failure_built=false;
-
+template<typename NODETYPE>
+class ACTrieBase : public trie::Trie<NODETYPE>{
 public:
     std::vector<std::pair<size_t,std::string>> ParseText(const char keys[]);
 
-private:
+protected:
     void BuildFailurePtr();
-    ACTrieNode* FindNode(const char key[]);
-    std::string GetKeyFromNode(const ACTrieNode *p);
-    void CollectKeysFromNode(const ACTrieNode *p, int pos, std::vector<std::pair<size_t,std::string>> &words);
-    ACTrieNode* GetNextNode(const ACTrieNode *p, const char key);
+    NODETYPE* FindNode(const char key[]);
+    NODETYPE* GetNextNode(const NODETYPE *p, const char key);
+
+private:
+    std::string GetKeyFromNode(const NODETYPE *p);
+    void CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::string>> &words);
+};
+
+class ACTrie : public ACTrieBase<ACTrieNode>{
+
 };
 
 } // namespace ac_trie

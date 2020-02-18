@@ -24,6 +24,7 @@ void test_ac_segment(){
 
     std::string sentence("Ilovechinachinaloveme");
 
+    std::cout << "Segmentation" << std::endl; 
     std::vector<std::string> segmented = ac_segment.SegSentence(sentence.c_str());
     
     for(auto i = 0; i < segmented.size(); i++){

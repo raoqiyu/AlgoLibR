@@ -72,14 +72,14 @@ void KVTrie<T>::Add(const char key[], const T value){
         p = p->child_nodes[key[i]];
     }
     p->value = value;
-    p->is_ending_char=true;
+    p->is_ending_key=true;
 }
 
 template<typename T>
 bool KVTrie<T>::Search(const char key[], T &value){
 
     KVTrieNode<T>* p = this->FindNode(key);
-    if(p && p->is_ending_char){
+    if(p && p->is_ending_key){
         value = p->value;
         return true;
     }

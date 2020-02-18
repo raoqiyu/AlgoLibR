@@ -19,7 +19,7 @@ namespace trie{
 class TrieNode{
 public:
     char key;
-    bool is_ending_char;
+    bool is_ending_key;
     std::map<char, TrieNode*> child_nodes;
     TrieNode *parent;
 
@@ -35,16 +35,16 @@ template<typename NODETYPE>
 class Trie{
 protected:
     NODETYPE* root;
-    bool is_word_added;
+    bool is_keys_added;
 
 public:
     Trie();
     ~Trie();
 
-    void Add(const char key[]);
-    NODETYPE* FindNode(const char key[]);
-    bool Search(const char key[]);
-    void Remove(const char key[]);
+    NODETYPE* Add(const char keys[]);
+    NODETYPE* FindNode(const char keys[]);
+    bool Search(const char keys[]);
+    void Remove(const char keys[]);
 };
 
 } // namespace trie
