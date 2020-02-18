@@ -35,6 +35,7 @@ template<typename NODETYPE>
 class Trie{
 protected:
     NODETYPE* root;
+    bool is_word_added;
 
 public:
     Trie();

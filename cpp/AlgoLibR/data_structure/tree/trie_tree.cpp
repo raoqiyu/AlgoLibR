@@ -77,6 +77,8 @@ void Trie<NODETYPE>::Add(const char key[]){
         p = p->child_nodes[key[i]];
     }
     p->is_ending_char=true;
+
+    is_word_added=true;
 }
 
 template<typename NODETYPE>
