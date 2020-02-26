@@ -49,7 +49,7 @@ void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true){
 
 template<typename T>
 void build_heap(T arr[], size_t n, bool is_max_heap){
-    for(long long i = n/2-1; i >= 0; --i){
+    for(long long i = n/2; i >= 0; --i){
         heapify(arr, n, i, is_max_heap);
     }
 }
