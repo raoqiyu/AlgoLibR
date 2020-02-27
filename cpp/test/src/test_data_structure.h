@@ -1,7 +1,7 @@
 /*
 Author: raoqiyu@gmail.com
 Date: 2020-02-07 17:07:11
-FilePath: /AlgoLibR/cpp/test/AlgoLibR/test_data_structure.h
+FilePath: /AlgoLibR/cpp/test/src/test_data_structure.h
 Description: 
  */
 
@@ -35,7 +35,24 @@ void test_heap(){
     heap.remove();
     printf("Current max: %d\n", heap.get());
     heap.remove();
-    printf("\n");
+
+    int arr[5]  = {2, 100, 1 ,45, 6};
+    int * result, k=3;
+
+    result = AlgoLibR::data_structure::heap::klargest(arr, 5, k);
+    for(auto i = 0; i < k; i++){
+        std::cout << result[i] << " ";
+    }
+    std::cout << std::endl;
+    delete result;
+    result = AlgoLibR::data_structure::heap::ksmallest(arr, 5, k);
+    for(auto i = 0; i < k; i++){
+        std::cout << result[i] << " ";
+    }
+    std::cout << std::endl;
+    delete result;
+
+    printf("\n\n");
 }
 
 

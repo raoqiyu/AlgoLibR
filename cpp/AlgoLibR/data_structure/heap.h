@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-01 16:07:13
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/heap.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/heap.h
  * @Description: 
  */
 
@@ -28,6 +28,14 @@ namespace heap{
 
     template<typename T>
     T get_heap(T arr[], size_t heap_size);
+
+    template<typename T>
+    T* klargest(T arr[], size_t n, size_t k);
+
+    template<typename T>
+    T* ksmallest(T arr[], size_t n, size_t k);
+
+
     template<class T>
     class HeapImp{
     private:

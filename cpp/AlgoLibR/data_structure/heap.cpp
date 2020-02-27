@@ -8,6 +8,7 @@
 #include "AlgoLibR/data_structure/heap.h"
 #include "AlgoLibR/sort/utils.h"
 #include "AlgoLibR/framework/register_types.h"
+#include "AlgoLibR/framework/comparator.hpp"
 
 namespace AlgoLibR{
 namespace data_structure{
@@ -102,6 +103,74 @@ T get_heap(T arr[], size_t heap_size){
     return arr[0];
 }
 
+template<typename T>
+T* klargest(T arr[], size_t n, size_t k){
+    if(k == 0){
+        return nullptr;
+    }
+    
+    T* result = new T[k];
+    if(k == 1){
+         result[0] = comparator::array::max(arr, n);
+         return result;
+    }
+
+    size_t i;
+
+    for(i = 0; i < k; i++){
+        result[i] = arr[i];
+    }
+    // build a min heap, store the k-largest elements
+    build_heap(result, k, false);
+    for(i = k; i < n; i++){
+        // result[0] is the k-th larger element
+        if(arr[i] > result[0]){
+            result[0] = arr[i];
+            heapify(result, k, 0, false);
+        }
+    }
+    for(i = 0; i < k; i++){
+        sort::UTILS::swap<T>(&result[0], &result[k-i-1]);
+        heapify(arr, k-i-1, 0, false);
+    }
+
+    return result;
+}
+
+template<typename T>
+T* ksmallest(T arr[], size_t n, size_t k){
+    if(k == 0){
+        return nullptr;
+    }
+    
+    T* result = new T[k];
+    if(k == 1){
+         result[0] = comparator::array::min(arr, n);
+         return result;
+    }
+
+    size_t i;
+
+    for(i = 0; i < k; i++){
+        result[i] = arr[i];
+    }
+    // build a min heap, store the k-largest elements
+    build_heap(result, k, true);
+    for(i = k; i < n; i++){
+        // result[0] is the k-th larger element
+        if(arr[i] < result[0]){
+            result[0] = arr[i];
+            heapify(arr, k, 0, true);
+        }
+    }
+    for(i = 0; i < k; i++){
+        sort::UTILS::swap<T>(&result[0], &result[k-i-1]);
+        heapify(result, k-i-1, 0, true);
+    }
+
+    return result;
+}
+
 template<class T>
 HeapImp<T>::HeapImp(size_t capacity, bool is_max_heap){
     this->arr = new T[capacity];
@@ -154,6 +223,8 @@ size_t HeapImp<T>::size(){
     template bool insert_heap<T>(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap); \
     template bool remove_heap<T>(T arr[], size_t n, size_t heap_size, bool is_max_heap); \
     template T    get_heap<T>(T arr[], size_t heap_size); \
+    template T*   klargest<T>(T arr[], size_t n, size_t k); \
+    template T*   ksmallest<T>(T arr[], size_t n, size_t k); \
     template class HeapImp<T>; 
 REGISTER_REAL_NUMBER_TYPES(DEFINE_HEAMPIMP);
 
