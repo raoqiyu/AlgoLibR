@@ -9,7 +9,7 @@ cimport cython
 from libcpp cimport bool
 
 
-cdef extern from "AlgoLibR/data_structure/heap.h" namespace "AlgoLibR::data_structure::heap":
+cdef extern from "AlgoLibR/data_structure/heap.hpp" namespace "AlgoLibR::data_structure::heap":
         cdef bool insert_heap[T](T arr[], T data, size_t n, size_t heap_size, bool is_max_heap)
         cdef bool remove_heap[T](T arr[], size_t n, size_t heap_size, bool is_max_heap)
         cdef T    get_heap[T](T arr[], size_t heap_size)

@@ -9,7 +9,7 @@ Description:
 #include <iostream>
 #include <vector>
 #include <string>
-#include "AlgoLibR/data_structure/heap.h"
+#include "AlgoLibR/data_structure/heap.hpp"
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
 #include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
 #include "AlgoLibR/data_structure/tree/ac_trie.h"

@@ -1,11 +1,14 @@
 /*
  * @Author: raoqiyu@gmail.com
- * @Date: 2020-02-01 16:42:06
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/heap.cpp
+ * @Date: 2020-02-01 16:07:13
+ * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/heap.hpp
  * @Description: 
  */
 
-#include "AlgoLibR/data_structure/heap.h"
+#ifndef DS_HEAP
+#define DS_HEAP
+
+#include <stdlib.h>
 #include "AlgoLibR/sort/utils.h"
 #include "AlgoLibR/framework/register_types.h"
 #include "AlgoLibR/framework/comparator.hpp"
@@ -13,6 +16,46 @@
 namespace AlgoLibR{
 namespace data_structure{
 namespace heap{
+
+    template<typename T>
+    void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true);
+
+    template<typename T>
+    void build_heap(T arr[], size_t n, bool is_max_heap);
+    
+    template<typename T>
+    bool insert_heap(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap);
+
+    template<typename T>
+    bool remove_heap(T arr[], size_t n, size_t heap_size, bool is_max_heap);
+
+    template<typename T>
+    T get_heap(T arr[], size_t heap_size);
+
+    template<typename T>
+    T* klargest(T arr[], size_t n, size_t k);
+
+    template<typename T>
+    T* ksmallest(T arr[], size_t n, size_t k);
+
+
+    template<class T>
+    class HeapImp{
+    private:
+        T *arr;            // array, index from 1
+        size_t capacity;    // heap capacity
+        size_t heap_size;   // count of elements in the heap
+        bool   is_max_heap; // whether this heap is max heap or not 
+    
+    public:
+        HeapImp(size_t capacity, bool is_max_heap);
+        ~HeapImp();
+        void insert(T data);
+        void remove();
+        T    get();
+        size_t size();
+        T*   values();
+    };
 
 template<typename T>
 void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true){
@@ -102,6 +145,8 @@ T get_heap(T arr[], size_t heap_size){
     if(heap_size == 0) return (T)-1;
     return arr[0];
 }
+
+
 
 template<typename T>
 T* klargest(T arr[], size_t n, size_t k){
@@ -217,18 +262,8 @@ size_t HeapImp<T>::size(){
     return this->heap_size;
 }
 
-#define DEFINE_HEAMPIMP(T) \
-    template void heapify<T>(T arr[], size_t n, size_t i, bool is_max_heap=true); \
-    template void build_heap<T>(T arr[], size_t n, bool is_max_heap); \
-    template bool insert_heap<T>(T arr[], T data, size_t n, size_t heap_size, bool is_max_heap); \
-    template bool remove_heap<T>(T arr[], size_t n, size_t heap_size, bool is_max_heap); \
-    template T    get_heap<T>(T arr[], size_t heap_size); \
-    template T*   klargest<T>(T arr[], size_t n, size_t k); \
-    template T*   ksmallest<T>(T arr[], size_t n, size_t k); \
-    template class HeapImp<T>; 
-REGISTER_REAL_NUMBER_TYPES(DEFINE_HEAMPIMP);
-
 } // namespace heap
 } // namespace data_structure
 } // namespace AlgoLibR
 
+#endif 

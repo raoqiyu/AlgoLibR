@@ -7,7 +7,7 @@
 
 #include "AlgoLibR/sort/heap_sort.h"
 #include "AlgoLibR/sort/utils.h"
-#include "AlgoLibR/data_structure/heap.h"
+#include "AlgoLibR/data_structure/heap.hpp"
 #include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
