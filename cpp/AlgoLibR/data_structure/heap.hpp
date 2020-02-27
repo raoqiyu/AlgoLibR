@@ -199,13 +199,13 @@ T* ksmallest(T arr[], size_t n, size_t k){
     for(i = 0; i < k; i++){
         result[i] = arr[i];
     }
-    // build a min heap, store the k-largest elements
+    // build a max heap, store the k-smallest elements
     build_heap(result, k, true);
     for(i = k; i < n; i++){
-        // result[0] is the k-th larger element
+        // result[0] is the k-th small element
         if(arr[i] < result[0]){
             result[0] = arr[i];
-            heapify(arr, k, 0, true);
+            heapify(result, k, 0, true);
         }
     }
     for(i = 0; i < k; i++){
