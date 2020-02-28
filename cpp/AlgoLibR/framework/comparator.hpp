@@ -11,49 +11,6 @@
 
 namespace AlgoLibR{
 namespace comparator{
-namespace array{
-
-// typedef bool  (*CompareFunc) (void* data, long long i, long long  j);    // Compare data[i] and data[j]
-
-// template<typename T>
-// bool greater(void *data, long long  i, long long  j){
-//     return ((T*)data)[i] > ((T*)data)[j];        
-// }
-
-// template<typename T>
-// bool less(void *data, long long i, long long j){
-//     return ((T*)data)[i] < ((T*)data)[j];        
-// }
-
-template<typename T>
-T max(T arr[], size_t n){
-    if(n <= 0){
-        return 0;
-    }
-    T target = arr[0];
-    for(auto i = 1; i < n; i++){
-        if(arr[i] > target){
-            target = arr[i];
-        }
-    } // for
-    return target;
-}
-
-template<typename T>
-T min(T arr[], size_t n){
-    if(n <= 0){
-        return 0;
-    }
-    T target = arr[0];
-    for(auto i = 1; i < n; i++){
-        if(arr[i] < target){
-            target = arr[i];
-        }
-    } // for
-    return target;
-}
-
-} // namespace array 
 
 namespace number{
 template<typename T> using CompareFunc = bool (*) (T x, T y);    // Compare x and y
@@ -96,8 +53,73 @@ T min(T x, T y){
     }
 }
 
-
 } // namespace number 
+
+namespace array{
+
+
+template<typename T>
+T max(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] > target){
+            target = arr[i];
+        }
+    } // for
+    return target;
+}
+
+template<typename T>
+T min(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] < target){
+            target = arr[i];
+        }
+    } // for
+    return target;
+}
+
+template<typename T>
+size_t argmax(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    size_t target_pos = 0;
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] > target){
+            target = arr[i];
+            target_pos = i;
+        }
+    } // for
+    return target_pos;
+}
+
+template<typename T>
+size_t argmin(T arr[], size_t n){
+    if(n <= 0){
+        return 0;
+    }
+    size_t target_pos = 0;
+    T target = arr[0];
+    for(auto i = 1; i < n; i++){
+        if(arr[i] < target){
+            target = arr[i];
+            target_pos = i;
+        }
+    } // for
+    return target_pos;
+}
+
+} // namespace array 
+
 } // namespace comparator
 } // namespace AlgoLibR
 #endif
