@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-17 11:00:48
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/ai/nlp/seg/ahocorasick_segment.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/ai/nlp/seg/ahocorasick_segment.h
  * @Description: 
  */
 
@@ -53,7 +53,6 @@ private:
     bool is_seg_all;
 
 private:
-    std::vector<std::string> SegAll(const char sentence[]);
     std::size_t GetKeySizeFromNode(const ACSegNode *p);
     void CollectKeySizesFromNode(const ACSegNode *p, int pos, std::map<size_t,std::vector<WordProp>> &dag);
     void ExtractDAG(const char sentence[], std::map<size_t,std::vector<WordProp>> &dag);

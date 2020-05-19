@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-17 11:25:48
- * @FilePath: /AlgoLibR/cpp/test/src/test_segment.h
+FilePath: /AlgoLibR/cpp/test/src/test_segment.h
  * @Description: 
  */
 
@@ -18,6 +18,7 @@ void test_ac_segment(){
     std::cout << "\nTest AC Segmentation" << std::endl;
 
     AhoCorasickSegment ac_segment;
+    ac_segment.SetSegAll(false);
 
     ac_segment.Build("../../data/NLP/Dictionary/test_dict.txt");
 
@@ -30,6 +31,7 @@ void test_ac_segment(){
         std::cout << segmented[i] << " " ;
     }
     std::cout << std::endl;
+
 
 
 }

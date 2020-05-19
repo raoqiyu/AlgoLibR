@@ -195,37 +195,10 @@ void AhoCorasickSegment::ExtractDAG(const char sentence[], std::map<size_t,std::
         if(iter->second.empty()) iter->second.push_back(WordProp("null",0,1));
     }
 }
-
-std::vector<std::string> AhoCorasickSegment::SegAll(const char sentence[]){
-    std::vector<std::string> segmented;
-    std::vector<std::pair<size_t,std::string>> parsed;
-    parsed = ParseText(sentence); 
-    size_t sen_len=strlen(sentence),begin_pos=0, pos, tmp_pos;
-
-    std::string word, tmp_word;
-    for(auto i = 0; i < parsed.size(); i++){
-        pos = parsed[i].first;
-        word = parsed[i].second;
-        tmp_pos = pos - word.length()-1;
-        if( tmp_pos >= begin_pos){
-            for(auto i = begin_pos; i <= tmp_pos; i++){
-                tmp_word.push_back(sentence[i]);
-            }
-            segmented.push_back(tmp_word);
-            tmp_word.clear();
-        }
-        segmented.push_back(word);
-        begin_pos = pos;
-    }
-    if(pos < sen_len){
-       for(auto i = pos; i < sen_len; i++){
-            tmp_word.push_back(sentence[i]);
-        }
-        segmented.push_back(tmp_word);
-        tmp_word.clear(); 
-    }
-    return segmented; 
+void AhoCorasickSegment::SetSegAll(bool is_seg_all){
+    this->is_seg_all = is_seg_all;
 }
+
 
 std::vector<std::string> AhoCorasickSegment::SegSentence(const char sentence[]){
     std::vector<std::string> segmented;
@@ -250,7 +223,24 @@ std::vector<std::string> AhoCorasickSegment::SegSentence(const char sentence[]){
                 }
             }
         }
-        return segmented;
+    }else{
+        begin_pos = 0;
+        unsigned int max_word_size = 0;
+        while(begin_pos < sen.length()){
+            if(dag.find(begin_pos) == dag.end()){
+               segmented.push_back(sen.substr(begin_pos, 1));
+               begin_pos++;
+               continue;
+            }
+            max_word_size = 0;
+            for(auto word : dag[begin_pos]){
+                if(max_word_size < word.word_length){
+                    max_word_size = word.word_length;
+                }
+            }
+            segmented.push_back(sen.substr(begin_pos, max_word_size));
+            begin_pos += max_word_size;
+        } 
     }
 
     return segmented;
