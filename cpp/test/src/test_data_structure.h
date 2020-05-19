@@ -14,6 +14,11 @@ Description:
 #include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
 #include "AlgoLibR/data_structure/tree/ac_trie.h"
 
+bool test_max(std::pair<int,int> x, std::pair<int,int> y){
+    return x.second > y.second;
+}
+
+
 void test_heap(){
     printf("Test Heap\n");
 
@@ -37,7 +42,7 @@ void test_heap(){
     heap.remove();
 
     int arr[5]  = {2, 100, 1 ,45, 6};
-    int * result, k=3;
+    int * result, k=2;
 
     result = AlgoLibR::data_structure::heap::klargest(arr, 5, k);
     for(auto i = 0; i < k; i++){
@@ -45,12 +50,27 @@ void test_heap(){
     }
     std::cout << std::endl;
     delete result;
+    
     result = AlgoLibR::data_structure::heap::ksmallest(arr, 5, k);
     for(auto i = 0; i < k; i++){
         std::cout << result[i] << " ";
     }
     std::cout << std::endl;
     delete result;
+
+    // std::vector<std::pair<int,int>> test_arr, result2;
+    // test_arr.push_back(std::make_pair(1,4));
+    // test_arr.push_back(std::make_pair(2,3));
+    // test_arr.push_back(std::make_pair(3,2));
+    // test_arr.push_back(std::make_pair(4,1));
+
+    // result2 = AlgoLibR::data_structure::heap::klargestKey<std::vector<std::pair<int,int>>,
+    //                                                    std::pair<int,int>>(test_arr, 4, 1, test_max);
+    // for(auto i = 0; i < k; i++){
+    //     std::cout << result2[i].first << ',' << result2[i].second << " ";
+    // }
+    // std::cout << std::endl;
+
 
     printf("\n\n");
 }
