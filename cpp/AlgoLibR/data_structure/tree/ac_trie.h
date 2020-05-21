@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-14 13:42:26
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/ac_trie_tree.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/ac_trie.h
  * @Description: Aho-Corasick Trie
  */
 
@@ -20,33 +20,33 @@ namespace ac_trie{
 
 class ACTrieNode{
 public:
-    char key;
+    wchar_t key;
     bool is_ending_key;
     ACTrieNode *parent=NULL;
     ACTrieNode *failure=NULL;
-    std::map<char, ACTrieNode*> child_nodes;
+    std::map<wchar_t, ACTrieNode*> child_nodes;
 
     ~ACTrieNode();
-    ACTrieNode(const char key);
-    ACTrieNode(const char key, ACTrieNode* parent);
-    void AddChild(const char key);
-    void RemoveChild(const char key);
+    ACTrieNode(const wchar_t key);
+    ACTrieNode(const wchar_t key, ACTrieNode* parent);
+    void AddChild(const wchar_t key);
+    void RemoveChild(const wchar_t key);
 
 };
 
 template<typename NODETYPE>
 class ACTrieBase : public trie::Trie<NODETYPE>{
 public:
-    std::vector<std::pair<size_t,std::string>> ParseText(const char keys[]);
+    std::vector<std::pair<size_t,std::wstring>> ParseText(const wchar_t keys[]);
 
 protected:
     void BuildFailurePtr();
-    NODETYPE* FindNode(const char key[]);
-    NODETYPE* GetNextNode(const NODETYPE *p, const char key);
+    NODETYPE* FindNode(const wchar_t key[]);
+    NODETYPE* GetNextNode(const NODETYPE *p, const wchar_t key);
 
 private:
-    std::string GetKeyFromNode(const NODETYPE *p);
-    void CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::string>> &words);
+    std::wstring GetKeyFromNode(const NODETYPE *p);
+    void CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::wstring>> &words);
 };
 
 class ACTrie : public ACTrieBase<ACTrieNode>{

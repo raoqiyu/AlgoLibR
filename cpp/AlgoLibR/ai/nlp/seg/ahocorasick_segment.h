@@ -32,19 +32,19 @@ public:
 
 class ACSegNode{
 public:
-    char key;
+    wchar_t key;
     bool is_ending_key;
     WordProp* word_prop;
 
     ACSegNode *parent=NULL;
     ACSegNode *failure=NULL;
-    std::map<char, ACSegNode*> child_nodes;
+    std::map<wchar_t, ACSegNode*> child_nodes;
 
     ~ACSegNode();
-    ACSegNode(const char key);
-    ACSegNode(const char key, ACSegNode* parent);
-    void AddChild(const char key);
-    void RemoveChild(const char key);    
+    ACSegNode(const wchar_t key);
+    ACSegNode(const wchar_t key, ACSegNode* parent);
+    void AddChild(const wchar_t key);
+    void RemoveChild(const wchar_t key);    
 };
 
 
@@ -55,15 +55,15 @@ private:
 private:
     std::size_t GetKeySizeFromNode(const ACSegNode *p);
     void CollectKeySizesFromNode(const ACSegNode *p, int pos, std::map<size_t,std::vector<WordProp>> &dag);
-    void ExtractDAG(const char sentence[], std::map<size_t,std::vector<WordProp>> &dag);
+    void ExtractDAG(const wchar_t sentence[], std::map<size_t,std::vector<WordProp>> &dag);
 
 public:
     AhoCorasickSegment();
-    void AddWord(const char word[], const char nature[], const size_t freq);
+    void AddWord(const wchar_t word[], const char nature[], const size_t freq);
     void SetSegAll(bool is_seg_all);
     void Build(const char dictionary_fname[]);
-    std::vector<std::string> SegSentence(const char sentence[]);
-    std::vector<std::wstring> SegChineseSentence(const char sentence[]);
+    std::vector<std::wstring> SegSentence(const wchar_t sentence[]);
+    // std::vector<std::wstring> SegChineseSentence(const wchar_t sentence[]);
 
 };
 

@@ -69,7 +69,7 @@ WordProp::~WordProp(){
     
 }
 
-ACSegNode::ACSegNode(const char key){
+ACSegNode::ACSegNode(const wchar_t key){
     this->key =key;
     is_ending_key=false;
     parent = NULL;
@@ -77,7 +77,7 @@ ACSegNode::ACSegNode(const char key){
     word_prop = NULL;
 }
 
-ACSegNode::ACSegNode(const char key, ACSegNode* parent){
+ACSegNode::ACSegNode(const wchar_t key, ACSegNode* parent){
     this->key = key;
     this->parent = parent;
     failure=NULL;
@@ -100,14 +100,14 @@ ACSegNode::~ACSegNode(){
     failure=NULL;
 }
 
-void ACSegNode::AddChild(const char key){
+void ACSegNode::AddChild(const wchar_t key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
     child_nodes[key] = new ACSegNode(key, this);
 }
 
-void ACSegNode::RemoveChild(const char key){
+void ACSegNode::RemoveChild(const wchar_t key){
     auto iter = child_nodes.find(key);
     if( iter == child_nodes.end()){
         return;
@@ -120,16 +120,16 @@ void ACSegNode::RemoveChild(const char key){
 AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
 }
 
-void AhoCorasickSegment::AddWord(const char word[], const char nature[], const size_t freq){
+void AhoCorasickSegment::AddWord(const wchar_t word[], const char nature[], const size_t freq){
     ACSegNode* p = Add(word);
-    p->word_prop = new WordProp(nature, freq, strlen(word));
+    p->word_prop = new WordProp(nature, freq, wcslen(word));
 
 }
 
 
 void AhoCorasickSegment::Build(const char dictionary_fname[]){
-    std::ifstream dictionary_file(dictionary_fname, std::ios::in);
-    std::string word;
+    std::wifstream dictionary_file(dictionary_fname);
+    std::wstring word;
     if (!dictionary_file.is_open()){ 
         return;
     }
@@ -178,10 +178,10 @@ void AhoCorasickSegment::CollectKeySizesFromNode(const ACSegNode *p, int pos, st
     }
 }
 
-void AhoCorasickSegment::ExtractDAG(const char sentence[], std::map<size_t,std::vector<WordProp>> &dag){
+void AhoCorasickSegment::ExtractDAG(const wchar_t sentence[], std::map<size_t,std::vector<WordProp>> &dag){
     BuildFailurePtr();
 
-    size_t sen_len = strlen(sentence);
+    size_t sen_len = wcslen(sentence);
     int i = 0;
     ACSegNode *p = GetNextNode(this->root, sentence[0]), *failure_node;
 
@@ -200,13 +200,13 @@ void AhoCorasickSegment::SetSegAll(bool is_seg_all){
 }
 
 
-std::vector<std::string> AhoCorasickSegment::SegSentence(const char sentence[]){
-    std::vector<std::string> segmented;
+std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence[]){
+    std::vector<std::wstring> segmented;
     // std::vector<std::pair<size_t,std::string>> parsed;
     std::map<size_t,std::vector<WordProp>> dag;
     ExtractDAG(sentence, dag);
 
-    std::string sen(sentence);
+    std::wstring sen(sentence);
     long begin_pos=0, end_pos=-1;
     if(is_seg_all){
         for(auto iter=dag.begin(); iter != dag.end(); iter++){
@@ -251,7 +251,7 @@ std::vector<std::string> AhoCorasickSegment::SegSentence(const char sentence[]){
     // std::vector<std::pair<size_t,std::string>> parsed;
     // parsed = ParseText(sentence);
     
-    // size_t sen_len=strlen(sentence),begin_pos=0, pos, tmp_pos=-1;
+    // size_t sen_len=wcslen(sentence),begin_pos=0, pos, tmp_pos=-1;
     // std::string word, tmp_word;
     // for(auto i = 0; i < parsed.size(); i++){
     //     pos = parsed[i].first;
@@ -280,7 +280,7 @@ std::vector<std::string> AhoCorasickSegment::SegSentence(const char sentence[]){
 }
 
 
-std::vector<std::wstring> AhoCorasickSegment::SegChineseSentence(const char sentence[]){
+std::vector<std::wstring> AhoCorasickSegment::SegChineseSentence(const wchar_t sentence[]){
     std::vector<std::string> segmented;
     std::vector<std::wstring> segmented_chinese;
     
@@ -297,24 +297,24 @@ std::vector<std::wstring> AhoCorasickSegment::SegChineseSentence(const char sent
         if(segmented[i].length() > 1){
             segmented_chinese.push_back(AlgoLibR::framework::string::str2wstr(segmented[i]));
             std::cout << "Raw: " <<  segmented[i] << std::endl;
+            std::wcout << "Raw seg: " <<  segmented_chinese.back() << std::endl;
             continue;
         }
         if(segmented[i][0] & 0x80){
             if(is_zh_second){
-                str = segmented[i-1]+segmented[i];
+                str = segmented[i]+segmented[i-1];
                 std::cout << "str: " <<  str << std::endl;
                 segmented_chinese.push_back(AlgoLibR::framework::string::str2wstr(str));
                 std::wcout << segmented_chinese.back()<< std::endl;
                 is_zh_first=false;
                 is_zh_second=false;
-             }else if(is_zh_first){
-                 is_zh_second=true;
              }else{
-                 is_zh_first=true;
+                 is_zh_second=true;
              }
          }
 
     }
+        std::cout << "len(segmented)" << segmented_chinese.size() << std::endl;
     return segmented_chinese;
 }
 

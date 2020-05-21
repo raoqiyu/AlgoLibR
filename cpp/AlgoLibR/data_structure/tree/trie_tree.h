@@ -18,16 +18,16 @@ namespace trie{
 
 class TrieNode{
 public:
-    char key;
+    wchar_t key;
     bool is_ending_key;
-    std::map<char, TrieNode*> child_nodes;
+    std::map<wchar_t, TrieNode*> child_nodes;
     TrieNode *parent;
 
-    TrieNode(const char key);
-    TrieNode(const char key, TrieNode* parent);
+    TrieNode(const wchar_t key);
+    TrieNode(const wchar_t key, TrieNode* parent);
     ~TrieNode();
-    void AddChild(const char key);
-    void RemoveChild(const char key);
+    void AddChild(const wchar_t key);
+    void RemoveChild(const wchar_t key);
 };
 
 
@@ -41,10 +41,10 @@ public:
     Trie();
     ~Trie();
 
-    NODETYPE* Add(const char keys[]);
-    NODETYPE* FindNode(const char keys[]);
-    bool Search(const char keys[]);
-    void Remove(const char keys[]);
+    NODETYPE* Add(const wchar_t keys[]);
+    NODETYPE* FindNode(const wchar_t keys[]);
+    bool Search(const wchar_t keys[]);
+    void Remove(const wchar_t keys[]);
 };
 
 } // namespace trie

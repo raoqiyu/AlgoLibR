@@ -21,24 +21,24 @@ namespace kv_trie{
 template<class T>
 class KVTrieNode{
 public:
-    char key;
+    wchar_t key;
     T value;
     bool is_ending_key;
-    std::map<char, KVTrieNode*> child_nodes;
+    std::map<wchar_t, KVTrieNode*> child_nodes;
     KVTrieNode *parent;
 
-    KVTrieNode(const char key);
-    KVTrieNode(const char key, KVTrieNode* parent);
+    KVTrieNode(const wchar_t key);
+    KVTrieNode(const wchar_t key, KVTrieNode* parent);
     ~KVTrieNode();
-    void AddChild(const char key);
-    void RemoveChild(const char key);
+    void AddChild(const wchar_t key);
+    void RemoveChild(const wchar_t key);
 };
 
 template<typename T>
 class KVTrie : public trie::Trie<KVTrieNode<T>>{
 public:
-    void Add(const char key[], T value);
-    bool Search(const char key[], T &value);
+    void Add(const wchar_t key[], T value);
+    bool Search(const wchar_t key[], T &value);
 };
 
 } // namespace kv_trie

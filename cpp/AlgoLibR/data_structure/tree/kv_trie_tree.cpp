@@ -17,11 +17,11 @@ namespace kv_trie{
 
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(const char key) : key(key), parent(NULL){
+KVTrieNode<T>::KVTrieNode(const wchar_t key) : key(key), parent(NULL){
 }
 
 template<typename T>
-KVTrieNode<T>::KVTrieNode(const char key, KVTrieNode* parent) : key(key), parent(parent){
+KVTrieNode<T>::KVTrieNode(const wchar_t key, KVTrieNode* parent) : key(key), parent(parent){
 }
 
 template<typename T>
@@ -37,7 +37,7 @@ KVTrieNode<T>::~KVTrieNode(){
 }
 
 template<typename T>
-void KVTrieNode<T>::AddChild(const char key){
+void KVTrieNode<T>::AddChild(const wchar_t key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
@@ -45,7 +45,7 @@ void KVTrieNode<T>::AddChild(const char key){
 }
 
 template<typename T>
-void KVTrieNode<T>::RemoveChild(const char key){
+void KVTrieNode<T>::RemoveChild(const wchar_t key){
     auto iter = child_nodes.find(key);
     if( iter == child_nodes.end()){
         return;
@@ -56,8 +56,8 @@ void KVTrieNode<T>::RemoveChild(const char key){
 }
 
 template<typename T>
-void KVTrie<T>::Add(const char key[], const T value){
-    size_t key_len = strlen(key);
+void KVTrie<T>::Add(const wchar_t key[], const T value){
+    size_t key_len = wcslen(key);
     if(key_len <= 0){
         return ;
     }
@@ -72,7 +72,7 @@ void KVTrie<T>::Add(const char key[], const T value){
 }
 
 template<typename T>
-bool KVTrie<T>::Search(const char key[], T &value){
+bool KVTrie<T>::Search(const wchar_t key[], T &value){
 
     KVTrieNode<T>* p = this->FindNode(key);
     if(p && p->is_ending_key){
@@ -88,8 +88,8 @@ bool KVTrie<T>::Search(const char key[], T &value){
     template class KVTrieNode<T>; \
     template class KVTrie<T>; 
 REGISTER_REAL_NUMBER_TYPES(DEFINE_TRIE)
-REGISTER_char(DEFINE_TRIE)
-REGISTER_charptr(DEFINE_TRIE) 
+REGISTER_wchar_t(DEFINE_TRIE)
+REGISTER_wchar_t_ptr(DEFINE_TRIE) 
 
 
 } // namespace kv_trie

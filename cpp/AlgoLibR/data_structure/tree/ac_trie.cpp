@@ -18,11 +18,11 @@ namespace data_structure{
 namespace tree{
 namespace ac_trie{
 
-ACTrieNode::ACTrieNode(const char key) : 
+ACTrieNode::ACTrieNode(const wchar_t key) : 
             key(key), parent(NULL), failure(NULL), is_ending_key(false){
 }
 
-ACTrieNode::ACTrieNode(const char key, ACTrieNode* parent) : 
+ACTrieNode::ACTrieNode(const wchar_t key, ACTrieNode* parent) : 
             key(key), parent(parent), failure(NULL), is_ending_key(false){
 }
 
@@ -37,14 +37,14 @@ ACTrieNode::~ACTrieNode(){
     failure=NULL;
 }
 
-void ACTrieNode::AddChild(const char key){
+void ACTrieNode::AddChild(const wchar_t key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
     child_nodes[key] = new ACTrieNode(key, this);
 }
 
-void ACTrieNode::RemoveChild(const char key){
+void ACTrieNode::RemoveChild(const wchar_t key){
     auto iter = child_nodes.find(key);
     if( iter == child_nodes.end()){
         return;
@@ -92,9 +92,9 @@ void ACTrieBase<NODETYPE>::BuildFailurePtr(){
 }
 
 template<typename NODETYPE>
-std::string ACTrieBase<NODETYPE>::GetKeyFromNode(const NODETYPE *p){
+std::wstring ACTrieBase<NODETYPE>::GetKeyFromNode(const NODETYPE *p){
     const NODETYPE *node  = p;
-    std::string word;
+    std::wstring word;
     while(node != this->root){
         word.insert(0, 1, node->key);
         node = node->parent;
@@ -104,12 +104,12 @@ std::string ACTrieBase<NODETYPE>::GetKeyFromNode(const NODETYPE *p){
 }
 
 template<typename NODETYPE>
-void ACTrieBase<NODETYPE>::CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::string>> &words){
+void ACTrieBase<NODETYPE>::CollectKeysFromNode(const NODETYPE *p, int pos, std::vector<std::pair<size_t,std::wstring>> &words){
     // check pointer is not NULL
     if(!p) return;
 
     NODETYPE *failure_node;
-    std::string word;
+    std::wstring word;
 
     if(p->is_ending_key){
         word = GetKeyFromNode(p);
@@ -137,7 +137,7 @@ void ACTrieBase<NODETYPE>::CollectKeysFromNode(const NODETYPE *p, int pos, std::
 }
 
 template<typename NODETYPE>
-NODETYPE* ACTrieBase<NODETYPE>::GetNextNode(const NODETYPE *p, const char key){
+NODETYPE* ACTrieBase<NODETYPE>::GetNextNode(const NODETYPE *p, const wchar_t key){
     if(!p){
         return this->root;
     }
@@ -158,15 +158,15 @@ NODETYPE* ACTrieBase<NODETYPE>::GetNextNode(const NODETYPE *p, const char key){
 }
 
 template<typename NODETYPE>
-std::vector<std::pair<size_t,std::string>> ACTrieBase<NODETYPE>::ParseText(const char keys[]){
+std::vector<std::pair<size_t,std::wstring>> ACTrieBase<NODETYPE>::ParseText(const wchar_t keys[]){
     BuildFailurePtr();
-    std::vector<std::pair<size_t,std::string>> words;
-    size_t keys_len = strlen(keys);
+    std::vector<std::pair<size_t,std::wstring>> words;
+    size_t keys_len = wcslen(keys);
     if(keys_len == 0) return words;
 
     int i = 0;
     NODETYPE *p = GetNextNode(this->root, keys[0]);
-    std::string word;
+    std::wstring word;
 
     for(i = 0; i < keys_len-1; i++){
         // Collect words ends with position i

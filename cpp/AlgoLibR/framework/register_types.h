@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-01-15 09:35:59
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/framework/register_types.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/framework/register_types.h
  * @Description: 
  */
 
@@ -23,6 +23,10 @@
 
 #define REGISTER_char(func) func(char)
 #define REGISTER_charptr(func) func(char*)
+
+
+#define REGISTER_wchar_t(func) func(wchar_t)
+#define REGISTER_wchar_t_ptr(func) func(wchar_t*)
 
 #define REGISTER_SIGNED_INTEGER_TYPES(func)                                      \
   REGISTER_short(func) REGISTER_int(func) REGISTER_long(func) REGISTER_long_long(func) 

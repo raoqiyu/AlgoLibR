@@ -18,10 +18,10 @@ namespace data_structure{
 namespace tree{
 namespace trie{
 
-TrieNode::TrieNode(const char key) : key(key), parent(NULL){
+TrieNode::TrieNode(const wchar_t key) : key(key), parent(NULL){
 }
 
-TrieNode::TrieNode(const char key, TrieNode* parent) : key(key), parent(parent){
+TrieNode::TrieNode(const wchar_t key, TrieNode* parent) : key(key), parent(parent){
 }
 
 TrieNode::~TrieNode(){
@@ -34,14 +34,14 @@ TrieNode::~TrieNode(){
     parent=NULL;
 }
 
-void TrieNode::AddChild(const char key){
+void TrieNode::AddChild(const wchar_t key){
     if(child_nodes.find(key) != child_nodes.end()){
         return;
     }
     child_nodes[key] = new TrieNode(key, this);
 }
 
-void TrieNode::RemoveChild(const char key){
+void TrieNode::RemoveChild(const wchar_t key){
     auto iter = child_nodes.find(key);
     if( iter == child_nodes.end()){
         return;
@@ -63,8 +63,8 @@ Trie<NODETYPE>::~Trie(){
 }    
 
 template<typename NODETYPE>
-NODETYPE* Trie<NODETYPE>::Add(const char keys[]){
-    size_t key_len = strlen(keys);
+NODETYPE* Trie<NODETYPE>::Add(const wchar_t keys[]){
+    size_t key_len = wcslen(keys);
     if(key_len <= 0){
         return nullptr;
     }
@@ -82,8 +82,8 @@ NODETYPE* Trie<NODETYPE>::Add(const char keys[]){
 }
 
 template<typename NODETYPE>
-NODETYPE* Trie<NODETYPE>::FindNode(const char keys[]){
-    size_t key_len = strlen(keys);
+NODETYPE* Trie<NODETYPE>::FindNode(const wchar_t keys[]){
+    size_t key_len = wcslen(keys);
     if(key_len <= 0){
         return NULL;
     }
@@ -100,7 +100,7 @@ NODETYPE* Trie<NODETYPE>::FindNode(const char keys[]){
 }
 
 template<typename NODETYPE>
-bool Trie<NODETYPE>::Search(const char keys[]){
+bool Trie<NODETYPE>::Search(const wchar_t keys[]){
 
     NODETYPE* p = FindNode(keys);
     if(p && p->is_ending_key){
@@ -110,7 +110,7 @@ bool Trie<NODETYPE>::Search(const char keys[]){
 }
 
 template<typename NODETYPE>
-void Trie<NODETYPE>::Remove(const char keys[]){
+void Trie<NODETYPE>::Remove(const wchar_t keys[]){
     NODETYPE* node = FindNode(keys);
     NODETYPE* parent;
     if(!node){
@@ -139,8 +139,8 @@ template class Trie<AlgoLibR::ai::nlp::seg::ACSegNode>;
 #define DEFINE_TRIE(T) \
     template class Trie<kv_trie::KVTrieNode<T>>; 
 REGISTER_REAL_NUMBER_TYPES(DEFINE_TRIE)
-REGISTER_char(DEFINE_TRIE)
-REGISTER_charptr(DEFINE_TRIE) 
+REGISTER_wchar_t(DEFINE_TRIE)
+REGISTER_wchar_t_ptr(DEFINE_TRIE) 
 
 } // namespace trie
 } // namespace tree
