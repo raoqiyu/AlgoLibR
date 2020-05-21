@@ -5,14 +5,20 @@
  * @Description: 
  */
 
-
+#include <locale.h>
 #include "src/test_sort.h"
 #include "src/test_data_structure.h"
 #include "src/test_segment.h"
 
 
 int main(){
+    std::ios::sync_with_stdio(false);
+    std::locale::global(std::locale(""));
+    std::wcin.imbue(std::locale(""));
+    std::wcout.imbue(std::locale(""));
+
+
     test_ds();
     test_sort();
-    test_ac_segment();
+    test_segment();
 }

@@ -46,16 +46,16 @@ void test_heap(){
 
     result = AlgoLibR::data_structure::heap::klargest(arr, 5, k);
     for(auto i = 0; i < k; i++){
-        std::cout << result[i] << " ";
+        std::wcout << result[i] << " ";
     }
-    std::cout << std::endl;
+    std::wcout << std::endl;
     delete result;
     
     result = AlgoLibR::data_structure::heap::ksmallest(arr, 5, k);
     for(auto i = 0; i < k; i++){
-        std::cout << result[i] << " ";
+        std::wcout << result[i] << " ";
     }
-    std::cout << std::endl;
+    std::wcout << std::endl;
     delete result;
 
     // std::vector<std::pair<int,int>> test_arr, result2;
@@ -67,9 +67,9 @@ void test_heap(){
     // result2 = AlgoLibR::data_structure::heap::klargestKey<std::vector<std::pair<int,int>>,
     //                                                    std::pair<int,int>>(test_arr, 4, 1, test_max);
     // for(auto i = 0; i < k; i++){
-    //     std::cout << result2[i].first << ',' << result2[i].second << " ";
+    //     std::wcout << result2[i].first << ',' << result2[i].second << " ";
     // }
-    // std::cout << std::endl;
+    // std::wcout << std::endl;
 
 
     printf("\n\n");
@@ -77,235 +77,191 @@ void test_heap(){
 
 
 void test_Trie(){
-    std::cout << "Test Trie" << std::endl;
+    std::wcout << "Test Trie" << std::endl;
 
     AlgoLibR::data_structure::tree::trie::Trie<AlgoLibR::data_structure::tree::trie::TrieNode> str_trie;
 
 
-    str_trie.Add("hello");
-    str_trie.Add("world");
+    str_trie.Add(L"hello");
+    str_trie.Add(L"world");
+    str_trie.Add(L"我");
 
-    std::cout << "Searching" << std::endl; 
+    std::wcout << "Searching" << std::endl; 
 
-    if(!str_trie.Search("hello")){
-        std::cout << "Wrong! : hello" << std::endl;
+    if(!str_trie.Search(L"hello")){
+        std::wcout << "Wrong! : hello" << std::endl;
     }
 
-    if(!str_trie.Search("world")){
-        std::cout << "Wrong!: world" << std::endl;
-    }
-    
-    if(str_trie.Search("he")){
-        std::cout << "Wrong! : he" << std::endl;
-    }
-
-    if(str_trie.Search("wor")){
-        std::cout << "Wrong! : wor" << std::endl;
-    }
-
-    if(str_trie.Search("word")){
-        std::cout << "Wrong! : word" << std::endl;
-    }
-
-    std::cout << "Searching Stage 2" << std::endl; 
-    str_trie.Add("his");
-    str_trie.Add("hi");
-    if(!str_trie.Search("hi")){
-        std::cout << "Wrong!   hi should exist" << std::endl;
+    if(!str_trie.Search(L"world")){
+        std::wcout << "Wrong!: world" << std::endl;
     }
     
-    str_trie.Remove("his");
-    if(!str_trie.Search("hi")){
-        std::cout << "Wrong!   hi should exist" << std::endl;
+    if(str_trie.Search(L"he")){
+        std::wcout << "Wrong! : he" << std::endl;
     }
 
-    str_trie.Add("hi LiSi");
-    if(!str_trie.Search("hi")){
-        std::cout << "Wrong!   hi should exist" << std::endl;
+    if(str_trie.Search(L"wor")){
+        std::wcout << "Wrong! : wor" << std::endl;
     }
 
-    str_trie.Remove("hi");
-    if(str_trie.Search("hi")){
-        std::cout << "Wrong!   hi should not exist" << std::endl;
+    if(str_trie.Search(L"我")){
+        std::wcout << "Wrong! : word" << std::endl;
+    }
+
+    std::wcout << "Searching Stage 2" << std::endl; 
+    str_trie.Add(L"his");
+    str_trie.Add(L"hi");
+    if(!str_trie.Search(L"hi")){
+        std::wcout << "Wrong!   hi should exist" << std::endl;
     }
     
-    str_trie.Remove("hi");
-    if(str_trie.Search("hi")){
-        std::cout << "Wrong!   hi should not exist" << std::endl;
+    str_trie.Remove(L"his");
+    if(!str_trie.Search(L"hi")){
+        std::wcout << "Wrong!   hi should exist" << std::endl;
     }
 
-    if(!str_trie.Search("hi LiSi")){
-        std::cout << "Wrong!   hi LiSi should exist" << std::endl;
+    str_trie.Add(L"我们");
+    if(!str_trie.Search(L"我")){
+        std::wcout << "Wrong!   hi should exist" << std::endl;
     }
 
-    std::cout << "Searching Stage 3" << std::endl; 
-
-    str_trie.Add("hit");
-    if(!str_trie.Search("hit")){
-        std::cout << "Wrong!   hit should exist" << std::endl;
+    str_trie.Remove(L"我");
+    if(str_trie.Search(L"我")){
+        std::wcout << L"Wrong!   我 should not exist" << std::endl;
     }
-    std::cout << "Remove" << std::endl; 
-    str_trie.Remove("hit");
-    // if(str_trie.Search("hit")){
-        // std::cout << "Wrong!   hi LiSi should exist" << std::endl;
-    // }
 
-    std::cout << "End\n" << std::endl;
+     str_trie.Remove(L"我");
+    if(str_trie.Search(L"我")){
+        std::wcout << L"Wrong!   我 should not exist" << std::endl;
+    }
+   
+    if(!str_trie.Search(L"我们")){
+        std::wcout << L"Wrong!   我们 should exist" << std::endl;
+    }
+
+    std::wcout << "Searching Stage 3" << std::endl; 
+
+    std::wcout << "End\n" << std::endl;
 }
 
 void test_KVTrie(){
-    std::cout << "Test KVTrie" << std::endl <<     std::flush;
-    AlgoLibR::data_structure::tree::kv_trie::KVTrie<char*> str_trie;
+    std::wcout << "Test KVTrie" << std::endl <<     std::flush;
+    AlgoLibR::data_structure::tree::kv_trie::KVTrie<wchar_t*> str_trie;
 
     bool is_in;
-    char* ret;
+    wchar_t* ret;
 
-    str_trie.Add("hello", "world");
-    str_trie.Add("world", "!");
+    str_trie.Add(L"hello", L"嗨");
+    str_trie.Add(L"world", L"世界");
 
-    if(!str_trie.Search("hello", ret)){
-        std::cout << "Wrong!" << std::endl;
+    if(!str_trie.Search(L"hello", ret)){
+        std::wcout << "Wrong!" << std::endl;
     }
 
-    if(!str_trie.Search("world", ret)){
-        std::cout << "Wrong!" << std::endl;
-    }
-    
-    if(str_trie.Search("he", ret)){
-        std::cout << "Wrong!" << std::endl;
-    }
-
-    if(str_trie.Search("wor", ret)){
-        std::cout << "Wrong!" << std::endl;
-    }
-
-    if(str_trie.Search("word", ret)){
-        std::cout << "Wrong!" << std::endl;
-    }
-
-
-    str_trie.Add("hi", "this is a test");
-    str_trie.Search("hi", ret);
-    std::cout << "hi : " << ret << std::endl;
-
-    str_trie.Add("hi", " Done");
-    str_trie.Search("hi", ret);
-    std::cout << "hi : " << ret << std::endl;
-    if(!str_trie.Search("hi", ret)){
-        std::cout << "Wrong!   hi should exist" << std::endl;
-    }
-
-    str_trie.Add("hi LiSi", "How are you?");
-    if(!str_trie.Search("hi", ret)){
-        std::cout << "Wrong!   hi should exist after add hi LiSi" << std::endl;
-    }
-
-    str_trie.Remove("hi LiSi");
-    if(!str_trie.Search("hi", ret)){
-        std::cout << "Wrong!   hi should exist after remove LiSi" << std::endl;
-    }
-
-    if(str_trie.Search("hi LiSi", ret)){
-        std::cout << "Wrong!   hi LiSi should not exist" << std::endl;
-    }
-    str_trie.Add("hi LiSi", "I'm back");
-
-    str_trie.Remove("hi");
-    is_in = str_trie.Search("hi", ret);
-    std::cout << "hi : " << ret << std::endl;
-    if(is_in){
-        std::cout << "Wrong!   hi should not exist" << std::endl;
+    if(!str_trie.Search(L"world", ret)){
+        std::wcout << "Wrong!" << std::endl;
     }
     
-    str_trie.Remove("hi");
-    is_in = str_trie.Search("hi", ret);
-    std::cout << "hi : " << ret << std::endl;
+    if(str_trie.Search(L"he", ret)){
+        std::wcout << "Wrong!" << std::endl;
+    }
+
+    if(str_trie.Search(L"wor", ret)){
+        std::wcout << "Wrong!" << std::endl;
+    }
+
+    if(str_trie.Search(L"word", ret)){
+        std::wcout << "Wrong!" << std::endl;
+    }
+
+
+    str_trie.Add(L"Test", L"测试ing");
+    str_trie.Search(L"Test", ret);
+    std::wcout << L"Test : " << ret << std::endl;
+
+    str_trie.Add(L"Test", L"测试结束");
+    str_trie.Search(L"Test", ret);
+    std::wcout << "Test : " << ret << std::endl;
+
+    str_trie.Add(L"Test twice", L"I'm back");
+
+    str_trie.Remove(L"Test");
+    is_in = str_trie.Search(L"Test", ret);
     if(is_in){
-        std::cout << "Wrong!   hi should not exist" << std::endl;
+        std::wcout << "Wrong! Test should not exist" << std::endl;
     }
-
-    is_in = str_trie.Search("hi LiSi", ret);
-    std::cout << "hi LiSi : " << ret << std::endl;
+    
+    is_in = str_trie.Search(L"Test twice", ret);
+    std::wcout << L"Test twice : " << ret << std::endl;
     if(!is_in){
-        std::cout << "Wrong!   hi LiSi should exist" << std::endl;
+        std::wcout << "Wrong! Test twice should exist" << std::endl;
     }
 
-    str_trie.Add("hit", "Begin");
-    is_in = str_trie.Search("hit", ret);
-    if(!is_in){
-        std::cout << "Wrong!   hit should exist" << std::endl;
-    }
-    std::cout << "Remove" << std::endl; 
-    str_trie.Remove("hit");
-    // if(str_trie.Search("hit")){
-        // std::cout << "Wrong!   hi LiSi should exist" << std::endl;
-    // }
-
-    std::cout << "End\n" << std::endl;
+    std::wcout << "End\n" << std::endl;
 }
 
 void test_ACTrie(){
-    std::cout << "Test AC Trie" << std::endl;
+    std::wcout << "Test AC Trie" << std::endl;
     AlgoLibR::data_structure::tree::ac_trie::ACTrie ac_trie;
 
     bool is_in;
-    std::cout << "Add word" << std::endl;
-    ac_trie.Add("hers");
-    ac_trie.Add("his");
-    ac_trie.Add("she");
-    ac_trie.Add("he");
-    ac_trie.Add("sh");
-    ac_trie.Add("s");
-    ac_trie.Add("h");
-    ac_trie.Add("hr");
-    ac_trie.Add("hi");
+    std::wcout << "Add word" << std::endl;
+    ac_trie.Add(L"hers");
+    ac_trie.Add(L"his");
+    ac_trie.Add(L"she");
+    ac_trie.Add(L"he");
+    ac_trie.Add(L"sh");
+    ac_trie.Add(L"s");
+    ac_trie.Add(L"h");
+    ac_trie.Add(L"hr");
+    ac_trie.Add(L"hi");
 
-    ac_trie.Remove("his");
-    is_in = ac_trie.Search("hi");
+    ac_trie.Remove(L"his");
+    is_in = ac_trie.Search(L"hi");
     if(!is_in){
-        std::cout << "Wrong!   hi should exist after remove his" << std::endl; 
+        std::wcout << "Wrong!   hi should exist after remove his" << std::endl; 
     } 
-    ac_trie.Add("his");
+    ac_trie.Add(L"his");
 
-    std::cout << "Searching" << std::endl;
-    is_in = ac_trie.Search("his");
+    std::wcout << "Searching" << std::endl;
+    is_in = ac_trie.Search(L"his");
     if(!is_in){
-        std::cout << "Wrong!   his should exist" << std::endl; 
+        std::wcout << "Wrong!   his should exist" << std::endl; 
     }
 
-    is_in = ac_trie.Search("she");
+    is_in = ac_trie.Search(L"she");
     if(!is_in){
-        std::cout << "Wrong!   she should exist" << std::endl; 
+        std::wcout << "Wrong!   she should exist" << std::endl; 
     }
 
-    std::cout << "Searching" << std::endl;
-    is_in = ac_trie.Search("shi");
+    std::wcout << "Searching" << std::endl;
+    is_in = ac_trie.Search(L"shi");
     if(is_in){
-        std::cout << "Wrong!   hi should not exist" << std::endl; 
+        std::wcout << "Wrong!   hi should not exist" << std::endl; 
     }
 
-    std::cout << "Parsing" << std::endl;
-    std::vector<std::pair<size_t,std::string>> parsed = ac_trie.ParseText("ushers");
-    std::cout << "output" << std::endl;
+    std::wcout << "Parsing" << std::endl;
+    std::vector<std::pair<size_t,std::wstring>> parsed = ac_trie.ParseText(L"ushers");
+    std::wcout << "output" << std::endl;
     for(auto i = 0; i < parsed.size(); i++){
-        std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
+        std::wcout << parsed[i].first << ":" << parsed[i].second << ", " ;
     }
-    std::cout << std::endl;
+    std::wcout << std::endl;
 
-    ac_trie.Add("algorithm");
-    ac_trie.Add("defines");
-    ac_trie.Add("functions");
-    ac_trie.Add("designed");
-    ac_trie.Add("elements");
-    ac_trie.Add("header");
-    ac_trie.Add("lo");
-    ac_trie.Add("love");
-    ac_trie.Add("china");
-    parsed = ac_trie.ParseText("The header <algorithm> defines a collection of functions especially designed to be used on ranges of elements Ilovechina. ");
+    ac_trie.Add(L"algorithm");
+    ac_trie.Add(L"defines");
+    ac_trie.Add(L"functions");
+    ac_trie.Add(L"designed");
+    ac_trie.Add(L"elements");
+    ac_trie.Add(L"header");
+    ac_trie.Add(L"lo");
+    ac_trie.Add(L"love");
+    ac_trie.Add(L"china");
+    parsed = ac_trie.ParseText(L"The header <algorithm> defines a collection of functions especially designed to be used on ranges of elements Ilovechina. ");
     for(auto i = 0; i < parsed.size(); i++){
-        std::cout << parsed[i].first << ":" << parsed[i].second << ", " ;
+        std::wcout << parsed[i].first << ":" << parsed[i].second << ", " ;
     }
-    std::cout << std::endl;
+    std::wcout << "\n" << std::endl;
 }
 
 
