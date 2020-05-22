@@ -61,7 +61,7 @@ public:
     AhoCorasickSegment();
     void AddWord(const wchar_t word[], const char nature[], const size_t freq);
     void SetSegAll(bool is_seg_all);
-    void Build(const char dictionary_fname[]);
+    void Build(const char dictionary_fname[],  const std::wstring& delimiters);
     std::vector<std::wstring> SegSentence(const wchar_t sentence[]);
     // std::vector<std::wstring> SegChineseSentence(const wchar_t sentence[]);
 

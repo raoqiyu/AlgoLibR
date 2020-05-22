@@ -127,16 +127,22 @@ void AhoCorasickSegment::AddWord(const wchar_t word[], const char nature[], cons
 }
 
 
-void AhoCorasickSegment::Build(const char dictionary_fname[]){
+void AhoCorasickSegment::Build(const char dictionary_fname[], const std::wstring& delimiters){
     std::wifstream dictionary_file(dictionary_fname);
-    std::wstring word;
+    std::wstring line;
+    std::vector<std::wstring> word_props;
     if (!dictionary_file.is_open()){ 
         return;
     }
 
-    while(getline(dictionary_file,word)){
-        AddWord(word.c_str(), "null", 1);
-    } 
+    while(getline(dictionary_file,line)){
+        // word nature  freq
+        AlgoLibR::framework::string::split(line, word_props,delimiters);
+        
+        AddWord(word_props[0].c_str(), AlgoLibR::framework::string::wstr2str(word_props[2]).c_str(), 
+                std::stoi(word_props[1]));
+        word_props.clear();
+    }
     dictionary_file.close();
 }
 
@@ -244,78 +250,6 @@ std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence
     }
 
     return segmented;
-        // Dynamic Programming
-
-    // }
-    // std::vector<std::string> segmented;
-    // std::vector<std::pair<size_t,std::string>> parsed;
-    // parsed = ParseText(sentence);
-    
-    // size_t sen_len=wcslen(sentence),begin_pos=0, pos, tmp_pos=-1;
-    // std::string word, tmp_word;
-    // for(auto i = 0; i < parsed.size(); i++){
-    //     pos = parsed[i].first;
-    //     word = parsed[i].second;
-    //     begin_pos = pos + 1 - word.length();
-    //     std::cout << word << ": " << pos << ": " << begin_pos << "-" << pos << std::endl;
-    //     if( begin_pos > tmp_pos+1){
-    //         for(auto i = begin_pos; i <= pos; i++){
-    //             tmp_word.push_back(sentence[i]);
-    //         }
-    //         segmented.push_back(tmp_word);
-    //         tmp_word.clear();
-    //     }
-    //     segmented.push_back(word);
-    //     tmp_pos = pos;
-    // }
-    // if(pos < sen_len-1){
-    //    for(auto i = pos+1; i < sen_len; i++){
-    //         tmp_word.push_back(sentence[i]);
-    //     }
-    //     segmented.push_back(tmp_word);
-    //     tmp_word.clear(); 
-    // }
-
-    // return segmented;
-}
-
-
-std::vector<std::wstring> AhoCorasickSegment::SegChineseSentence(const wchar_t sentence[]){
-    std::vector<std::string> segmented;
-    std::vector<std::wstring> segmented_chinese;
-    
-    std::string str;
-
-    segmented =SegSentence(sentence);
-    std::cout << "len(segmented)" << segmented.size() << std::endl;
-     for(auto i = 0; i < segmented.size(); i++){
-        std::cout << segmented[i] << "," ;
-    }
-    std::cout << std::endl;
-    bool is_zh_first=false, is_zh_second=false;
-    for(auto i = 0; i < segmented.size(); i++){
-        if(segmented[i].length() > 1){
-            segmented_chinese.push_back(AlgoLibR::framework::string::str2wstr(segmented[i]));
-            std::cout << "Raw: " <<  segmented[i] << std::endl;
-            std::wcout << "Raw seg: " <<  segmented_chinese.back() << std::endl;
-            continue;
-        }
-        if(segmented[i][0] & 0x80){
-            if(is_zh_second){
-                str = segmented[i]+segmented[i-1];
-                std::cout << "str: " <<  str << std::endl;
-                segmented_chinese.push_back(AlgoLibR::framework::string::str2wstr(str));
-                std::wcout << segmented_chinese.back()<< std::endl;
-                is_zh_first=false;
-                is_zh_second=false;
-             }else{
-                 is_zh_second=true;
-             }
-         }
-
-    }
-        std::cout << "len(segmented)" << segmented_chinese.size() << std::endl;
-    return segmented_chinese;
 }
 
 } // namespace seg
