@@ -30,8 +30,8 @@ namespace demo {
     int MyDemo::add (int b) {
         return this->a+b;
     }
-    void MyDemo::sayHello(char* name){
-        cout<<"hello "<<name<<"!"<<endl;
+    void MyDemo::sayHello(wchar_t* name){
+        wcout<<"hello "<<name<<"!"<<endl;
     }
 
 } // namespace demo

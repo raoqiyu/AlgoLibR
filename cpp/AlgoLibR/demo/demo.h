@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-01-09 14:55:06
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/demo/demo.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/demo/demo.h
  * @Description: 
  */
 
@@ -22,7 +22,7 @@ class MyDemo {
         int mul(int m );
         int pymul(int m);
         int add(int b);
-        void sayHello(char* name);
+        void sayHello(wchar_t* name);
 };
 
 } // namespace demo

@@ -5,6 +5,8 @@ FilePath: /AlgoLibR/python/AlgoLibR/demo/cdemo.pxd
 Description: 
 '''
 
+from AlgoLibR.utils.string cimport wchar_t,wstring, to_wchar_t,to_wstring,from_wstring
+
 cdef extern from "AlgoLibR/demo/mul.h" namespace "AlgoLibR::demo":
     int mul(int a, int b)
 
@@ -17,5 +19,5 @@ cdef extern from "AlgoLibR/demo/demo.h" namespace "AlgoLibR::demo":
         int mul(int)
         int pymul(int)
         int add(int )
-        void sayHello(char*)
+        void sayHello(wchar_t*)
 

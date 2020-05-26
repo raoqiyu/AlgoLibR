@@ -7,6 +7,7 @@ Description:
 '''
 
 from cdemo cimport MyDemo
+from AlgoLibR.utils.string cimport wchar_t,wstring, to_wchar_t,to_wstring,from_wstring
 
 # Create a Cython extension type which holds a C++ instance
 # as an attribute and create a bunch of forwarding methods
@@ -26,7 +27,10 @@ cdef class PyMyDemo:
     def add(self,b):
         return self.c_mydemo.add(b)
 
-    def sayHello(self,name ):
-        self.c_mydemo.sayHello(name) 
+        self.c_mydemo.sayHello(name)
+    
+    def sayHello(self, name):
+        cdef wchar_t* s = to_wchar_t(name)
+        self.c_mydemo.sayHello(s)
 
 
