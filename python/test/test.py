@@ -69,18 +69,28 @@ def test_demo():
     from AlgoLibR.demo import PyMyDemo
     a = PyMyDemo(20000)
     print(a.mul(20000))
-    a.sayHello(b'ni')
+    a.sayHello('你好')
 
 def test_device():
     print('\nTest device')
     from AlgoLibR.device.gpu import enum_gpu_info
     enum_gpu_info()
 
+def test_segment():
+    print('\nTest AC seg')
+    from AlgoLibR.ai.nlp.seg import AhoCorasickSegmentor
+    ac = AhoCorasickSegmentor()
+    ac.Build(b'/home/rqy/AlgoLibR/data/NLP/Dictionary/jieba_dict.txt.big', ' ')
+
+    ret = ac.segment('HEH《三国演义》描写了从东汉末年到西晋初年之间近百年的历史风云，以描写战争为主，诉说了东汉末年的群雄割据混战和魏、蜀、吴三国之间的政治和军事斗争，最终司马炎一统三国，建立晋朝的故事。反映了三国时代各类社会斗争与矛盾的转化，并概括了这一时代的历史巨变，塑造了一群叱咤风云的三国英雄人')
+    print(ret)
+
 if  __name__ == '__main__':
-    test_sort()
-    test_seach()
+    # test_sort()
+    # test_seach()
     test_demo() 
-    test_device()
+    test_segment()
+    #test_device()
 
 
 

@@ -41,6 +41,7 @@ public:
     std::map<wchar_t, ACSegNode*> child_nodes;
 
     ~ACSegNode();
+    ACSegNode();
     ACSegNode(const wchar_t key);
     ACSegNode(const wchar_t key, ACSegNode* parent);
     void AddChild(const wchar_t key);

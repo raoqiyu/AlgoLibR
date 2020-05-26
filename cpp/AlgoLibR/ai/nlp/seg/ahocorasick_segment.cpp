@@ -70,11 +70,20 @@ WordProp::~WordProp(){
 }
 
 ACSegNode::ACSegNode(const wchar_t key){
+    std::ios::sync_with_stdio(false);
+    std::locale::global(std::locale(""));
+    std::wcin.imbue(std::locale(""));
+    std::wcout.imbue(std::locale(""));
+
     this->key =key;
     is_ending_key=false;
     parent = NULL;
     failure = NULL;
     word_prop = NULL;
+}
+
+ACSegNode::ACSegNode(){
+    this->key = L'/';
 }
 
 ACSegNode::ACSegNode(const wchar_t key, ACSegNode* parent){
@@ -118,6 +127,23 @@ void ACSegNode::RemoveChild(const wchar_t key){
 }
 
 AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
+    std::ios::sync_with_stdio(false);
+    std::locale::global(std::locale(""));
+    std::wcin.imbue(std::locale(""));
+    std::wcout.imbue(std::locale(""));
+    root = new ACSegNode(L'A');
+
+    // Build("/home/rqy/AlgoLibR/data/NLP/Dictionary/jieba_dict.txt.big", L" ");
+    // std::wcout << "Init" << std::endl << std::flush;
+
+    // std::wstring sentence(L"《三国演义》描写了从东汉末年到西晋初年之间近百年的历史风云，以描写战争为主，诉说了东汉末年的群雄割据混战和魏、蜀、吴三国之间的政治和军事斗争，最终司马炎一统三国，建立晋朝的故事。反映了三国时代各类社会斗争与矛盾的转化，并概括了这一时代的历史巨变，塑造了一群叱咤风云的三国英雄人物。");
+
+    // std::vector<std::wstring> segmented = SegSentence(sentence.c_str());
+    
+    // for(auto i = 0; i < segmented.size(); i++){
+    //     std::wcout << segmented[i] << " " ;
+    // }
+
 }
 
 void AhoCorasickSegment::AddWord(const wchar_t word[], const char nature[], const size_t freq){
@@ -134,11 +160,9 @@ void AhoCorasickSegment::Build(const char dictionary_fname[], const std::wstring
     if (!dictionary_file.is_open()){ 
         return;
     }
-
-    while(getline(dictionary_file,line)){
-        // word nature  freq
-        AlgoLibR::framework::string::split(line, word_props,delimiters);
-        
+    while(std::getline(dictionary_file,line)){
+        // word freq nature
+        AlgoLibR::framework::string::split(line, word_props, delimiters);
         AddWord(word_props[0].c_str(), AlgoLibR::framework::string::wstr2str(word_props[2]).c_str(), 
                 std::stoi(word_props[1]));
         word_props.clear();
