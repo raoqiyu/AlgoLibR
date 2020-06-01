@@ -9,21 +9,22 @@ Description:
 #include "AlgoLibR/sort/radix_sort.h"
 #include "AlgoLibR/sort/sort.h"
 #include <stdio.h>
-#define N 5
+
+#define N_NUM 5
 
 void test_uints(){
     printf("\nTest sort unsigned int array: radix sort(GPU) and bubble sort\n");
     unsigned int h_in[5] = {71422,72452,54329,77510,80669};
-    unsigned int h_outs[N];
+    unsigned int h_outs[N_NUM];
 
-    AlgoLibR::sort::radix_sort::radix_sort_kernel(h_in, h_outs,  (size_t) N);
+    AlgoLibR::sort::radix_sort::radix_sort_kernel(h_in, h_outs,  (size_t) N_NUM);
 
-    for(int i = 0; i < N; i++){
+    for(int i = 0; i < N_NUM; i++){
         printf("%d ",h_outs[i]);
     }
     printf("\n");
 
-    AlgoLibR::sort::sortKernel<unsigned int>(h_in, (size_t) N, AlgoLibR::sort::BUBBLE_SORT_M, true);
+    AlgoLibR::sort::sortKernel<unsigned int>(h_in, (size_t) N_NUM, AlgoLibR::sort::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%d ",h_in[i]);
@@ -41,7 +42,7 @@ void test_float(){
     }
     printf("\n");
 
-    AlgoLibR::sort::sortKernel(h_in, (size_t) N, AlgoLibR::sort::BUBBLE_SORT_M, true);
+    AlgoLibR::sort::sortKernel(h_in, (size_t) N_NUM, AlgoLibR::sort::BUBBLE_SORT_M, true);
 
     for(int i = 0; i < 5; i++){
         printf("%f ",h_in[i]);
