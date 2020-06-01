@@ -9,6 +9,7 @@
 #include "src/test_sort.h"
 #include "src/test_data_structure.h"
 #include "src/test_segment.h"
+#include "src/test_regex.h"
 
 
 int main(){
@@ -18,7 +19,8 @@ int main(){
     std::wcout.imbue(std::locale(""));
 
 
-    test_ds();
-    test_sort();
+    // test_ds();
+    // test_sort();
     test_segment();
+    test_regex_split();
 }
