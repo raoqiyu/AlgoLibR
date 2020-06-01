@@ -17,8 +17,8 @@ namespace AlgoLibR{
 namespace data_structure{
 namespace heap{
 
-    template<typename T>
-    void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true);
+    // template<typename T>
+    // void heapify(T arr[], size_t n, size_t i, bool is_max_heap=true);
 
     template<typename T>
     void build_heap(T arr[], size_t n, bool is_max_heap);
