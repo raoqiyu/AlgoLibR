@@ -29,6 +29,7 @@ find_package(CUDA 10.0 REQUIRED)
 # - Compiler Options  -----------------------------------------------------------------------------
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX11_ABI ON)
 
 if(CMAKE_CUDA_HOST_COMPILER)
   # If CMAKE_CUDA_HOST_COMPILER is set to a nonempty string cmake was called with the environment variable CUDAHOSTCXX set or -DCMAKE_CUDA_HOST_COMPILER
