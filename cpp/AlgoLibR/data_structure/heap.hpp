@@ -226,7 +226,8 @@ HeapImp<T>::HeapImp(size_t capacity, bool is_max_heap){
 
 template<class T>
 HeapImp<T>::~HeapImp(){
-    delete this->arr;
+    if(this->arr)
+        delete this->arr;
 }
 
 template<class T>

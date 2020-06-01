@@ -58,8 +58,10 @@ Trie<NODETYPE>::Trie() : root(NULL), is_keys_added(false){
 
 template<typename NODETYPE>
 Trie<NODETYPE>::~Trie(){
-    delete root;
-    root = NULL;
+    if(root != NULL){
+        delete root;
+        root = NULL;
+    }
 }    
 
 template<typename NODETYPE>

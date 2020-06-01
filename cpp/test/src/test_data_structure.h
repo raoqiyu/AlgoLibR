@@ -49,14 +49,18 @@ void test_heap(){
         std::wcout << result[i] << " ";
     }
     std::wcout << std::endl;
-    delete result;
+    if(result != nullptr){
+        delete result;
+    }
     
     result = AlgoLibR::data_structure::heap::ksmallest(arr, 5, k);
     for(auto i = 0; i < k; i++){
         std::wcout << result[i] << " ";
     }
     std::wcout << std::endl;
-    delete result;
+    if(result != nullptr){
+        delete result;
+    }
 
     // std::vector<std::pair<int,int>> test_arr, result2;
     // test_arr.push_back(std::make_pair(1,4));
