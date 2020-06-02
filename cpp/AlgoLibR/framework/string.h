@@ -92,28 +92,43 @@ void split(const std::wstring& str, std::vector<std::wstring>& sub_strs, const s
 
 const std::wstring g_re_pattern_str = L"([\u4E00-\u9FD5a-zA-Z0-9+#&._%-]+)";
 
-void regex_wsplit(const std::wstring& str, std::vector<std::wstring>& sub_strs){
+void regex_wsplit(const std::wstring& str, std::vector<std::wstring>& sub_strs, 
+                    std::vector<unsigned int>& sub_strs_kind, const std::wstring& pattern_str=g_re_pattern_str){
+    std::wregex pattern(pattern_str);
     std::wstring s(str);
-    std::wregex pattern(g_re_pattern_str);
     std::wsmatch result;
     std::wstring text;
     while(true){
         if(!std::regex_search(s, result, pattern)){
-            if(s.size() > 0)
+            if(s.size() > 0){
                 sub_strs.push_back(s);
+                sub_strs_kind.push_back(0);
+            }
             break;
         }
         text = result.prefix();
-        if(text.size() > 0)
+        if(text.size() > 0){
             sub_strs.push_back(text);
+            sub_strs_kind.push_back(0);
+        }
         for(auto x = result.begin()+1; x != result.end(); x++){
             text = x->str();
-            if(text.size() > 0)
+            if(text.size() > 0){
                 sub_strs.push_back(text);
+                sub_strs_kind.push_back(1);
+            }
         }
         s = result.suffix().str();
-    }
+    }   
 }
+
+
+void regex_wsplit(const wchar_t*  str, std::vector<std::wstring>& sub_strs,
+        std::vector<unsigned int>& sub_strs_kind, const std::wstring& pattern_str=g_re_pattern_str ){
+    std::wstring s(str);
+    regex_wsplit(s, sub_strs, sub_strs_kind, pattern_str);
+}
+
 
 } // namespace
 }
