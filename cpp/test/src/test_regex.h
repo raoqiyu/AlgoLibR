@@ -18,12 +18,16 @@ void test_regex_split(){
     std::vector<std::wstring> sub_strs;
     std::vector<unsigned int> sub_strs_kind;
 
-    std::wstring eng_num_patten(L"([a-zA-Z0-9]+)");
+    std::wstring eng_num_patten(L"");
 
-    regex_wsplit(s, sub_strs, sub_strs_kind, eng_num_patten);
+    bool is_splited = regex_wsplit(s, sub_strs, sub_strs_kind, eng_num_patten);
 
-    for(auto x:sub_strs){
-    	std::wcout << x << std::endl;
+    if(is_splited){
+        for(auto x:sub_strs){
+            std::wcout << x << std::endl;
+        }
+    }else{
+        std::wcout << L"split失败" << std::endl;
     }
 }
 

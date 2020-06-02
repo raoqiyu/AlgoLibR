@@ -285,8 +285,14 @@ std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence
 std::vector<std::wstring> AhoCorasickSegment::Segment(const wchar_t sentence[]){
     std::vector<std::wstring> sub_sentences ;
     std::vector<unsigned int> sub_sentences_kind ;
-    AlgoLibR::framework::string::regex_wsplit(sentence, sub_sentences, sub_sentences_kind, this->ignore_pattern);
+    bool is_splited = AlgoLibR::framework::string::regex_wsplit(sentence, sub_sentences, sub_sentences_kind, this->ignore_pattern);
 
+    if(!is_splited){
+        // split 失败，对整条句子进行分析
+        return SegSentence(sentence);
+    }
+
+    // split 成功，对句子非ignore子句进行分词
     std::vector<std::wstring> segmented;
     for(auto i = 0; i < sub_sentences.size(); i++){
         if(sub_sentences[i].size() == 1 || sub_sentences_kind[i] == 1){

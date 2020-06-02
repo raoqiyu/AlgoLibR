@@ -92,8 +92,14 @@ void split(const std::wstring& str, std::vector<std::wstring>& sub_strs, const s
 
 const std::wstring g_re_pattern_str = L"([\u4E00-\u9FD5a-zA-Z0-9+#&._%-]+)";
 
-void regex_wsplit(const std::wstring& str, std::vector<std::wstring>& sub_strs, 
+bool regex_wsplit(const std::wstring& str, std::vector<std::wstring>& sub_strs, 
                     std::vector<unsigned int>& sub_strs_kind, const std::wstring& pattern_str=g_re_pattern_str){
+
+    if(pattern_str.size()  == 0){
+        // pattern 字符串为空是，不进行切割
+        return false;
+    }
+
     std::wregex pattern(pattern_str);
     std::wstring s(str);
     std::wsmatch result;
@@ -119,14 +125,16 @@ void regex_wsplit(const std::wstring& str, std::vector<std::wstring>& sub_strs,
             }
         }
         s = result.suffix().str();
-    }   
+    }
+
+    return true;
 }
 
 
-void regex_wsplit(const wchar_t*  str, std::vector<std::wstring>& sub_strs,
+bool regex_wsplit(const wchar_t*  str, std::vector<std::wstring>& sub_strs,
         std::vector<unsigned int>& sub_strs_kind, const std::wstring& pattern_str=g_re_pattern_str ){
     std::wstring s(str);
-    regex_wsplit(s, sub_strs, sub_strs_kind, pattern_str);
+    return regex_wsplit(s, sub_strs, sub_strs_kind, pattern_str);
 }
 
 
