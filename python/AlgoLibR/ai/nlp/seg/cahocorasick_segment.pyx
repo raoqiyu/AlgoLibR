@@ -21,6 +21,9 @@ cdef class AhoCorasickSegmentor:
         print(delimiters)
         self.c_ac_segmentor.Build(fname, d)
     
+    def set_seg_all(self, is_seg_all):
+        self.c_ac_segmentor.SetSegAll(is_seg_all)
+
     def set_ignore_pattern(self, pattern):
         cdef wchar_t* s = to_wchar_t(pattern)
         self.c_ac_segmentor.SetIgnorePattern(s)
