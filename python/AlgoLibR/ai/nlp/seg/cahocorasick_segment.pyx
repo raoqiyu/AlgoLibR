@@ -21,9 +21,14 @@ cdef class AhoCorasickSegmentor:
         print(delimiters)
         self.c_ac_segmentor.Build(fname, d)
     
+    def set_ignore_pattern(self, pattern):
+        cdef wchar_t* s = to_wchar_t(pattern)
+        self.c_ac_segmentor.SetIgnorePattern(s)
+ 
+
     def segment(self, sentence: str):
         cdef wchar_t* s = to_wchar_t(sentence)
-        cdef vector[wstring] out = self.c_ac_segmentor.SegSentence(s)
+        cdef vector[wstring] out = self.c_ac_segmentor.Segment(s)
         cdef size_t n = out.size()
         ret = []
         for i in range(n):

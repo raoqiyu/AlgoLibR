@@ -225,10 +225,16 @@ void AhoCorasickSegment::ExtractDAG(const wchar_t sentence[], std::map<size_t,st
         if(iter->second.empty()) iter->second.push_back(WordProp("null",0,1));
     }
 }
+
+
 void AhoCorasickSegment::SetSegAll(bool is_seg_all){
     this->is_seg_all = is_seg_all;
 }
 
+
+void AhoCorasickSegment::SetIgnorePattern(const wchar_t pattern[]){
+    this->ignore_pattern = pattern;
+ }
 
 std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence[]){
     std::vector<std::wstring> segmented;
@@ -275,6 +281,26 @@ std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence
 
     return segmented;
 }
+
+std::vector<std::wstring> AhoCorasickSegment::Segment(const wchar_t sentence[]){
+    std::vector<std::wstring> sub_sentences ;
+    std::vector<unsigned int> sub_sentences_kind ;
+    AlgoLibR::framework::string::regex_wsplit(sentence, sub_sentences, sub_sentences_kind, this->ignore_pattern);
+
+    std::vector<std::wstring> segmented;
+    for(auto i = 0; i < sub_sentences.size(); i++){
+        if(sub_sentences[i].size() == 1 || sub_sentences_kind[i] == 1){
+            segmented.push_back(sub_sentences[i]);
+            continue;
+        }
+        for(auto sub_seg: SegSentence(sub_sentences[i].c_str())){
+            segmented.push_back(sub_seg);
+        }
+    }
+
+    return segmented;
+}
+
 
 } // namespace seg
 } // namespace nlp

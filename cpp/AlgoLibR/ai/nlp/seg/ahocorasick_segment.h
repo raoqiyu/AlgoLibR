@@ -10,6 +10,7 @@ FilePath: /AlgoLibR/cpp/AlgoLibR/ai/nlp/seg/ahocorasick_segment.h
 
 #include <vector>
 #include <string>
+#include <regex>
 #include "AlgoLibR/data_structure/tree/ac_trie.h"
 
 namespace AlgoLibR{
@@ -52,6 +53,8 @@ public:
 class AhoCorasickSegment : public AlgoLibR::data_structure::tree::ac_trie::ACTrieBase<ACSegNode>{
 private:
     bool is_seg_all;
+    std::wstring ignore_pattern = L"([a-zA-Z0-9.-]+)";
+
 
 private:
     std::size_t GetKeySizeFromNode(const ACSegNode *p);
@@ -62,8 +65,10 @@ public:
     AhoCorasickSegment();
     void AddWord(const wchar_t word[], const char nature[], const size_t freq);
     void SetSegAll(bool is_seg_all);
+    void SetIgnorePattern(const wchar_t pattern[]);
     void Build(const char dictionary_fname[],  const std::wstring& delimiters);
     std::vector<std::wstring> SegSentence(const wchar_t sentence[]);
+    std::vector<std::wstring> Segment(const wchar_t sentence[]);
     // std::vector<std::wstring> SegChineseSentence(const wchar_t sentence[]);
 
 };
