@@ -41,6 +41,6 @@ cdef extern from "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h" namespace "AlgoLibR
         AhoCorasickSegment()
         void AddWord(const wchar_t word[], const char nature[], const size_t freq)
         void SetSegAll(bool is_seg_all)
-        void SetIgnorePattern(const wchar_t pattern[])
+        void SetCombinePattern(const wchar_t pattern[])
         void Build(const char dictionary_fname[], const wstring& delimiters)
         vector[wstring] Segment(const wchar_t*)

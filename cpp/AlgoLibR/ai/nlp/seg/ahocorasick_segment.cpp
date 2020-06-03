@@ -12,6 +12,7 @@
 #include <map>
 #include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
 #include "AlgoLibR/framework/string.h"
+#include <regex>
 
 
 namespace AlgoLibR{
@@ -132,6 +133,7 @@ AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
     std::wcin.imbue(std::locale(""));
     std::wcout.imbue(std::locale(""));
     root = new ACSegNode(L'A');
+    this->combine_pattern_re = std::wregex(this->combine_pattern);
 
     // Build("/home/rqy/AlgoLibR/data/NLP/Dictionary/jieba_dict.txt.big", L" ");
     // std::wcout << "Init" << std::endl << std::flush;
@@ -232,8 +234,10 @@ void AhoCorasickSegment::SetSegAll(bool is_seg_all){
 }
 
 
-void AhoCorasickSegment::SetIgnorePattern(const wchar_t pattern[]){
-    this->ignore_pattern = pattern;
+void AhoCorasickSegment::SetCombinePattern(const wchar_t pattern[]){
+    this->combine_pattern = pattern;
+    this->combine_pattern_re = std::wregex(pattern);
+
  }
 
 std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence[]){
@@ -285,17 +289,19 @@ std::vector<std::wstring> AhoCorasickSegment::SegSentence(const wchar_t sentence
 std::vector<std::wstring> AhoCorasickSegment::Segment(const wchar_t sentence[]){
     std::vector<std::wstring> sub_sentences ;
     std::vector<unsigned int> sub_sentences_kind ;
-    bool is_splited = AlgoLibR::framework::string::regex_wsplit(sentence, sub_sentences, sub_sentences_kind, this->ignore_pattern);
+
+    // 对句子进行split，找出待分词的子局
+    bool is_splited = AlgoLibR::framework::string::regex_wsplit(sentence, sub_sentences, sub_sentences_kind, this->split_pattern);
 
     if(!is_splited){
         // split 失败，对整条句子进行分析
         return SegSentence(sentence);
     }
 
-    // split 成功，对句子非ignore子句进行分词
+    // split 成功，对非ignore子句进行分词
     std::vector<std::wstring> segmented;
     for(auto i = 0; i < sub_sentences.size(); i++){
-        if(sub_sentences[i].size() == 1 || sub_sentences_kind[i] == 1){
+        if(sub_sentences[i].size() == 1 || sub_sentences_kind[i] == 0){
             segmented.push_back(sub_sentences[i]);
             continue;
         }
@@ -304,7 +310,26 @@ std::vector<std::wstring> AhoCorasickSegment::Segment(const wchar_t sentence[]){
         }
     }
 
-    return segmented;
+    // 按照pattern进行合并
+    std::vector<std::wstring> segmented_combined;
+    std::wstring combined;
+    for(auto s: segmented){
+        if(!std::regex_match(s,this->combine_pattern_re)){
+            if(combined.size() > 0){
+                segmented_combined.push_back(combined);
+                combined.clear();
+            }
+            segmented_combined.push_back(s);
+        }else{
+            combined += s;
+        }
+    }
+    if(combined.size() > 0){
+        segmented_combined.push_back(combined);
+    }
+
+    segmented.clear();
+    return segmented_combined;
 }
 
 
