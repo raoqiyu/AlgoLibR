@@ -8,6 +8,7 @@ Description:
 from libcpp.vector cimport vector
 from AlgoLibR.utils.string cimport wchar_t,wstring, to_wchar_t,to_wstring,from_wstring
 from cahocorasick_segment cimport AhoCorasickSegment
+from cpython.mem cimport PyMem_Free
 
 
 cdef class AhoCorasickSegmentor:
@@ -19,11 +20,12 @@ cdef class AhoCorasickSegmentor:
     def add_word(self, word, nature, freq):
         cdef wchar_t* s = to_wchar_t(word)
         self.c_ac_segmentor.AddWord(s, nature.encode(), freq)
+        PyMem_Free(s)
     
     def remove_word(self, word):
         cdef wchar_t* s = to_wchar_t(word)
         self.c_ac_segmentor.RemoveWord(s)
-       
+        PyMem_Free(s)
 
     def Build(self, fname, delimiters):
         cdef wstring d = to_wstring(delimiters)
@@ -36,11 +38,14 @@ cdef class AhoCorasickSegmentor:
     def set_combine_pattern(self, pattern):
         cdef wchar_t* s = to_wchar_t(pattern)
         self.c_ac_segmentor.SetCombinePattern(s)
+        PyMem_Free(s)
 
     def segment(self, sentence: str):
         cdef wchar_t* s = to_wchar_t(sentence)
         cdef vector[wstring] out = self.c_ac_segmentor.Segment(s)
         cdef size_t n = out.size()
+        PyMem_Free(s)
+
         ret = []
         for i in range(n):
             ret.append(from_wstring(out[i]))
