@@ -151,8 +151,12 @@ AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
 void AhoCorasickSegment::AddWord(const wchar_t word[], const char nature[], const size_t freq){
     ACSegNode* p = Add(word);
     p->word_prop = new WordProp(nature, freq, wcslen(word));
-
 }
+
+void AhoCorasickSegment::RemoveWord(const wchar_t word[]){
+    Remove(word);
+}
+
 
 
 void AhoCorasickSegment::Build(const char dictionary_fname[], const std::wstring& delimiters){

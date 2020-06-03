@@ -19,6 +19,11 @@ cdef class AhoCorasickSegmentor:
     def add_word(self, word, nature, freq):
         cdef wchar_t* s = to_wchar_t(word)
         self.c_ac_segmentor.AddWord(s, nature.encode(), freq)
+    
+    def remove_word(self, word):
+        cdef wchar_t* s = to_wchar_t(word)
+        self.c_ac_segmentor.RemoveWord(s)
+       
 
     def Build(self, fname, delimiters):
         cdef wstring d = to_wstring(delimiters)

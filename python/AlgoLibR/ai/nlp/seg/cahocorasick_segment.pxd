@@ -40,6 +40,7 @@ cdef extern from "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h" namespace "AlgoLibR
     cdef cppclass AhoCorasickSegment(ACTrieBase[ACSegNode]):
         AhoCorasickSegment()
         void AddWord(const wchar_t word[], const char nature[], const size_t freq)
+        void RemoveWord(const wchar_t word[])
         void SetSegAll(bool is_seg_all)
         void SetCombinePattern(const wchar_t pattern[])
         void Build(const char dictionary_fname[], const wstring& delimiters)
