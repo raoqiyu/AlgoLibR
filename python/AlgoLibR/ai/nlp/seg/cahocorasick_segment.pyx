@@ -16,6 +16,10 @@ cdef class AhoCorasickSegmentor:
     def __cinit__(self):
         self.c_ac_segmentor = new AhoCorasickSegment()
     
+    def add_word(self, word, nature, freq):
+        cdef wchar_t* s = to_wchar_t(word)
+        self.c_ac_segmentor.AddWord(s, nature.encode(), freq)
+
     def Build(self, fname, delimiters):
         cdef wstring d = to_wstring(delimiters)
         print(delimiters)
@@ -27,7 +31,6 @@ cdef class AhoCorasickSegmentor:
     def set_combine_pattern(self, pattern):
         cdef wchar_t* s = to_wchar_t(pattern)
         self.c_ac_segmentor.SetCombinePattern(s)
- 
 
     def segment(self, sentence: str):
         cdef wchar_t* s = to_wchar_t(sentence)
