@@ -6,6 +6,8 @@
  ###
 #!/bin/bash
 
+export BUILD_ALGOLIBR_WITH_GPU=False
+
 cd cpp
 mkdir build
 cd build
