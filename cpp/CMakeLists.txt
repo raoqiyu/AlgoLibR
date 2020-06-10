@@ -3,7 +3,21 @@ set (CMAKE_FIND_NO_INSTALL_PREFIX TRUE FORCE)
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 cmake_policy(SET CMP0079 NEW)
 
-project(AlgoLibR VERSION 0.10.0 LANGUAGES CXX CUDA)
+
+###################################################################################################
+if($ENV{BUILD_ALGOLIBR_WITH_GPU} MATCHES "True")
+    set(USE_GPU ON)
+else()
+    set(USE_GPU OFF)
+endif()
+###################################################################################################
+
+
+if(USE_GPU)
+    project(AlgoLibR VERSION 0.10.0 LANGUAGES CXX CUDA)
+else()
+    project(AlgoLibR VERSION 0.10.0 LANGUAGES CXX)
+endif()
 
 ###################################################################################################
 # - build type ------------------------------------------------------------------------------------
@@ -23,7 +37,9 @@ endif()
 ###################################################################################################
 # - Requirements ----------------------------------------------------------------------------------
 
-find_package(CUDA 10.0 REQUIRED)
+if(USE_GPU)
+    find_package(CUDA 10.0 REQUIRED)
+endif()
 
 ###################################################################################################
 # - Compiler Options  -----------------------------------------------------------------------------
@@ -99,10 +115,14 @@ set(ALGO_CPP_TARGET "AlgoLibR++")
 add_library(${ALGO_CPP_TARGET} SHARED
     ${CPP_SOURCES}
 )
-target_link_libraries(${ALGO_CPP_TARGET} ${ALGO_CUDA_TARGET})
+if(USE_GPU)
+    target_link_libraries(${ALGO_CPP_TARGET} ${ALGO_CUDA_TARGET})
+else()
+    target_link_libraries(${ALGO_CPP_TARGET})
+endif()
 
 
 #############
 ## install
-install(TARGETS ${ALGO_CUDA_TARGET} DESTINATION lib)
+#install(TARGETS ${ALGO_CUDA_TARGET} DESTINATION lib)
 install(TARGETS ${ALGO_CPP_TARGET} DESTINATION lib)

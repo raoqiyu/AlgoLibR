@@ -7,6 +7,7 @@ from distutils.sysconfig import get_python_lib
 from cmake_setuptools import CMakeBuildExt, CMakeExtension, \
     convert_to_manylinux, InstallHeaders, distutils_dir_name
 
+
 name = 'AlgoLibR'
 version = '0.1'
 
@@ -22,12 +23,20 @@ if os.environ.get('CUDA_HOME', False):
     cuda_lib_dir = os.path.join(os.environ.get('CUDA_HOME'), 'lib64')
     cuda_include_dir = os.path.join(os.environ.get('CUDA_HOME'), 'include')
 
-libs = ['cuda', 'AlgoLibR++','AlgoLibR']
 
-exc_list = []
+libs = ['AlgoLibR++']
+runtime_lib_dirs=['/usr/local/lib/']
+include_dirs = ['../cpp/']
+
+if os.environ.get('BUILD_ALGOLIBR_WITH_GPU', 'False') == 'True':
+    libs.append('CUDA')
+    runtime_lib_dirs.append(cuda_lib_dir)
+    include_dirs.append(cuda_include_dir)
+    exc_list = []
+else:
+    exc_list = ['AlgoLibR/**/*gpu.pyx']
 
 cython_files = ['AlgoLibR/**/**.pyx']
-include_dirs = ['../cpp/',cuda_include_dir]
 
 extensions = [
     Extension("*",
@@ -36,7 +45,7 @@ extensions = [
               library_dirs=[get_python_lib()],
               libraries=libs,
               language='c++',
-              runtime_library_dirs=[cuda_lib_dir,'/usr/local/lib/'],
+              runtime_library_dirs= runtime_lib_dirs,
               extra_compile_args=['-std=c++11'],#,'-fopenmp'],
               extra_link_args=['-lgomp']
 )
