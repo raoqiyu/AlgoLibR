@@ -121,9 +121,11 @@ void Trie<NODETYPE>::Remove(const wchar_t keys[]){
 
     if(node->is_ending_key){
         node->is_ending_key=false;
+    }else{
+        return;
     }
     while(node){
-        if(node->child_nodes.size()==0 && !node->is_ending_key){
+        if(node != this->root && node->child_nodes.size()==0 && !node->is_ending_key){
             parent = node->parent;
             parent->RemoveChild(node->key);
             node = parent;
