@@ -98,8 +98,10 @@ ACSegNode::ACSegNode(const wchar_t key, ACSegNode* parent){
 ACSegNode::~ACSegNode(){
     auto iter = this->child_nodes.begin();
     while(iter != this->child_nodes.end()){
-        delete iter->second;
-        iter->second = NULL;
+        if(iter->second != nullptr){
+            delete iter->second;
+            iter->second = nullptr;
+        }
         child_nodes.erase(iter++);
     }
     if(word_prop != NULL){
@@ -122,9 +124,11 @@ void ACSegNode::RemoveChild(const wchar_t key){
     if( iter == child_nodes.end()){
         return;
     }
-    delete iter->second;
-    iter->second= NULL;
-    child_nodes.erase(key);
+    if(iter->second != nullptr){
+        delete iter->second;
+        iter->second= nullptr;
+    }
+    child_nodes.erase(iter);
 }
 
 AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
@@ -132,7 +136,7 @@ AhoCorasickSegment::AhoCorasickSegment(): is_seg_all(true){
     std::locale::global(std::locale(""));
     std::wcin.imbue(std::locale(""));
     std::wcout.imbue(std::locale(""));
-    root = new ACSegNode(L'A');
+    root = new ACSegNode(L'/');
     this->combine_pattern_re = std::wregex(this->combine_pattern);
 
     // Build("/home/rqy/AlgoLibR/data/NLP/Dictionary/jieba_dict.txt.big", L" ");
@@ -164,6 +168,7 @@ void AhoCorasickSegment::Build(const char dictionary_fname[], const std::wstring
     std::wstring line;
     std::vector<std::wstring> word_props;
     if (!dictionary_file.is_open()){ 
+        std::wcout << dictionary_fname << L"文件打开失败...\n" << std::endl;
         return;
     }
     while(std::getline(dictionary_file,line)){
