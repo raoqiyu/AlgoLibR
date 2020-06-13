@@ -45,3 +45,4 @@ cdef extern from "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h" namespace "AlgoLibR
         void SetCombinePattern(const wchar_t pattern[])
         void Build(const char dictionary_fname[], const wstring& delimiters)
         vector[wstring] Segment(const wchar_t*)
+        void SegmentFile(const char src_fname[], const char dst_fname[])

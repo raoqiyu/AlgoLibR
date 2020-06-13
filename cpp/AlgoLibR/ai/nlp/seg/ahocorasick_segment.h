@@ -71,6 +71,7 @@ public:
     void Build(const char dictionary_fname[],  const std::wstring& delimiters);
     std::vector<std::wstring> SegSentence(const wchar_t sentence[]);
     std::vector<std::wstring> Segment(const wchar_t sentence[]);
+    void SegmentFile(const char src_fname[], const char dst_fname[]);
     // std::vector<std::wstring> SegChineseSentence(const wchar_t sentence[]);
 
 };

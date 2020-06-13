@@ -336,6 +336,33 @@ std::vector<std::wstring> AhoCorasickSegment::Segment(const wchar_t sentence[]){
     return segmented_combined;
 }
 
+void AhoCorasickSegment::SegmentFile(const char src_fname[], const char dst_fname[]){
+    std::wifstream src_file(src_fname);
+    std::wofstream dst_file(dst_fname);
+    std::wstring line;
+    std::vector<std::wstring> word_props;
+    if (!src_file.is_open()){
+        std::wcout << src_fname << L" 文件打开失败..." << std::endl;
+        return;
+    }
+    if (!dst_file.is_open()){
+        std::wcout << dst_fname << L" 文件打开失败..." << std::endl;
+        return;
+    }
+
+    std::vector<std::wstring> line_words;
+    while(std::getline(src_file,line)){
+        line_words = Segment(line.c_str());
+        for(auto word:line_words){
+            std::wcout << word << ' ';
+            dst_file << word << ' ';
+        }
+        dst_file << '\n';
+    }
+    src_file.close();
+    dst_file.close();
+}
+
 
 } // namespace seg
 } // namespace nlp

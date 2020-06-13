@@ -50,6 +50,9 @@ cdef class AhoCorasickSegmentor:
         for i in range(n):
             ret.append(from_wstring(out[i]))
         return ret
+
+    def segment_file(self, src_fname: str, dst_fname: str):
+        self.c_ac_segmentor.SegmentFile(src_fname.encode(), dst_fname.encode())
     
     def __dealloc__(self):
         del self.c_ac_segmentor
