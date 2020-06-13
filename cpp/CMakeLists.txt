@@ -62,8 +62,10 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 endif()
 
 
+if(USE_GPU)
 set(GPU_ARCHS "60")
 message("GPU_ARCHS = ${GPU_ARCHS}")
+endif()
 
 foreach(arch ${GPU_ARCHS})
   set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -gencode arch=compute_${arch},code=sm_${arch}")
@@ -77,7 +79,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     message(STATUS "Disabling the GLIBCXX11 ABI")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler -D_GLIBCXX_USE_CXX11_ABI=0")
+    if(USE_GPU)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler -D_GLIBCXX_USE_CXX11_ABI=0")
+    endif()
   elseif(CMAKE_CXX11_ABI)
     message(STATUS "Enabling the GLIBCXX11 ABI")
   endif(NOT CMAKE_CXX11_ABI)
@@ -91,6 +95,7 @@ include_directories(
 
 #######################
 ## build cuda code
+if(USE_GPU)
 file(GLOB_RECURSE CUDA_SOURCES "AlgoLibR/*.cu")
 set(ALGO_CUDA_TARGET "AlgoLibR")
   add_library(${ALGO_CUDA_TARGET} SHARED
@@ -106,6 +111,7 @@ set(CUML_LINK_LIBRARIES
   ${CUDA_nvgraph_LIBRARY}
 )
 target_link_libraries(${ALGO_CUDA_TARGET} ${CUML_LINK_LIBRARIES})
+endif()
 
 
 ############
