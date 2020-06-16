@@ -47,7 +47,7 @@ extensions = [
               language='c++',
               runtime_library_dirs= runtime_lib_dirs,
               extra_compile_args=['-std=c++11'],#,'-fopenmp'],
-              extra_link_args=['-lgomp']
+              #extra_link_args=['-lgomp']
 )
 ]
 
