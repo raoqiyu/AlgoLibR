@@ -2,4 +2,7 @@
 *.pyc
 .vscode
 .DS_Store
+cpp/build/
+data/
+*.bak
 python/**/**.cpp

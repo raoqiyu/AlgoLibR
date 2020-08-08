@@ -12,6 +12,7 @@
 #include "AlgoLibR/data_structure/tree/ac_trie.h"
 #include "AlgoLibR/framework/register_types.h"
 #include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
+#include "AlgoLibR/ai/nlp/mining/word/ngram_counter.h"
 
 namespace AlgoLibR{
 namespace data_structure{
@@ -139,6 +140,7 @@ void Trie<NODETYPE>::Remove(const wchar_t keys[]){
 template class Trie<TrieNode>; 
 template class Trie<ac_trie::ACTrieNode>;
 template class Trie<AlgoLibR::ai::nlp::seg::ACSegNode>;
+template class Trie<AlgoLibR::ai::nlp::mining::word::Node>;
 
 #define DEFINE_TRIE(T) \
     template class Trie<kv_trie::KVTrieNode<T>>; 
