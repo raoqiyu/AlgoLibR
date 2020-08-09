@@ -42,17 +42,17 @@ public:
 
 class NGramCounter : public AlgoLibR::data_structure::tree::trie::Trie<Node>{
 public:
-    NGramCounter(const char *src_fname, const char *dst_fname, const unsigned int top_n, const wchar_t *delimiters);
-    void Count();
+    NGramCounter(const unsigned int max_n, const wchar_t *delimiters);
+    void Count(const char *src_fname, const char * dst_fname=nullptr);
+    void ExportToFile(const char *dst_fname);
 
 private:
     void AddNGram(const wchar_t gram[]);
     void ExportGrams(Node *node, std::wstring gram);
     std::vector<std::wstring> ParseLine(const std::wstring &line);
 
-    std::wifstream src_file;
     std::wfstream dst_file;
-    unsigned long top_n = 0;
+    unsigned long max_n = 0;
     std::set<wchar_t> delimiters;
 
     

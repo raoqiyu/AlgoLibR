@@ -52,19 +52,10 @@ void Node::RemoveChild(const wchar_t key){
 
 
 
-NGramCounter::NGramCounter(const char *src_fname, const char *dst_fname, 
-                            const unsigned int top_n, const wchar_t *delimiters) : src_file(src_fname), dst_file(dst_fname), top_n(top_n){
+NGramCounter::NGramCounter(const unsigned int max_n, const wchar_t *delimiters) :  max_n(max_n){
     auto n_delim = std::wcslen(delimiters);
     for(auto i = 0; i < n_delim; i++){
         this->delimiters.insert(delimiters[i]);
-    }
-    if (!src_file.is_open()){
-        std::wcout << src_fname << L" 文件打开失败..." << std::endl;
-        return;
-    }
-    if (!dst_file.is_open()){
-        std::wcout << dst_fname << L" 文件打开失败..." << std::endl;
-        return;
     }
     return;
 }
@@ -96,7 +87,7 @@ std::vector<std::wstring> NGramCounter::ParseLine(const std::wstring &line){
             }
             gram.clear();
             continue;
-        }else if(gram.size() == top_n){
+        }else if(gram.size() == max_n){
             for(auto i = 2; i <= gram.size(); i++){
                 grams.emplace_back(gram.substr(0,i));
             }
@@ -126,8 +117,25 @@ void NGramCounter::ExportGrams(Node *node, std::wstring gram){
     }
 }
 
+void NGramCounter::ExportToFile(const char *dst_fname){
+    dst_file.open(dst_fname, std::ios::out | std::ios::trunc);
+    if (!dst_file.is_open()){
+        std::wcout << dst_fname << L" 文件打开失败..." << std::endl;
+        return;
+    }
 
-void NGramCounter::Count(){
+    std::wstring gram=L"";
+    ExportGrams(root, gram);
+    dst_file.close();
+}
+
+
+void NGramCounter::Count(const char *src_fname, const char *dst_fname){
+    std::wifstream src_file(src_fname);
+    if(!src_file.is_open()){
+        std::wcout << src_fname << L" 文件打开失败..." << std::endl;
+        return;
+    }
     
     std::wstring line;
     while(std::getline(src_file,line)){
@@ -135,12 +143,7 @@ void NGramCounter::Count(){
             AddNGram(gram.c_str());
         }
     }
-
-    std::wstring gram;
-    ExportGrams(root, gram);
-    
     src_file.close();
-    dst_file.close();
 }
 
 
