@@ -52,7 +52,7 @@ void Node::RemoveChild(const wchar_t key){
 
 
 
-NGramCounter::NGramCounter(const unsigned int max_n, const wchar_t *delimiters) :  max_n(max_n){
+NGramCounter::NGramCounter(const unsigned int max_n, const wchar_t *delimiters) :  max_n(max_n), min_freq(0){
     auto n_delim = std::wcslen(delimiters);
     for(auto i = 0; i < n_delim; i++){
         this->delimiters.insert(delimiters[i]);
@@ -144,6 +144,52 @@ void NGramCounter::Count(const char *src_fname, const char *dst_fname){
         }
     }
     src_file.close();
+}
+
+
+void NGramCounter::Delete(Node *node){
+    auto parent = node->parent;
+    
+    if(node->is_ending_key){
+        if(node->value < this->min_freq){
+            if(node->child_nodes.size() > 0){
+                node->is_ending_key = false;
+                node->value = 0;
+            }
+            else{
+                parent->RemoveChild(node->key);        
+            }
+        }
+    }else if(node->child_nodes.size() == 0){
+        parent->RemoveChild(node->key);
+    }
+    if(parent != this->root){
+        Delete(parent);
+    }
+}
+
+
+void NGramCounter::Search(Node *node, std::vector<Node*> &leaf_nodes){
+    if(node == nullptr){
+        return;
+    }
+    if(node->child_nodes.size() > 0){
+        for(auto iter = node->child_nodes.begin(); iter != node->child_nodes.end();iter++){
+            Search(iter->second, leaf_nodes);
+        }
+    }
+    else{
+        leaf_nodes.push_back(node);
+    }
+}
+
+void NGramCounter::Filter(const unsigned long min_freq){
+    this->min_freq = min_freq;
+    std::vector<Node*> leaf_nodes;
+    Search(this->root, leaf_nodes);
+    for(auto node : leaf_nodes){
+        Delete(node);
+    }
 }
 
 

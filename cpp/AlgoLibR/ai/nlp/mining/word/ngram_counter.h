@@ -45,16 +45,21 @@ public:
     NGramCounter(const unsigned int max_n, const wchar_t *delimiters);
     void Count(const char *src_fname, const char * dst_fname=nullptr);
     void ExportToFile(const char *dst_fname);
+    void Filter(const unsigned long min_freq);
+
 
 private:
     void AddNGram(const wchar_t gram[]);
     void ExportGrams(Node *node, std::wstring gram);
     std::vector<std::wstring> ParseLine(const std::wstring &line);
+    
+    void Search(Node *node, std::vector<Node*> &leaf_nodes);
+    void Delete(Node *node);
 
     std::wfstream dst_file;
     unsigned long max_n = 0;
     std::set<wchar_t> delimiters;
-
+    unsigned long min_freq = 0;
     
 };
 

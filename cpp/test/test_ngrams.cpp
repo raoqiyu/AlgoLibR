@@ -24,6 +24,10 @@ int main(){
 
     ngram_counter.Count("../../data/NLP/Corpus/test_for_ngrams.txt");
     ngram_counter.ExportToFile("./ngrams_test_results.txt");
+
+    ngram_counter.Filter(2);
+    ngram_counter.ExportToFile("./ngrams_test_results_filtered.txt");
+    
     
     return 0;
 }
