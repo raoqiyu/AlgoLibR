@@ -79,21 +79,22 @@ void NGramCounter::AddNGram(const wchar_t gram[]){
 
 std::vector<std::wstring> NGramCounter::ParseLine(const std::wstring &line){
     std::vector<std::wstring> grams;
-    std::wstring gram;
-    for(auto c:line){
-        if(delimiters.find(c) != delimiters.end()){
-            for(auto i = 2; i < gram.size(); i++){
-                grams.emplace_back(gram.substr(0,i));
-            }
-            gram.clear();
-            continue;
-        }else if(gram.size() == max_n){
-            for(auto i = 2; i <= gram.size(); i++){
-                grams.emplace_back(gram.substr(0,i));
-            }
-            gram = gram.substr(1,gram.size()-1);
+    // std::wstring gram;
+    for(auto i = 0; i < line.size()-this->max_n; i++){
+        if(delimiters.find(line[i]) != delimiters.end()) continue;
+        for(auto j = 1; j < this->max_n; j++){
+            if(delimiters.find(line[i+j]) != delimiters.end()) break;
+            grams.push_back(line.substr(i, j+1));
         }
-        gram.push_back(c);
+    }
+    auto k = this->max_n;
+    for(auto i = line.size()-k; i < line.size(); i++){
+        if(delimiters.find(line[i]) != delimiters.end()) continue;
+        for(auto j = 1; j < k; j++){
+            if(delimiters.find(line[i+j]) != delimiters.end()) break;
+            grams.push_back(line.substr(i, j+1));
+        }
+        if(--k == 0) break;
     }
     return grams;
 }
