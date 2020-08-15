@@ -61,10 +61,10 @@ NGramCounter::NGramCounter(const unsigned int max_n, const wchar_t *delimiters) 
 }
 
 
-void NGramCounter::AddNGram(const wchar_t gram[]){
+Node* NGramCounter::AddNGram(const wchar_t gram[]){
     size_t gram_len = wcslen(gram);
     if(gram_len <= 0){
-        return ;
+        return nullptr;
     }
 
     Node* p = this->root;
@@ -74,6 +74,7 @@ void NGramCounter::AddNGram(const wchar_t gram[]){
     }
     p->value += 1;
     p->is_ending_key=true;
+    return p;
 }
 
 

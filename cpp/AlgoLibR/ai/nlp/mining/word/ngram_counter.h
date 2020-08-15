@@ -49,7 +49,7 @@ public:
 
 
 private:
-    void AddNGram(const wchar_t gram[]);
+    Node* AddNGram(const wchar_t gram[]);
     void ExportGrams(Node *node, std::wstring gram);
     std::vector<std::wstring> ParseLine(const std::wstring &line);
     
