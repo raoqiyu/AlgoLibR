@@ -96,7 +96,6 @@ std::vector<std::wstring> NGramCounter::ParseLine(const std::wstring &line){
         if(!is_ok) continue;
         for(auto j = this->min_n-1; j < this->max_n; j++){
             if(delimiters.find(line[i+j]) != delimiters.end()) break;
-            std::wcout << line.substr(i, j+1) << std::endl;
             grams.push_back(line.substr(i, j+1));
         }
     }
@@ -105,7 +104,6 @@ std::vector<std::wstring> NGramCounter::ParseLine(const std::wstring &line){
         if(delimiters.find(line[i]) != delimiters.end()) continue;
         for(auto j = this->min_n-1; j < k; j++){
             if(delimiters.find(line[i+j]) != delimiters.end()) break;
-            std::wcout << line.substr(i, j+1) << std::endl;
             grams.push_back(line.substr(i, j+1));
         }
         if(--k == 0) break;

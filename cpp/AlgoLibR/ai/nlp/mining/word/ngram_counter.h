@@ -47,8 +47,7 @@ public:
     void ExportToFile(const char *dst_fname);
     void Filter(const unsigned long min_freq);
 
-
-private:
+protected:
     Node* AddNGram(const wchar_t gram[]);
     void ExportGrams(Node *node, std::wstring gram);
     std::vector<std::wstring> ParseLine(const std::wstring &line);
