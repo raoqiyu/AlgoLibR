@@ -20,7 +20,7 @@ int main(){
     std::wcout << L"开始\n";
 
     wchar_t *delimiters = L" ，。；‘”’";
-    NGramCounter ngram_counter = NGramCounter(4, delimiters);
+    NGramCounter ngram_counter = NGramCounter(3, 4, delimiters);
 
     ngram_counter.Count("../../data/NLP/Corpus/test_for_ngrams.txt");
     ngram_counter.ExportToFile("./ngrams_test_results.txt");

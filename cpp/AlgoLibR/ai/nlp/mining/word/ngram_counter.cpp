@@ -52,7 +52,9 @@ void Node::RemoveChild(const wchar_t key){
 
 
 
-NGramCounter::NGramCounter(const unsigned int max_n, const wchar_t *delimiters) :  max_n(max_n), min_freq(0){
+NGramCounter::NGramCounter(const unsigned long min_n, const unsigned long max_n, const wchar_t *delimiters) : min_n(min_n), max_n(max_n), min_freq(0){
+    if(delimiters == nullptr) return;
+    
     auto n_delim = std::wcslen(delimiters);
     for(auto i = 0; i < n_delim; i++){
         this->delimiters.insert(delimiters[i]);
@@ -81,18 +83,29 @@ Node* NGramCounter::AddNGram(const wchar_t gram[]){
 std::vector<std::wstring> NGramCounter::ParseLine(const std::wstring &line){
     std::vector<std::wstring> grams;
     // std::wstring gram;
+    unsigned long k = 0;
+    bool is_ok = true;
     for(auto i = 0; i < line.size()-this->max_n; i++){
-        if(delimiters.find(line[i]) != delimiters.end()) continue;
-        for(auto j = 1; j < this->max_n; j++){
+        is_ok = true;
+        for(k = 0; k < this->min_n; k++){
+            if(delimiters.find(line[i+k]) != delimiters.end()){
+                is_ok = false;
+                break;
+            } 
+        }
+        if(!is_ok) continue;
+        for(auto j = this->min_n-1; j < this->max_n; j++){
             if(delimiters.find(line[i+j]) != delimiters.end()) break;
+            std::wcout << line.substr(i, j+1) << std::endl;
             grams.push_back(line.substr(i, j+1));
         }
     }
-    auto k = this->max_n;
+    k = this->max_n;
     for(auto i = line.size()-k; i < line.size(); i++){
         if(delimiters.find(line[i]) != delimiters.end()) continue;
-        for(auto j = 1; j < k; j++){
+        for(auto j = this->min_n-1; j < k; j++){
             if(delimiters.find(line[i+j]) != delimiters.end()) break;
+            std::wcout << line.substr(i, j+1) << std::endl;
             grams.push_back(line.substr(i, j+1));
         }
         if(--k == 0) break;
