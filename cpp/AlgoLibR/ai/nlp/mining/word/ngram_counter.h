@@ -1,5 +1,5 @@
 /*
- * @Autor: raoqiyu@gmail.com
+ * @Author: raoqiyu@gmail.com
  * @Date: 2020-08-07 20:20:15
  * @FilePath: /AlgoLibR/cpp/AlgoLibR/ai/nlp/mining/word/ngram_counter.h
  * @Description: 

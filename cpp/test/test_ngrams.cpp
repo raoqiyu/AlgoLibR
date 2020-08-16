@@ -1,5 +1,5 @@
 /*
- * @Autor: raoqiyu@gmail.com
+ * @Author: raoqiyu@gmail.com
  * @Date: 2020-08-08 19:45:24
  * @FilePath: /AlgoLibR/cpp/test/test_ngrams.cpp
  * @Description: 
