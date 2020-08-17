@@ -132,3 +132,6 @@ endif()
 ## install
 #install(TARGETS ${ALGO_CUDA_TARGET} DESTINATION lib)
 install(TARGETS ${ALGO_CPP_TARGET} DESTINATION lib)
+
+link_libraries(${ALGO_CPP_TARGET})
+add_executable(test_ngram test/test_ngrams.cpp)

@@ -20,7 +20,7 @@ int main(){
     std::wcout << L"开始\n";
 
     wchar_t *delimiters = L" ，。；‘”’";
-    NewWordExtractor ngram_counter = NewWordExtractor(2, 4, delimiters);
+    NewWordExtractor ngram_counter = NewWordExtractor(3, 4, delimiters);
 
     ngram_counter.Extract("../../data/NLP/Corpus/test_for_ngrams.txt");
     ngram_counter.ExportToFile("./ngrams_test_results.txt");
