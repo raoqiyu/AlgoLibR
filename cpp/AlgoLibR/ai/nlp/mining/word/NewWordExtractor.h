@@ -24,7 +24,7 @@ namespace nlp {
 namespace mining {
 namespace word {
 
-typedef struct WordNeighbor{
+typedef struct WordNeighbor {
  public:
   WordNeighbor(Node *last_wchar_ptr) : last_wchar_ptr(last_wchar_ptr) {}
 
@@ -40,6 +40,9 @@ class NewWordExtractor : public NGramCounter {
   void Extract(const char *src_fname);
 
  private:
+  inline void AddBeginWord(std::wstring &line);
+  inline void AddWord(std::wstring &line, const unsigned long start_pos, const unsigned long n_end);
+
   void CalcScore();
   void CalcEntropy();
   void CalcPointMutalInformation();
