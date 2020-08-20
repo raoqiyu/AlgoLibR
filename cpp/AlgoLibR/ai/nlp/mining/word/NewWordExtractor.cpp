@@ -14,7 +14,7 @@ namespace nlp {
 namespace mining {
 namespace word {
 
-NewWordExtractor::NewWordExtractor(unsigned long min_n, unsigned long max_n,
+NewWordExtractor::NewWordExtractor(uint8_t min_n, uint8_t max_n,
                                    const wchar_t *delimiters) : NGramCounter(min_n, max_n, delimiters) {}
 
 inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
@@ -44,7 +44,7 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
 inline void NewWordExtractor::AddWord(std::wstring &line, const unsigned long start_pos, const unsigned long n_end) {
     bool is_ok = true;
     Node *last_wchar_ptr;
-    unsigned long n;
+    uint8_t n;
     for (n = 0; n < this->min_n; n++) {
         if (delimiters.find(line[start_pos + n]) != delimiters.end()) {
             is_ok = false;
@@ -76,7 +76,8 @@ void NewWordExtractor::Extract(const char *src_fname) {
 
     std::wstring line;
     std::wstring gram_str;
-    unsigned long start_pos, split_pos, k = this->max_n;
+    unsigned long start_pos, split_pos;
+    uint8_t k = this->max_n;
     while (std::getline(src_file, line)) {
         if (line.size() < this->min_n) continue;
         AddBeginWord(line);

@@ -42,7 +42,7 @@ public:
 
 class NGramCounter : public AlgoLibR::data_structure::tree::trie::Trie<Node>{
 public:
-    NGramCounter(const unsigned long min_n=2, const unsigned long max_n=3, const wchar_t *delimiters=nullptr);
+    NGramCounter(const uint8_t min_n=2, const uint8_t max_n=3, const wchar_t *delimiters=nullptr);
     void Count(const char *src_fname, const char * dst_fname=nullptr);
     void ExportToFile(const char *dst_fname);
     void Filter(const unsigned long min_freq);
@@ -56,8 +56,8 @@ protected:
     void Delete(Node *node);
 
     std::wfstream dst_file;
-    unsigned long min_n;
-    unsigned long max_n;
+    uint8_t min_n;
+    uint8_t max_n;
     std::set<wchar_t> delimiters;
     unsigned long min_freq = 0;
     
