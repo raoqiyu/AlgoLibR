@@ -15,6 +15,7 @@
 #include <vector>
 #include <set>
 #include <fstream>
+#include <regex>
 
 #include "AlgoLibR/ai/nlp/mining/word/ngram_counter.h"
 
@@ -25,17 +26,14 @@ namespace mining {
 namespace word {
 
 typedef struct WordNeighbor {
- public:
-  WordNeighbor(Node *last_wchar_ptr) : last_wchar_ptr(last_wchar_ptr) {}
-
-  Node *last_wchar_ptr;
-  std::set<wchar_t> left_neighbors;
-  std::set<wchar_t> right_neighbors;
+  double score;
+  Node *last_char_ptr;
+  std::map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
 
 class NewWordExtractor : public NGramCounter {
  public:
-  NewWordExtractor(const uint8_t min_n = 2, const uint8_t max_n = 4, const wchar_t *delimiters = nullptr);
+  NewWordExtractor(const uint8_t max_word_length = 4);
 
   void Extract(const char *src_fname);
 
@@ -43,12 +41,14 @@ class NewWordExtractor : public NGramCounter {
   inline void AddBeginWord(std::wstring &line);
   inline void AddWord(std::wstring &line, const unsigned long start_pos, const unsigned long n_end);
 
+  void GetWord(Node *node, std::wstring &word);
+
   void CalcScore();
-  void CalcEntropy();
+  inline void CalcEntropyScore(const std::map<Node *, WordNeighbor>::iterator &word_iter);
   void CalcPointMutalInformation();
 
   std::map<Node *, WordNeighbor> m_words;
-
+  std::wregex delimiters = std::wregex(L"[a-zA-Z0-9!@#$%^&*,./:(){}\\[\\];'“！@#¥%……&*（）！、，。/：；\"，「」【】　]");
 };
 
 } // namespace word
