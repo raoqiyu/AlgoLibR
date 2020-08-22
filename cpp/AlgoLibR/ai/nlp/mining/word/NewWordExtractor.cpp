@@ -107,7 +107,6 @@ void NewWordExtractor::Extract(const char *src_fname) {
     while (std::getline(src_file, line)) {
         if (line.size() < this->min_n) continue;
         line = std::regex_replace(line, this->delimiters, L"*");
-        std::wcout << line << std::endl;
         AddBeginWord(line);
         split_pos = std::max((long) (line.size() - this->max_n), 0L);
 //        std::wcout << split_pos << ':' << line[split_pos] <<  std::endl;
@@ -176,17 +175,48 @@ inline void NewWordExtractor::CalcEntropyScore(const std::map<Node *, WordNeighb
 //    std::wcout << left_total_cnt << ',' << left_entropy << ';' << right_total_cnt << ',' << right_entropy << std::endl;
 }
 
+
+void NewWordExtractor::CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter) {
+    double mi=0;
+    std::wstring word;
+    std::vector<unsigned long long> left_freqs, right_freqs;
+    Node* node = word_iter->first->parent;
+    word.push_back(word_iter->first->key);
+    while(node != this->root){
+        word.push_back(node->key);
+        left_freqs.push_back(node->value);
+        node = node->parent;
+    }
+    reverse(word.begin(), word.end());
+    for(auto i = 1; i < word.size(); i++){
+        node = FindNode(word.substr(i).c_str());
+        if(node == nullptr){
+            right_freqs.push_back(0);
+        }else{
+            right_freqs.push_back(node->value);
+        }
+    }
+//    while(right_freqs.size() < left_freqs.size()){
+//        right_freqs.push_back(0);
+//    }
+    /* left : a ab abc
+     * right: bcd cd d
+     */
+    for(auto i = 0; i < left_freqs.size(); i++) {
+        mi = std::max(double(left_freqs[i]) * right_freqs[i], mi);
+    }
+    word_iter->second.score +=log2(word_iter->first->value/(mi+1e-8))/word.size();
+}
+
 void NewWordExtractor::CalcScore() {
     std::wstring word;
     for (auto word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
         CalcEntropyScore(word_iter);
+        CalcPointMutalInformation(word_iter);
     }
     std::wcout << std::flush;
 }
 
-void NewWordExtractor::CalcPointMutalInformation() {
-    return;
-}
 
 } // namespace word
 } // namespace mining

@@ -45,10 +45,10 @@ class NewWordExtractor : public NGramCounter {
 
   void CalcScore();
   inline void CalcEntropyScore(const std::map<Node *, WordNeighbor>::iterator &word_iter);
-  void CalcPointMutalInformation();
+  void CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter);
 
   std::map<Node *, WordNeighbor> m_words;
-  std::wregex delimiters = std::wregex(L"[a-zA-Z0-9!@#$%^&*,./:(){}\\[\\];'“！@#¥%……&*（）！、，。/：；\"，「」【】　]");
+  std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");
 };
 
 } // namespace word
