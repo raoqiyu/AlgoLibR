@@ -14,7 +14,8 @@ namespace nlp {
 namespace mining {
 namespace word {
 
-NewWordExtractor::NewWordExtractor(uint8_t max_word_length) : NGramCounter(1, max_word_length + 1, nullptr) {}
+NewWordExtractor::NewWordExtractor(uint8_t max_word_length, unsigned long long min_freq) :
+        NGramCounter(1, max_word_length + 1, nullptr), m_min_freq(min_freq) {}
 
 inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
     const unsigned long start_pos = 0;
@@ -210,9 +211,15 @@ void NewWordExtractor::CalcPointMutalInformation(const std::map<Node *, WordNeig
 
 void NewWordExtractor::CalcScore() {
     std::wstring word;
-    for (auto word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
-        CalcEntropyScore(word_iter);
-        CalcPointMutalInformation(word_iter);
+    auto word_iter = this->m_words.begin();
+    while ( word_iter != this->m_words.end()) {
+        if(word_iter->first->value < this->m_min_freq){
+            this->m_words.erase(word_iter++);
+        }else{
+            CalcEntropyScore(word_iter);
+            CalcPointMutalInformation(word_iter);
+            word_iter++;
+        }
     }
     std::wcout << std::flush;
 }
