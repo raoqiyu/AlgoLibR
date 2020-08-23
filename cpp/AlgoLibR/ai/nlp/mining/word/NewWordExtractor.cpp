@@ -197,9 +197,9 @@ void NewWordExtractor::CalcPointMutalInformation(const std::map<Node *, WordNeig
             right_freqs.push_back(node->value);
         }
     }
-//    while(right_freqs.size() < left_freqs.size()){
-//        right_freqs.push_back(0);
-//    }
+    while(right_freqs.size() < left_freqs.size()){
+        right_freqs.push_back(0);
+    }
     /* left : a ab abc
      * right: bcd cd d
      */
