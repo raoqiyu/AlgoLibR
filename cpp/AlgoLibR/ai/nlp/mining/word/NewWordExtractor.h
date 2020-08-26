@@ -49,6 +49,9 @@ class NewWordExtractor : public NGramCounter {
   void CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter,
                                  std::map<uint8_t, size_t> &ngram_count);
 
+  inline wchar_t FindLeadingChar(Node *end_node);
+  void Filter();
+
   unsigned long long m_min_freq;
   std::map<Node *, WordNeighbor> m_words;
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");

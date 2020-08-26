@@ -124,6 +124,7 @@ void NewWordExtractor::Extract(const char *src_fname) {
         line.clear();
     }
 
+    Filter();
     CalcScore();
 
     // Sort by score
@@ -197,21 +198,63 @@ void NewWordExtractor::CalcScore() {
     std::wstring word;
     auto word_iter = this->m_words.begin();
     std::map<uint8_t, u_long> ngram_count;
-    while ( word_iter != this->m_words.end()) {
-        if (word_iter->first->value < this->m_min_freq) {
-            this->m_words.erase(word_iter++);
-        } else {
-            CalcEntropyScore(word_iter);
-            ++ngram_count[word_iter->second.word_length];
-            word_iter++;
-        }
+    while (word_iter != this->m_words.end()) {
+        CalcEntropyScore(word_iter);
+        ++ngram_count[word_iter->second.word_length];
+        word_iter++;
     }
-    ngram_count[1] = this->root->child_nodes.size();
-    for(word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
+    for (word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
         CalcPointMutalInformation(word_iter, ngram_count);
     }
 }
 
+inline wchar_t NewWordExtractor::FindLeadingChar(Node *end_node) {
+    wchar_t leading_char('\0');
+    if (nullptr == end_node) return leading_char;
+    leading_char = end_node->key;
+    Node *node = end_node->parent;
+    while (node != this->root) {
+        leading_char = node->key;
+        node = node->parent;
+    }
+    return leading_char;
+}
+void NewWordExtractor::Filter() {
+    auto word_iter = this->m_words.begin();
+    std::map<wchar_t, u_long> start_char_count;
+    std::map<wchar_t, u_long> end_char_count;
+    while (word_iter != this->m_words.end()) {
+        if (word_iter->first->value < this->m_min_freq) {
+            this->m_words.erase(word_iter++);
+        } else {
+            ++end_char_count[word_iter->first->key];
+            word_iter++;
+        }
+    }
+    for (auto node : this->root->child_nodes) {
+        start_char_count[node.second->key] = node.second->value;
+    }
+    uint threshold = uint(this->m_words.size() * 0.004);
+    threshold = std::max(uint(50), threshold);
+    std::set<wchar_t> invalid_start_chars, invalid_end_chars;
+    for (auto char_cnt : start_char_count) {
+        if (char_cnt.second <= threshold) continue;
+        invalid_start_chars.insert(char_cnt.first);
+    }
+    for (auto char_cnt : end_char_count) {
+        if (char_cnt.second <= threshold) continue;
+        invalid_end_chars.insert(char_cnt.first);
+    }
+    word_iter = this->m_words.begin();
+    while (word_iter != this->m_words.end()) {
+        if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
+            invalid_start_chars.end() != invalid_start_chars.find(FindLeadingChar(word_iter->first)))) {
+            this->m_words.erase(word_iter++);
+            continue;
+        }
+        word_iter++;
+    }
+}
 
 } // namespace word
 } // namespace mining
