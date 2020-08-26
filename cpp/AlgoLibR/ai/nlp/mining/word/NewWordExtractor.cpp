@@ -28,7 +28,8 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
         }
     }
     if (is_ok) {
-        for (auto k = this->min_n; k < this->max_n - 1; k++) {
+        AddNGram(line.substr(start_pos, 1).c_str());
+        for (auto k = 1; k < this->max_n - 1; k++) {
             if (start_pos + k >= line.size()) break;
             if (line[start_pos + k] == '*') break;
             last_wchar_ptr = AddNGram(line.substr(start_pos, k + 1).c_str());
@@ -36,6 +37,7 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
             if (iter == this->m_words.end()) {
                 WordNeighbor word;
                 word.last_char_ptr = last_wchar_ptr;
+                word.word_length = k+1;
                 this->m_words.emplace(last_wchar_ptr, word);
             }
         }
@@ -62,7 +64,8 @@ inline void NewWordExtractor::AddWord(std::wstring &line, const unsigned long st
         }
         std::map<Node *, WordNeighbor>::iterator word_iter;
         std::map<wchar_t, u_long>::iterator char_iter;
-        for (n = this->min_n; n < word_n_end; n++) {
+        AddNGram(line.substr(start_pos, 1).c_str());
+        for (n = 1; n < word_n_end; n++) {
             if (start_pos + n >= line.size()) return;
 //            std::wcout << line[start_pos-1] << std::endl;
             if (line[start_pos + n] == L'*') return;
@@ -71,6 +74,7 @@ inline void NewWordExtractor::AddWord(std::wstring &line, const unsigned long st
             if (word_iter == this->m_words.end()) {
                 WordNeighbor word;
                 word.last_char_ptr = last_wchar_ptr;
+                word.word_length=n+1;
                 word.left_neighbors.emplace(line[start_pos - 1], 1);
                 this->m_words.emplace(last_wchar_ptr, word);
             } else {
@@ -131,7 +135,6 @@ void NewWordExtractor::Extract(const char *src_fname) {
         std::wcout << word << " : " << vec[i].second.score << std::endl;
         word.clear();
     }
-
 }
 
 void NewWordExtractor::GetWord(Node *node, std::wstring &word) {
@@ -151,7 +154,7 @@ inline void NewWordExtractor::CalcEntropyScore(const std::map<Node *, WordNeighb
         left_total_cnt += left_char.second;
     }
 //    std::wcout << std::endl << "right: ";
-    double left_entropy = 1e-8, right_entropy = 1e-8, prob;
+    double left_entropy = 0, right_entropy = 0, prob;
     if (left_total_cnt > 0) {
         for (auto left_char : word_iter->second.left_neighbors) {
             prob = left_char.second / left_total_cnt;
@@ -172,56 +175,41 @@ inline void NewWordExtractor::CalcEntropyScore(const std::map<Node *, WordNeighb
         }
     }
     word_iter->second.score = log2((left_entropy * exp(right_entropy) +
-        right_entropy * exp(left_entropy)) / (abs(left_entropy - right_entropy) + 1e-8));
+        right_entropy * exp(left_entropy)+1e-4) / (abs(left_entropy - right_entropy) + 1));
 //    std::wcout << left_total_cnt << ',' << left_entropy << ';' << right_total_cnt << ',' << right_entropy << std::endl;
 }
 
 
-void NewWordExtractor::CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter) {
-    double mi=0;
-    std::wstring word;
-    std::vector<unsigned long long> left_freqs, right_freqs;
-    Node* node = word_iter->first->parent;
-    word.push_back(word_iter->first->key);
+void NewWordExtractor::CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter,
+                                                 std::map<uint8_t, u_long> &ngram_count) {
+    double joint_prob, independent_prob=1;
+
+    joint_prob = double(word_iter->first->value)/ngram_count[word_iter->second.word_length];
+    Node* node = word_iter->first;
     while(node != this->root){
-        word.push_back(node->key);
-        left_freqs.push_back(node->value);
+        independent_prob *= double(node->value)/ngram_count[1];
         node = node->parent;
     }
-    reverse(word.begin(), word.end());
-    for(auto i = 1; i < word.size(); i++){
-        node = FindNode(word.substr(i).c_str());
-        if(node == nullptr){
-            right_freqs.push_back(0);
-        }else{
-            right_freqs.push_back(node->value);
-        }
-    }
-    while(right_freqs.size() < left_freqs.size()){
-        right_freqs.push_back(0);
-    }
-    /* left : a ab abc
-     * right: bcd cd d
-     */
-    for(auto i = 0; i < left_freqs.size(); i++) {
-        mi = std::max(double(left_freqs[i]) * right_freqs[i], mi);
-    }
-    word_iter->second.score +=log2(word_iter->first->value/(mi+1e-8))/word.size();
+    word_iter->second.score += log2(joint_prob/independent_prob)/word_iter->second.word_length;
 }
 
 void NewWordExtractor::CalcScore() {
     std::wstring word;
     auto word_iter = this->m_words.begin();
+    std::map<uint8_t, u_long> ngram_count;
     while ( word_iter != this->m_words.end()) {
-        if(word_iter->first->value < this->m_min_freq){
+        if (word_iter->first->value < this->m_min_freq) {
             this->m_words.erase(word_iter++);
-        }else{
+        } else {
             CalcEntropyScore(word_iter);
-            CalcPointMutalInformation(word_iter);
+            ++ngram_count[word_iter->second.word_length];
             word_iter++;
         }
     }
-    std::wcout << std::flush;
+    ngram_count[1] = this->root->child_nodes.size();
+    for(word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
+        CalcPointMutalInformation(word_iter, ngram_count);
+    }
 }
 
 

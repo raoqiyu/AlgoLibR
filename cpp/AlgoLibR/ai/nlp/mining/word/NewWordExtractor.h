@@ -27,6 +27,7 @@ namespace word {
 
 typedef struct WordNeighbor {
   double score;
+  uint8_t word_length;
   Node *last_char_ptr;
   std::map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
@@ -45,7 +46,8 @@ class NewWordExtractor : public NGramCounter {
 
   void CalcScore();
   inline void CalcEntropyScore(const std::map<Node *, WordNeighbor>::iterator &word_iter);
-  void CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter);
+  void CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter,
+                                 std::map<uint8_t, size_t> &ngram_count);
 
   unsigned long long m_min_freq;
   std::map<Node *, WordNeighbor> m_words;
