@@ -42,8 +42,8 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
             }
         }
         if (start_pos + this->max_n >= line.size()) return;
-        if (line[start_pos + this->max_n] == '*') return;
-        last_wchar_ptr = AddNGram(line.substr(start_pos, this->max_n).c_str());
+        if (line[start_pos + this->max_n-1] == '*') return;
+        last_wchar_ptr = AddNGram(line.substr(start_pos, this->max_n+1).c_str());
     }
 }
 
@@ -89,7 +89,7 @@ inline void NewWordExtractor::AddWord(std::wstring &line, const unsigned long st
         if (n_end == this->max_n) {
             if (start_pos + n_end >= line.size()) return;
             if (line[start_pos + n_end] == '*') return;
-            last_wchar_ptr = AddNGram(line.substr(start_pos, n_end).c_str());
+            last_wchar_ptr = AddNGram(line.substr(start_pos, n_end+1).c_str());
         }
     }
 }
@@ -203,6 +203,7 @@ void NewWordExtractor::CalcScore() {
         ++ngram_count[word_iter->second.word_length];
         word_iter++;
     }
+    ngram_count[1] = this->root->child_nodes.size();
     for (word_iter = this->m_words.begin(); word_iter != this->m_words.end(); word_iter++) {
         CalcPointMutalInformation(word_iter, ngram_count);
     }
