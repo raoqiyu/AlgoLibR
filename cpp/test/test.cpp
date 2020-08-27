@@ -6,10 +6,10 @@
  */
 
 #include <locale.h>
-#include "src/test_sort.h"
-#include "src/test_data_structure.h"
+#include "src/test_sort.cpp"
+#include "src/test_data_structure.cpp"
 #include "src/test_segment.h"
-#include "src/test_regex.h"
+#include "src/test_regex.cpp"
 
 
 int main(){

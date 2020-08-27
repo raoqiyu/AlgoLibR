@@ -3,6 +3,8 @@ set (CMAKE_FIND_NO_INSTALL_PREFIX TRUE FORCE)
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 cmake_policy(SET CMP0079 NEW)
 
+option(GOOGLE_TEST "Build google tests" ON)
+
 
 ###################################################################################################
 if($ENV{BUILD_ALGOLIBR_WITH_GPU} MATCHES "True")
@@ -133,5 +135,12 @@ endif()
 #install(TARGETS ${ALGO_CUDA_TARGET} DESTINATION lib)
 install(TARGETS ${ALGO_CPP_TARGET} DESTINATION lib)
 
-link_libraries(${ALGO_CPP_TARGET})
-add_executable(test_ngram test/test_ngrams.cpp)
+
+if (GOOGLE_TEST)
+    enable_testing()
+    add_subdirectory(test)
+    add_test(
+            NAME TestAlgoLibR
+            COMMAND TestAlgoLibR
+            WORKING_DIRECTORY ${AlgoLibR_BINARY_DIR})
+endif (GOOGLE_TEST)

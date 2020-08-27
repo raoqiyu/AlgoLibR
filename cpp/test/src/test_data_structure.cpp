@@ -13,13 +13,14 @@ Description:
 #include "AlgoLibR/data_structure/tree/trie_tree.h"
 #include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
 #include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include <gtest/gtest.h>
 
 bool test_max(std::pair<int,int> x, std::pair<int,int> y){
     return x.second > y.second;
 }
 
 
-void test_heap(){
+TEST(test_data_structure,heap){
     printf("Test Heap\n");
 
     AlgoLibR::data_structure::heap::HeapImp<int> heap(5, true);
@@ -30,122 +31,71 @@ void test_heap(){
     heap.insert(45);
     heap.insert(6);
 
-    printf("Current max: %d\n", heap.get());
+    ASSERT_EQ(heap.get(), 100);
     heap.remove();
-    printf("Current max: %d\n", heap.get());
+    ASSERT_EQ(heap.get(), 45);
     heap.remove();
-    printf("Current max: %d\n", heap.get());
+    ASSERT_EQ(heap.get(), 6);
     heap.remove();
-    printf("Current max: %d\n", heap.get());
+    ASSERT_EQ(heap.get(), 2);
     heap.remove();
-    printf("Current max: %d\n", heap.get());
+    ASSERT_EQ(heap.get(), 1);
     heap.remove();
+    ASSERT_EQ(heap.size(), 0);
 
     int arr[5]  = {2, 100, 1 ,45, 6};
     int * result, k=2;
 
     result = AlgoLibR::data_structure::heap::klargest(arr, 5, k);
-    for(auto i = 0; i < k; i++){
-        std::wcout << result[i] << " ";
-    }
-    std::wcout << std::endl;
+    ASSERT_EQ(result[0], 100);
+    ASSERT_EQ(result[1], 45);
+
     if(result != nullptr){
         delete result;
     }
     
     result = AlgoLibR::data_structure::heap::ksmallest(arr, 5, k);
-    for(auto i = 0; i < k; i++){
-        std::wcout << result[i] << " ";
-    }
+    ASSERT_EQ(result[0], 1);
+    ASSERT_EQ(result[1], 2);
+
     std::wcout << std::endl;
     if(result != nullptr){
         delete result;
     }
-
-    // std::vector<std::pair<int,int>> test_arr, result2;
-    // test_arr.push_back(std::make_pair(1,4));
-    // test_arr.push_back(std::make_pair(2,3));
-    // test_arr.push_back(std::make_pair(3,2));
-    // test_arr.push_back(std::make_pair(4,1));
-
-    // result2 = AlgoLibR::data_structure::heap::klargestKey<std::vector<std::pair<int,int>>,
-    //                                                    std::pair<int,int>>(test_arr, 4, 1, test_max);
-    // for(auto i = 0; i < k; i++){
-    //     std::wcout << result2[i].first << ',' << result2[i].second << " ";
-    // }
-    // std::wcout << std::endl;
-
-
-    printf("\n\n");
 }
 
 
-void test_Trie(){
+TEST(test_data_structure, Trie){
     std::wcout << "Test Trie" << std::endl;
 
     AlgoLibR::data_structure::tree::trie::Trie<AlgoLibR::data_structure::tree::trie::TrieNode> str_trie;
-
 
     str_trie.Add(L"hello");
     str_trie.Add(L"world");
     str_trie.Add(L"我");
 
-    std::wcout << "Searching" << std::endl; 
+    ASSERT_TRUE(str_trie.Search(L"hello"));
+    ASSERT_TRUE(str_trie.Search(L"world"));
+    ASSERT_FALSE(str_trie.Search(L"he"));
+    ASSERT_FALSE(str_trie.Search(L"wr"));
+    ASSERT_TRUE(str_trie.Search(L"我"));
 
-    if(!str_trie.Search(L"hello")){
-        std::wcout << "Wrong! : hello" << std::endl;
-    }
-
-    if(!str_trie.Search(L"world")){
-        std::wcout << "Wrong!: world" << std::endl;
-    }
-    
-    if(str_trie.Search(L"he")){
-        std::wcout << "Wrong! : he" << std::endl;
-    }
-
-    if(str_trie.Search(L"wor")){
-        std::wcout << "Wrong! : wor" << std::endl;
-    }
-
-    if(str_trie.Search(L"我")){
-        std::wcout << "Wrong! : word" << std::endl;
-    }
-
-    std::wcout << "Searching Stage 2" << std::endl; 
     str_trie.Add(L"his");
     str_trie.Add(L"hi");
-    if(!str_trie.Search(L"hi")){
-        std::wcout << "Wrong!   hi should exist" << std::endl;
-    }
+    ASSERT_TRUE(str_trie.Search(L"hi"));
     
     str_trie.Remove(L"his");
-    if(!str_trie.Search(L"hi")){
-        std::wcout << "Wrong!   hi should exist" << std::endl;
-    }
+    ASSERT_TRUE(str_trie.Search(L"hi"));
 
     str_trie.Add(L"我们");
-    if(!str_trie.Search(L"我")){
-        std::wcout << "Wrong!   hi should exist" << std::endl;
-    }
+    ASSERT_TRUE(str_trie.Search(L"我"));
 
     str_trie.Remove(L"我");
-    if(str_trie.Search(L"我")){
-        std::wcout << L"Wrong!   我 should not exist" << std::endl;
-    }
+    ASSERT_FALSE(str_trie.Search(L"我"));
 
-     str_trie.Remove(L"我");
-    if(str_trie.Search(L"我")){
-        std::wcout << L"Wrong!   我 should not exist" << std::endl;
-    }
-   
-    if(!str_trie.Search(L"我们")){
-        std::wcout << L"Wrong!   我们 should exist" << std::endl;
-    }
-
-    std::wcout << "Searching Stage 3" << std::endl; 
-
-    std::wcout << "End\n" << std::endl;
+    str_trie.Remove(L"我");
+    ASSERT_FALSE(str_trie.Search(L"我"));
+    ASSERT_TRUE(str_trie.Search(L"我们"));
 }
 
 void test_KVTrie(){
@@ -270,8 +220,6 @@ void test_ACTrie(){
 
 
 void test_ds(){
-    test_heap();
-    test_Trie();
     test_KVTrie();
     test_ACTrie();
 }
