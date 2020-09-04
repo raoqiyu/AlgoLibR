@@ -17,10 +17,28 @@ namespace word {
 NewWordExtractor::NewWordExtractor(uint8_t max_word_length, unsigned long long min_freq) :
         NGramCounter(1, max_word_length + 1, nullptr), m_min_freq(min_freq) {}
 
+void NewWordExtractor::AddNGram(const wchar_t gram[], Node **start_char_ptr, Node **ending_char_ptr){
+    size_t gram_len = wcslen(gram);
+    if(gram_len <= 0){
+        return;
+    }
+
+    Node* p  = this->root;
+    for(size_t i = 0; i < gram_len; i++){
+        p->AddChild(gram[i]);
+        p = p->child_nodes[gram[i]];
+    }
+    p->value += 1;
+    p->is_ending_key=true;
+
+    *start_char_ptr = this->root->child_nodes[gram[0]];
+    *ending_char_ptr = p;
+}
+
 inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
     const unsigned long start_pos = 0;
     bool is_ok = true;
-    Node *last_wchar_ptr;
+    Node *start_char_ptr, *ending_char_ptr;
     for (auto k = 0; k < this->min_n; k++) {
         if (line[start_pos + k] == '*') {
             is_ok = false;
@@ -28,24 +46,24 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
         }
     }
     if (is_ok) {
-        AddNGram(line.substr(start_pos, 1).c_str());
+        NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
         for (auto k = 1; k < this->max_n - 1; k++) {
             if (start_pos + k >= line.size()) return;
             if (line[start_pos + k] == '*') return;
-            last_wchar_ptr = AddNGram(line.substr(start_pos, k + 1).c_str());
+            AddNGram(line.substr(start_pos, k + 1).c_str(), &start_char_ptr, &ending_char_ptr);
             this->start_char_count[line[start_pos]]++;
             this->end_char_count[line[start_pos+k]]++;
-            auto iter = this->m_words.find(last_wchar_ptr);
+            auto iter = this->m_words.find(ending_char_ptr);
             if (iter == this->m_words.end()) {
                 WordNeighbor word;
-                word.last_char_ptr = last_wchar_ptr;
+                word.start_char_ptr = start_char_ptr;
                 word.word_length = k+1;
-                this->m_words.emplace(last_wchar_ptr, word);
+                this->m_words.emplace(ending_char_ptr, word);
             }
         }
 //        if (start_pos + this->max_n >= line.size()) return;
         if (line[start_pos + this->max_n-1] == '*') return;
-        last_wchar_ptr = AddNGram(line.substr(start_pos, this->max_n).c_str());
+        NGramCounter::AddNGram(line.substr(start_pos, this->max_n).c_str());
 //        this->start_char_count[line[start_pos]]++;
 //        this->end_char_count[line[start_pos+this->max_n-1]]++;
     }
@@ -53,8 +71,8 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
 
 inline void NewWordExtractor::AddWord(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
     bool is_ok = true;
-    Node *last_wchar_ptr;
     uint8_t n;
+    Node *start_char_ptr, *ending_char_ptr;
     for (n = 0; n < this->min_n; n++) {
         if (line[start_pos + n] == '*') {
             is_ok = false;
@@ -68,36 +86,37 @@ inline void NewWordExtractor::AddWord(std::wstring &line, unsigned long start_po
         }
         std::map<Node *, WordNeighbor>::iterator word_iter;
         std::map<wchar_t, u_long>::iterator char_iter;
-        AddNGram(line.substr(start_pos, 1).c_str());
+        NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
         for (n = 1; n < n_end; n++) {
 //            if (start_pos + n >= line.size()) return;
 //            std::wcout << line[start_pos-1] << std::endl;
             if (line[start_pos + n] == L'*') return;
             //  1 2 3 4
             //  2 3 4 5
-            last_wchar_ptr = AddNGram(line.substr(start_pos, n + 1).c_str());
+            AddNGram(line.substr(start_pos, n + 1).c_str(), &start_char_ptr, &ending_char_ptr);
             this->start_char_count[line[start_pos]]++;
             this->end_char_count[line[start_pos+n]]++;
-            word_iter = this->m_words.find(last_wchar_ptr);
+            word_iter = this->m_words.find(ending_char_ptr);
             if (word_iter == this->m_words.end()) {
                 WordNeighbor word;
-                word.last_char_ptr = last_wchar_ptr;
+                word.start_char_ptr = start_char_ptr;
                 word.word_length=n+1;
                 word.left_neighbors.emplace(line[start_pos - 1], 1);
-                this->m_words.emplace(last_wchar_ptr, word);
+                this->m_words.emplace(ending_char_ptr, word);
             } else {
                 char_iter = word_iter->second.left_neighbors.find(line[start_pos - 1]);
-                if (char_iter == word_iter->second.left_neighbors.end()) {
-                    word_iter->second.left_neighbors.emplace(line[start_pos - 1], 1);
-                } else {
-                    char_iter->second += 1;
-                }
+                word_iter->second.left_neighbors[line[start_pos-1]] += 1;
+//                if (char_iter == word_iter->second.left_neighbors.end()) {
+//                    word_iter->second.left_neighbors.emplace(line[start_pos - 1], 1);
+//                } else {
+//                    char_iter->second += 1;
+//                }
             }
         }
         if (n_end_bak == this->max_n) {
 //            if (start_pos + n_end-1 >= line.size()) return;
             if (line[start_pos + n] == '*') return;
-            last_wchar_ptr = AddNGram(line.substr(start_pos, n+1).c_str());
+            NGramCounter::AddNGram(line.substr(start_pos, n+1).c_str());
 //            this->start_char_count[line[start_pos]]++;
 //            this->end_char_count[line[start_pos+n]]++;
         }
@@ -149,12 +168,11 @@ void NewWordExtractor::Extract(const char *src_fname) {
 }
 
 void NewWordExtractor::GetWord(Node *node, std::wstring &word) {
-    if (node == this->root) {
-        reverse(word.begin(), word.end());
-        return;
+    while(node != this->root){
+        word.push_back(node->key);
+        node = node->parent;
     }
-    word.push_back(node->key);
-    GetWord(node->parent, word);
+    std::reverse(word.begin(), word.end());
 }
 
 inline void NewWordExtractor::CalcEntropyScore(const std::map<Node *, WordNeighbor>::iterator &word_iter) {
@@ -259,7 +277,7 @@ void NewWordExtractor::Filter() {
     word_iter = this->m_words.begin();
     while (word_iter != this->m_words.end()) {
         if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
-            invalid_start_chars.end() != invalid_start_chars.find(FindLeadingChar(word_iter->first)))) {
+            invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char_ptr->key))) {
             this->m_words.erase(word_iter++);
             continue;
         }
