@@ -34,7 +34,7 @@ typedef struct WordNeighbor {
 
 class NewWordExtractor : public NGramCounter {
  public:
-  NewWordExtractor(const uint8_t max_word_length = 4, unsigned long long min_freq=5);
+  explicit NewWordExtractor(uint8_t max_word_length = 4, unsigned long long min_freq=5);
 
   void Extract(const char *src_fname);
 
