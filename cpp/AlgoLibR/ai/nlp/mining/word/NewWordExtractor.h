@@ -40,7 +40,7 @@ class NewWordExtractor : public NGramCounter {
 
  private:
   inline void AddBeginWord(std::wstring &line);
-  inline void AddWord(std::wstring &line, const unsigned long start_pos, const unsigned long n_end);
+  inline void AddWord(std::wstring &line, unsigned long start_pos, unsigned long n_end);
 
   void GetWord(Node *node, std::wstring &word);
 
@@ -55,6 +55,9 @@ class NewWordExtractor : public NGramCounter {
   unsigned long long m_min_freq;
   std::map<Node *, WordNeighbor> m_words;
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");
+
+  std::map<wchar_t, u_long> start_char_count;
+  std::map<wchar_t, u_long> end_char_count;
 };
 
 } // namespace word
