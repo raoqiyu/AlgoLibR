@@ -8,6 +8,7 @@
 #include <math.h>
 #include "AlgoLibR/ai/nlp/mining/word/NewWordExtractor.h"
 #include "AlgoLibR/framework/logging.h"
+#include "AlgoLibR/framework/string.h"
 
 namespace AlgoLibR {
 namespace ai {
@@ -40,86 +41,51 @@ inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
     const unsigned long start_pos = 0;
     bool is_ok = true;
     Node *start_char_ptr, *ending_char_ptr;
-    for (auto k = 0; k < this->min_n; k++) {
-        if (line[start_pos + k] == '*') {
-            is_ok = false;
-            break;
+    NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
+    for (auto k = 1; k < this->max_n - 1; k++) {
+        AddNGram(line.substr(start_pos, k + 1).c_str(), &start_char_ptr, &ending_char_ptr);
+        this->start_char_count[line[start_pos]]++;
+        this->end_char_count[line[start_pos+k]]++;
+        auto iter = this->m_words.find(ending_char_ptr);
+        if (iter == this->m_words.end()) {
+            WordNeighbor word;
+            word.start_char_ptr = start_char_ptr;
+            word.word_length = k+1;
+            this->m_words.emplace(ending_char_ptr, word);
         }
     }
-    if (is_ok) {
-        NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
-        for (auto k = 1; k < this->max_n - 1; k++) {
-            if (start_pos + k >= line.size()) return;
-            if (line[start_pos + k] == '*') return;
-            AddNGram(line.substr(start_pos, k + 1).c_str(), &start_char_ptr, &ending_char_ptr);
-            this->start_char_count[line[start_pos]]++;
-            this->end_char_count[line[start_pos+k]]++;
-            auto iter = this->m_words.find(ending_char_ptr);
-            if (iter == this->m_words.end()) {
-                WordNeighbor word;
-                word.start_char_ptr = start_char_ptr;
-                word.word_length = k+1;
-                this->m_words.emplace(ending_char_ptr, word);
-            }
-        }
-//        if (start_pos + this->max_n >= line.size()) return;
-        if (line[start_pos + this->max_n-1] == '*') return;
-        NGramCounter::AddNGram(line.substr(start_pos, this->max_n).c_str());
-//        this->start_char_count[line[start_pos]]++;
-//        this->end_char_count[line[start_pos+this->max_n-1]]++;
-    }
+
+    NGramCounter::AddNGram(line.substr(start_pos, this->max_n).c_str());
 }
 
 inline void NewWordExtractor::AddWord(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
     bool is_ok = true;
     uint8_t n;
     Node *start_char_ptr, *ending_char_ptr;
-    for (n = 0; n < this->min_n; n++) {
-        if (line[start_pos + n] == '*') {
-            is_ok = false;
-            break;
-        }
+    auto n_end_bak = n_end;
+    if (n_end == this->max_n) {
+        NGramCounter::AddNGram(line.substr(start_pos, n_end+1).c_str());
+        n_end--;
     }
-    if (is_ok) {
-        auto n_end_bak = n_end;
-        if (n_end == this->max_n) {
-            n_end--;
-        }
-        std::map<Node *, WordNeighbor>::iterator word_iter;
-        std::map<wchar_t, u_long>::iterator char_iter;
-        NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
-        for (n = 1; n < n_end; n++) {
-//            if (start_pos + n >= line.size()) return;
-//            std::wcout << line[start_pos-1] << std::endl;
-            if (line[start_pos + n] == L'*') return;
-            //  1 2 3 4
-            //  2 3 4 5
-            AddNGram(line.substr(start_pos, n + 1).c_str(), &start_char_ptr, &ending_char_ptr);
-            this->start_char_count[line[start_pos]]++;
-            this->end_char_count[line[start_pos+n]]++;
-            word_iter = this->m_words.find(ending_char_ptr);
-            if (word_iter == this->m_words.end()) {
-                WordNeighbor word;
-                word.start_char_ptr = start_char_ptr;
-                word.word_length=n+1;
-                word.left_neighbors.emplace(line[start_pos - 1], 1);
-                this->m_words.emplace(ending_char_ptr, word);
-            } else {
-                char_iter = word_iter->second.left_neighbors.find(line[start_pos - 1]);
-                word_iter->second.left_neighbors[line[start_pos-1]] += 1;
-//                if (char_iter == word_iter->second.left_neighbors.end()) {
-//                    word_iter->second.left_neighbors.emplace(line[start_pos - 1], 1);
-//                } else {
-//                    char_iter->second += 1;
-//                }
-            }
-        }
-        if (n_end_bak == this->max_n) {
-//            if (start_pos + n_end-1 >= line.size()) return;
-            if (line[start_pos + n] == '*') return;
-            NGramCounter::AddNGram(line.substr(start_pos, n+1).c_str());
-//            this->start_char_count[line[start_pos]]++;
-//            this->end_char_count[line[start_pos+n]]++;
+    std::map<Node *, WordNeighbor>::iterator word_iter;
+    std::map<wchar_t, u_long>::iterator char_iter;
+    NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
+    for (n = 1; n < n_end; n++) {
+        //  1 2 3 4
+        //  2 3 4 5
+        AddNGram(line.substr(start_pos, n + 1).c_str(), &start_char_ptr, &ending_char_ptr);
+        this->start_char_count[line[start_pos]]++;
+        this->end_char_count[line[start_pos+n]]++;
+        word_iter = this->m_words.find(ending_char_ptr);
+        if (word_iter == this->m_words.end()) {
+            WordNeighbor word;
+            word.start_char_ptr = start_char_ptr;
+            word.word_length=n+1;
+            word.left_neighbors.emplace(line[start_pos - 1], 1);
+            this->m_words.emplace(ending_char_ptr, word);
+        } else {
+            char_iter = word_iter->second.left_neighbors.find(line[start_pos - 1]);
+            word_iter->second.left_neighbors[line[start_pos-1]] += 1;
         }
     }
 }
@@ -135,23 +101,40 @@ void NewWordExtractor::Extract(const char *src_fname) {
         return;
     }
     AlgoLibR::LOGGING_INFO(L"读取文件");
-    std::wstring line;
+    std::wstring line, raw_line;
     std::wstring gram_str;
     unsigned long start_pos, split_pos;
     uint8_t k = this->max_n;
-    while (std::getline(src_file, line)) {
-        if (line.size() < this->min_n) continue;
-        line = std::regex_replace(line, this->delimiters, L"*");
-        AddBeginWord(line);
-        split_pos = std::max((long) (line.size() - this->max_n), 0L);
-//        std::wcout << split_pos << ':' << line[split_pos] <<  std::endl;
-        for (start_pos = 1; start_pos < split_pos; start_pos++) {
-            AddWord(line, start_pos, this->max_n);
+    std::vector<std::wstring> sub_lines;
+    while (std::getline(src_file, raw_line)) {
+        sub_lines.clear();
+
+        if (raw_line.size() < this->min_n){
+            raw_line.clear();
+            continue;
         }
-        for (start_pos = split_pos; start_pos < line.size() && k > 0; start_pos++, k--) {
-            AddWord(line, start_pos, k);
+
+        raw_line = std::regex_replace(raw_line, this->delimiters, L"*");
+        if(raw_line.size() < this->min_n or raw_line[0] == L'*'){
+            raw_line.clear();
+            continue;
         }
-        line.clear();
+
+        AlgoLibR::framework::string::split(raw_line, sub_lines, L"*");
+        for(auto i = 0; i < sub_lines.size(); i++){
+            line = sub_lines[i];
+            if (line.size() < this->min_n) continue;
+            AddBeginWord(line);
+            split_pos = std::max((long) (line.size() - this->max_n), 0L);
+            for (start_pos = 1; start_pos < split_pos; start_pos++) {
+                AddWord(line, start_pos, this->max_n);
+            }
+            for (start_pos = split_pos; start_pos < line.size() && k > 0; start_pos++, k--) {
+                AddWord(line, start_pos, k);
+            }
+        }
+        raw_line.clear();
+        sub_lines.clear();
     }
     AlgoLibR::LOGGING_INFO(L"过滤低频词汇、高频开始和结束字的词汇");
     Filter();

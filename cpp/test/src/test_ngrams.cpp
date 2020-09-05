@@ -28,8 +28,8 @@ TEST(test_ngram_fn, test_ngram){
 
     NewWordExtractor ngram_counter = NewWordExtractor(5,2);
 
-    ngram_counter.Extract("../../../data/NLP/Corpus/test_for_ngrams.txt");
-//    ngram_counter.ExportToFile("./ngrams_test_results.txt");
+    ngram_counter.Extract("../../../data/NLP/Corpus/test_for_ngrams_bak.txt");
+    ngram_counter.ExportToFile("./ngrams_test_results.txt");
     time(&timep);
     strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
     AlgoLibR::LOGGING_INFO(L"结束");
