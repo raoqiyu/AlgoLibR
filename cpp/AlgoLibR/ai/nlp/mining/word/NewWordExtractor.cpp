@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include "AlgoLibR/ai/nlp/mining/word/NewWordExtractor.h"
+#include "AlgoLibR/framework/logging.h"
 
 namespace AlgoLibR {
 namespace ai {
@@ -133,7 +134,7 @@ void NewWordExtractor::Extract(const char *src_fname) {
         std::wcout << src_fname << L" 文件打开失败..." << std::endl;
         return;
     }
-
+    AlgoLibR::LOGGING_INFO(L"读取文件");
     std::wstring line;
     std::wstring gram_str;
     unsigned long start_pos, split_pos;
@@ -152,10 +153,13 @@ void NewWordExtractor::Extract(const char *src_fname) {
         }
         line.clear();
     }
-
+    AlgoLibR::LOGGING_INFO(L"过滤低频词汇、高频开始和结束字的词汇");
     Filter();
+
+    AlgoLibR::LOGGING_INFO(L"计算分数");
     CalcScore();
 
+    AlgoLibR::LOGGING_INFO(L"排序");
     // Sort by score
     std::wstring word;
     std::vector<std::pair<Node *, WordNeighbor>> vec(this->m_words.begin(), this->m_words.end());

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
+#include "AlgoLibR/framework/logging.h"
 #include "AlgoLibR/ai/nlp/mining/word/NewWordExtractor.h"
 
 using namespace AlgoLibR::ai::nlp::mining::word;
@@ -23,15 +24,15 @@ TEST(test_ngram_fn, test_ngram){
     char tmp[64];
     strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
 
-    std::wcout << L"开始: " << tmp << std::endl;
+    AlgoLibR::LOGGING_INFO(L"开始");
 
-    NewWordExtractor ngram_counter = NewWordExtractor(3);
+    NewWordExtractor ngram_counter = NewWordExtractor(5,2);
 
     ngram_counter.Extract("../../../data/NLP/Corpus/test_for_ngrams.txt");
 //    ngram_counter.ExportToFile("./ngrams_test_results.txt");
     time(&timep);
     strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
-    std::wcout << L"结束: " << tmp << std::endl;
+    AlgoLibR::LOGGING_INFO(L"结束");
     EXPECT_EQ(3, 3);
 
 }
