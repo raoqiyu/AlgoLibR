@@ -8,7 +8,7 @@
 #ifndef NEWWORDEXTRACTOR_H
 #define NEWWORDEXTRACTOR_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <iostream>
 #include <stdlib.h>
@@ -29,7 +29,7 @@ typedef struct WordNeighbor {
   double score;
   uint8_t word_length;
   Node *start_char_ptr;
-  std::map<wchar_t, u_long> left_neighbors;
+  std::unordered_map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
 
 class NewWordExtractor : public NGramCounter {
@@ -48,19 +48,19 @@ class NewWordExtractor : public NGramCounter {
   void GetWord(Node *node, std::wstring &word);
 
   void CalcScore();
-  inline void CalcEntropyScore(const std::map<Node *, WordNeighbor>::iterator &word_iter);
-  void CalcPointMutalInformation(const std::map<Node *, WordNeighbor>::iterator &word_iter,
-                                 std::map<uint8_t, size_t> &ngram_count);
+  inline void CalcEntropyScore(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter);
+  void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
+                                 std::unordered_map<uint8_t, size_t> &ngram_count);
 
   inline wchar_t FindLeadingChar(Node *end_node);
   void Filter();
 
   unsigned long long m_min_freq;
-  std::map<Node *, WordNeighbor> m_words;
+  std::unordered_map<Node *, WordNeighbor> m_words;
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");
 
-  std::map<wchar_t, u_long> start_char_count;
-  std::map<wchar_t, u_long> end_char_count;
+  std::unordered_map<wchar_t, u_long> start_char_count;
+  std::unordered_map<wchar_t, u_long> end_char_count;
 };
 
 } // namespace word

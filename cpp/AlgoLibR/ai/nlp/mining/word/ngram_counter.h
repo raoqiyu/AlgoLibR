@@ -8,7 +8,7 @@
 #ifndef NGRAM_COUNTER_H
 #define NGRAM_COUNTER_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <stdlib.h>
 #include <vector>
@@ -28,7 +28,7 @@ public:
     wchar_t key;
     unsigned long long value = 0;
     bool is_ending_key;
-    std::map<wchar_t, Node*> child_nodes;
+    std::unordered_map<wchar_t, Node*> child_nodes;
     Node *parent;
 
     Node(const wchar_t key);
