@@ -40,6 +40,16 @@ void Node::AddChild(const wchar_t key){
     child_nodes[key] = new Node(key, this);
 }
 
+Node* Node::AddChildPtr(const wchar_t key) {
+    auto iter = child_nodes.find(key);
+    if( iter != child_nodes.end()){
+        return iter->second;
+    }
+    Node * p = new Node(key, this);
+    child_nodes[key] = p;
+    return p;
+}
+
 void Node::RemoveChild(const wchar_t key){
     auto iter = child_nodes.find(key);
     if( iter == child_nodes.end()){

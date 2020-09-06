@@ -35,6 +35,7 @@ public:
     Node(const wchar_t key, Node* parent);
     ~Node();
     void AddChild(const wchar_t key);
+    Node* AddChildPtr(const wchar_t key);
     void RemoveChild(const wchar_t key);
 
 };

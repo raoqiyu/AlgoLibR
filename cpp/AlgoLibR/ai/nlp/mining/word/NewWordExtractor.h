@@ -39,10 +39,11 @@ class NewWordExtractor : public NGramCounter {
   void Extract(const char *src_fname);
 
  private:
-  void AddNGram(const wchar_t gram[], Node **start_char_ptr, Node **ending_char_ptr);
+  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size);
+  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **start_char_ptr, Node **ending_char_ptr);
 
-  inline void AddBeginWord(std::wstring &line);
-  inline void AddWord(std::wstring &line, unsigned long start_pos, unsigned long n_end);
+  inline void AddBeginWords(std::wstring &line);
+  inline void AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end);
 
   void GetWord(Node *node, std::wstring &word);
 

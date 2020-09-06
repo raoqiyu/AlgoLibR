@@ -19,68 +19,70 @@ namespace word {
 NewWordExtractor::NewWordExtractor(uint8_t max_word_length, unsigned long long min_freq) :
         NGramCounter(1, max_word_length + 1, nullptr), m_min_freq(min_freq) {}
 
-void NewWordExtractor::AddNGram(const wchar_t gram[], Node **start_char_ptr, Node **ending_char_ptr){
-    size_t gram_len = wcslen(gram);
-    if(gram_len <= 0){
-        return;
-    }
-
+void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size){
     Node* p  = this->root;
-    for(size_t i = 0; i < gram_len; i++){
-        p->AddChild(gram[i]);
-        p = p->child_nodes[gram[i]];
+    for(size_t i = 0; i < word_size; i++){
+        p = p->AddChildPtr(str[start_pos+i]);
     }
     p->value += 1;
     p->is_ending_key=true;
+}
 
-    *start_char_ptr = this->root->child_nodes[gram[0]];
+void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **start_char_ptr, Node **ending_char_ptr){
+    Node* p  = this->root;
+    for(size_t i = 0; i < word_size; i++){
+        p = p->AddChildPtr(str[start_pos+i]);
+    }
+    p->value += 1;
+    p->is_ending_key=true;
+    *start_char_ptr = this->root->child_nodes[str[start_pos]];
     *ending_char_ptr = p;
 }
 
-inline void NewWordExtractor::AddBeginWord(std::wstring &line) {
+
+inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
     const unsigned long start_pos = 0;
     bool is_ok = true;
     Node *start_char_ptr, *ending_char_ptr;
-    NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
-    for (auto k = 1; k < this->max_n - 1; k++) {
-        AddNGram(line.substr(start_pos, k + 1).c_str(), &start_char_ptr, &ending_char_ptr);
+    AddWord(line, start_pos, 1);
+    for (auto k = 2; k < this->max_n; k++) {
+        AddWord(line, start_pos, k, &start_char_ptr, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
-        this->end_char_count[line[start_pos+k]]++;
+        this->end_char_count[line[start_pos+k-1]]++;
         auto iter = this->m_words.find(ending_char_ptr);
         if (iter == this->m_words.end()) {
             WordNeighbor word;
             word.start_char_ptr = start_char_ptr;
-            word.word_length = k+1;
+            word.word_length = k;
             this->m_words.emplace(ending_char_ptr, word);
         }
     }
 
-    NGramCounter::AddNGram(line.substr(start_pos, this->max_n).c_str());
+    AddWord(line, start_pos, this->max_n);
 }
 
-inline void NewWordExtractor::AddWord(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
+inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
     bool is_ok = true;
-    uint8_t n;
     Node *start_char_ptr, *ending_char_ptr;
     auto n_end_bak = n_end;
     if (n_end == this->max_n) {
-        NGramCounter::AddNGram(line.substr(start_pos, n_end+1).c_str());
+        AddWord(line, start_pos, n_end);
         n_end--;
     }
     std::map<Node *, WordNeighbor>::iterator word_iter;
     std::map<wchar_t, u_long>::iterator char_iter;
-    NGramCounter::AddNGram(line.substr(start_pos, 1).c_str());
-    for (n = 1; n < n_end; n++) {
+    AddWord(line, start_pos, 1);
+    for (auto k = 2; k <= n_end; k++) {
         //  1 2 3 4
         //  2 3 4 5
-        AddNGram(line.substr(start_pos, n + 1).c_str(), &start_char_ptr, &ending_char_ptr);
+        AddWord(line, start_pos, k, &start_char_ptr, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
-        this->end_char_count[line[start_pos+n]]++;
+        this->end_char_count[line[start_pos+k-1]]++;
         word_iter = this->m_words.find(ending_char_ptr);
         if (word_iter == this->m_words.end()) {
             WordNeighbor word;
             word.start_char_ptr = start_char_ptr;
-            word.word_length=n+1;
+            word.word_length=k;
             word.left_neighbors.emplace(line[start_pos - 1], 1);
             this->m_words.emplace(ending_char_ptr, word);
         } else {
@@ -124,13 +126,13 @@ void NewWordExtractor::Extract(const char *src_fname) {
         for(auto i = 0; i < sub_lines.size(); i++){
             line = sub_lines[i];
             if (line.size() < this->min_n) continue;
-            AddBeginWord(line);
+            AddBeginWords(line);
             split_pos = std::max((long) (line.size() - this->max_n), 0L);
             for (start_pos = 1; start_pos < split_pos; start_pos++) {
-                AddWord(line, start_pos, this->max_n);
+                AddWords(line, start_pos, this->max_n);
             }
             for (start_pos = split_pos; start_pos < line.size() && k > 0; start_pos++, k--) {
-                AddWord(line, start_pos, k);
+                AddWords(line, start_pos, k);
             }
         }
         raw_line.clear();
