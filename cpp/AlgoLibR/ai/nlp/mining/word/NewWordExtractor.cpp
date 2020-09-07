@@ -44,11 +44,10 @@ void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_
 
 
 inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
-    const unsigned long start_pos = 0;
-    bool is_ok = true;
+    const unsigned long start_pos = 0, n = std::min(line.size(), (size_t)this->max_n);
     Node *ending_char_ptr;
     AddWord(line, start_pos, 1);
-    for (auto k = 2; k < this->max_n; k++) {
+    for (auto k = 2; k < n; k++) {
         AddWord(line, start_pos, k, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
         this->end_char_count[line[start_pos+k-1]]++;
@@ -59,8 +58,7 @@ inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
             this->m_words[k].emplace(ending_char_ptr, word);
         }
     }
-
-    AddWord(line, start_pos, this->max_n);
+    if (line.size() >= this->max_n) AddWord(line, start_pos, this->max_n);
 }
 
 inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
@@ -87,7 +85,6 @@ inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_p
             word.left_neighbors.emplace(line[start_pos - 1], 1);
             this->m_words[k].emplace(ending_char_ptr, word);
         } else {
-            char_iter = word_iter->second.left_neighbors.find(line[start_pos - 1]);
             word_iter->second.left_neighbors[line[start_pos-1]] += 1;
         }
     }
@@ -128,10 +125,12 @@ void NewWordExtractor::Extract(const char *src_fname) {
             line = sub_lines[i];
             if (line.size() < this->min_n) continue;
             AddBeginWords(line);
-            split_pos = std::max((long) (line.size() - this->max_n), 0L);
+            if (line.size() <= this->max_n) continue;
+            split_pos = std::max((long) (line.size() - this->max_n - 1), 1L);
             for (start_pos = 1; start_pos < split_pos; start_pos++) {
                 AddWords(line, start_pos, this->max_n);
             }
+            k = this->max_n;
             for (start_pos = split_pos; start_pos < line.size() && k > 0; start_pos++, k--) {
                 AddWords(line, start_pos, k);
             }
