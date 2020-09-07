@@ -49,8 +49,7 @@ class NewWordExtractor : public NGramCounter {
 
   void CalcScore();
   inline void CalcEntropyScore(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter);
-  void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
-                                 std::unordered_map<uint8_t, size_t> &ngram_count);
+  void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_ite);
 
   inline wchar_t FindLeadingChar(Node *end_node);
   void Filter();
@@ -61,6 +60,7 @@ class NewWordExtractor : public NGramCounter {
 
   std::unordered_map<wchar_t, u_long> start_char_count;
   std::unordered_map<wchar_t, u_long> end_char_count;
+  std::unordered_map<uint8_t, u_long> ngram_count;
 };
 
 } // namespace word
