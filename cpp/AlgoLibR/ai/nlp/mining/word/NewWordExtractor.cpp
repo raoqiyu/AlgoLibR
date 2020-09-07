@@ -28,14 +28,13 @@ void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_
     p->is_ending_key=true;
 }
 
-void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **start_char_ptr, Node **ending_char_ptr){
+void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **ending_char_ptr){
     Node* p  = this->root;
     for(size_t i = 0; i < word_size; i++){
         p = p->AddChildPtr(str[start_pos+i]);
     }
     p->value += 1;
     p->is_ending_key=true;
-    *start_char_ptr = this->root->child_nodes[str[start_pos]];
     *ending_char_ptr = p;
 }
 
@@ -43,16 +42,16 @@ void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_
 inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
     const unsigned long start_pos = 0;
     bool is_ok = true;
-    Node *start_char_ptr, *ending_char_ptr;
+    Node *ending_char_ptr;
     AddWord(line, start_pos, 1);
     for (auto k = 2; k < this->max_n; k++) {
-        AddWord(line, start_pos, k, &start_char_ptr, &ending_char_ptr);
+        AddWord(line, start_pos, k, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
         this->end_char_count[line[start_pos+k-1]]++;
         auto iter = this->m_words.find(ending_char_ptr);
         if (iter == this->m_words.end()) {
             WordNeighbor word;
-            word.start_char_ptr = start_char_ptr;
+            word.start_char = line[start_pos];
             word.word_length = k;
             this->m_words.emplace(ending_char_ptr, word);
         }
@@ -63,7 +62,7 @@ inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
 
 inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
     bool is_ok = true;
-    Node *start_char_ptr, *ending_char_ptr;
+    Node *ending_char_ptr;
     auto n_end_bak = n_end;
     if (n_end == this->max_n) {
         AddWord(line, start_pos, n_end);
@@ -75,13 +74,13 @@ inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_p
     for (auto k = 2; k <= n_end; k++) {
         //  1 2 3 4
         //  2 3 4 5
-        AddWord(line, start_pos, k, &start_char_ptr, &ending_char_ptr);
+        AddWord(line, start_pos, k, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
         this->end_char_count[line[start_pos+k-1]]++;
         word_iter = this->m_words.find(ending_char_ptr);
         if (word_iter == this->m_words.end()) {
             WordNeighbor word;
-            word.start_char_ptr = start_char_ptr;
+            word.start_char = line[start_pos];
             word.word_length=k;
             word.left_neighbors.emplace(line[start_pos - 1], 1);
             this->m_words.emplace(ending_char_ptr, word);
@@ -264,7 +263,7 @@ void NewWordExtractor::Filter() {
     word_iter = this->m_words.begin();
     while (word_iter != this->m_words.end()) {
         if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
-            invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char_ptr->key))) {
+            invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char))) {
             --this->ngram_count[word_iter->second.word_length];
             this->m_words.erase(word_iter++);
             continue;

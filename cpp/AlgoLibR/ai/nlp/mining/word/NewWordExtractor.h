@@ -28,7 +28,7 @@ namespace word {
 typedef struct WordNeighbor {
   double score;
   uint8_t word_length;
-  Node *start_char_ptr;
+  wchar_t start_char;
   std::unordered_map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
 
@@ -40,7 +40,7 @@ class NewWordExtractor : public NGramCounter {
 
  private:
   inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size);
-  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **start_char_ptr, Node **ending_char_ptr);
+  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **ending_char_ptr);
 
   inline void AddBeginWords(std::wstring &line);
   inline void AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end);
