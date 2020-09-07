@@ -17,7 +17,11 @@ namespace mining {
 namespace word {
 
 NewWordExtractor::NewWordExtractor(uint8_t max_word_length, unsigned long long min_freq) :
-        NGramCounter(1, max_word_length + 1, nullptr), m_min_freq(min_freq) {}
+        NGramCounter(1, max_word_length + 1, nullptr), m_min_freq(min_freq) {
+    for(auto k = 2; k <= max_word_length; k++){
+        this->m_words.emplace(k, std::unordered_map<Node *, WordNeighbor>());
+    }
+}
 
 void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size){
     Node* p  = this->root;
@@ -48,12 +52,11 @@ inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
         AddWord(line, start_pos, k, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
         this->end_char_count[line[start_pos+k-1]]++;
-        auto iter = this->m_words.find(ending_char_ptr);
-        if (iter == this->m_words.end()) {
+        auto iter = this->m_words[k].find(ending_char_ptr);
+        if (iter == this->m_words[k].end()) {
             WordNeighbor word;
             word.start_char = line[start_pos];
-            word.word_length = k;
-            this->m_words.emplace(ending_char_ptr, word);
+            this->m_words[k].emplace(ending_char_ptr, word);
         }
     }
 
@@ -77,13 +80,12 @@ inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_p
         AddWord(line, start_pos, k, &ending_char_ptr);
         this->start_char_count[line[start_pos]]++;
         this->end_char_count[line[start_pos+k-1]]++;
-        word_iter = this->m_words.find(ending_char_ptr);
-        if (word_iter == this->m_words.end()) {
+        word_iter = this->m_words[k].find(ending_char_ptr);
+        if (word_iter == this->m_words[k].end()) {
             WordNeighbor word;
             word.start_char = line[start_pos];
-            word.word_length=k;
             word.left_neighbors.emplace(line[start_pos - 1], 1);
-            this->m_words.emplace(ending_char_ptr, word);
+            this->m_words[k].emplace(ending_char_ptr, word);
         } else {
             char_iter = word_iter->second.left_neighbors.find(line[start_pos - 1]);
             word_iter->second.left_neighbors[line[start_pos-1]] += 1;
@@ -146,7 +148,13 @@ void NewWordExtractor::Extract(const char *src_fname) {
     AlgoLibR::LOGGING_INFO(L"排序");
     // Sort by score
     std::wstring word;
-    std::vector<std::pair<Node *, WordNeighbor>> vec(this->m_words.begin(), this->m_words.end());
+    std::vector<std::pair<Node *, WordNeighbor>> vec;
+    for(auto k = 2; k < this->max_n; k++){
+        for(auto item : this->m_words[k]){
+            vec.push_back(item);
+        }
+    }
+//    std::vector<std::pair<Node *, WordNeighbor>> vec(this->m_words.begin(), this->m_words.end());
     std::sort(vec.begin(), vec.end(), WordCmp);
     for (int i = 0; i < 200; ++i) {
         GetWord(vec[i].first, word);
@@ -197,25 +205,34 @@ inline void NewWordExtractor::CalcEntropyScore(const std::unordered_map<Node *, 
 }
 
 
-void NewWordExtractor::CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter) {
+inline void NewWordExtractor::CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
+                                                 const ulong &word_length_count, const ulong &single_char_count,
+                                                 uint8_t &word_length) {
     double joint_prob, independent_prob=1;
 
-    joint_prob = double(word_iter->first->value)/this->ngram_count[word_iter->second.word_length];
+    joint_prob = double(word_iter->first->value)/word_length_count;
     Node* node = word_iter->first;
     while(node != this->root){
-        independent_prob *= double(node->value)/this->ngram_count[1];
+        independent_prob *= double(node->value)/single_char_count;
         node = node->parent;
     }
-    word_iter->second.score += log2(joint_prob/independent_prob)/word_iter->second.word_length;
+    word_iter->second.score += log2(joint_prob/independent_prob)/word_length;
 }
 
 void NewWordExtractor::CalcScore() {
+    ulong single_char_count = 0;
+    for(auto child_node : this->root->child_nodes){
+        if(child_node.second->value < this->m_min_freq) continue;
+        single_char_count += child_node.second->value;
+    }
     std::wstring word;
-    auto word_iter = this->m_words.begin();
-    while (word_iter != this->m_words.end()) {
-        CalcEntropyScore(word_iter);
-        CalcPointMutalInformation(word_iter);
-        word_iter++;
+    for(uint8_t  k = 2; k < this->max_n; k++) {
+        auto word_iter = this->m_words[k].begin();
+        while (word_iter != this->m_words[k].end()) {
+            CalcEntropyScore(word_iter);
+            CalcPointMutalInformation(word_iter, this->m_words[k].size(), single_char_count, k);
+            word_iter++;
+        }
     }
 }
 
@@ -231,22 +248,27 @@ inline wchar_t NewWordExtractor::FindLeadingChar(Node *end_node) {
     return leading_char;
 }
 void NewWordExtractor::Filter() {
-    auto word_iter = this->m_words.begin();
-    while (word_iter != this->m_words.end()) {
-        if (word_iter->first->value < this->m_min_freq) {
-            this->m_words.erase(word_iter++);
-        } else {
-            ++this->ngram_count[word_iter->second.word_length];
-            word_iter++;
+    for(auto k = 2; k < this->max_n; k++){
+        auto word_iter = this->m_words[k].begin();
+        while (word_iter != this->m_words[k].end()) {
+            if (word_iter->first->value < this->m_min_freq) {
+                this->m_words[k].erase(word_iter++);
+            } else {
+//            ++end_char_count[word_iter->first->key];
+                word_iter++;
+            }
         }
     }
-    this->ngram_count[1] = 0;
-    for(auto child_node : this->root->child_nodes){
-        if(child_node.second->value < this->m_min_freq) continue;
-        this->ngram_count[1] += child_node.second->value;
+
+//    for (auto node : this->root->child_nodes) {
+//        start_char_count[node.second->key] = node.second->value;
+//    }
+    ulong threshold = 0;
+    for(auto iter = this->m_words.begin(); iter != this->m_words.end(); iter++){
+        threshold += iter->second.size();
     }
-    uint threshold = uint(this->m_words.size() * 0.004);
-    threshold = std::max(uint(50), threshold);
+    threshold = ulong(threshold * 0.004);
+    threshold = std::max(ulong(50), threshold);
     std::set<wchar_t> invalid_start_chars, invalid_end_chars;
     for (auto char_cnt : this->start_char_count) {
         if (char_cnt.second <= threshold) continue;
@@ -256,19 +278,16 @@ void NewWordExtractor::Filter() {
         if (char_cnt.second <= threshold) continue;
         invalid_end_chars.insert(char_cnt.first);
     }
-
-    this->start_char_count.clear();
-    this->end_char_count.clear();
-
-    word_iter = this->m_words.begin();
-    while (word_iter != this->m_words.end()) {
-        if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
-            invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char))) {
-            --this->ngram_count[word_iter->second.word_length];
-            this->m_words.erase(word_iter++);
-            continue;
+    for(auto k = 2; k < this->max_n; k++) {
+        auto word_iter = this->m_words[k].begin();
+        while (word_iter != this->m_words[k].end()) {
+            if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
+                invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char))) {
+                this->m_words[k].erase(word_iter++);
+                continue;
+            }
+            word_iter++;
         }
-        word_iter++;
     }
 }
 

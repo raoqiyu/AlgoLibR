@@ -27,7 +27,6 @@ namespace word {
 
 typedef struct WordNeighbor {
   double score;
-  uint8_t word_length;
   wchar_t start_char;
   std::unordered_map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
@@ -49,18 +48,20 @@ class NewWordExtractor : public NGramCounter {
 
   void CalcScore();
   inline void CalcEntropyScore(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter);
-  void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_ite);
+  inline void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
+                                 const ulong &word_length_count, const ulong &single_char_count,
+                                 uint8_t &word_length);
 
   inline wchar_t FindLeadingChar(Node *end_node);
   void Filter();
 
   unsigned long long m_min_freq;
-  std::unordered_map<Node *, WordNeighbor> m_words;
+  std::unordered_map<uint8_t ,std::unordered_map<Node *, WordNeighbor>> m_words;
+
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");
 
   std::unordered_map<wchar_t, u_long> start_char_count;
   std::unordered_map<wchar_t, u_long> end_char_count;
-  std::unordered_map<uint8_t, u_long> ngram_count;
 };
 
 } // namespace word
