@@ -33,7 +33,7 @@ typedef struct WordNeighbor {
 
 class NewWordExtractor : public NGramCounter {
  public:
-  explicit NewWordExtractor(uint8_t max_word_length = 4, unsigned long long min_freq=5);
+  explicit NewWordExtractor(uint8_t max_word_length = 4, unsigned long long min_freq = 5);
 
   void Extract(const char *src_fname);
 
@@ -49,8 +49,8 @@ class NewWordExtractor : public NGramCounter {
   void CalcScore();
   inline void CalcEntropyScore(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter);
   inline void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
-                                 const ulong &word_length_count, const ulong &single_char_count,
-                                 uint8_t &word_length);
+                                        const ulong &word_length_count, const ulong &single_char_count,
+                                        uint8_t &word_length);
 
   inline wchar_t FindLeadingChar(Node *end_node);
   void Filter();

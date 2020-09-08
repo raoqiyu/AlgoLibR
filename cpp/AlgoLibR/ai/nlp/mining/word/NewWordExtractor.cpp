@@ -62,9 +62,7 @@ inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
 }
 
 inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
-    bool is_ok = true;
     Node *ending_char_ptr;
-    auto n_end_bak = n_end;
     if (n_end == this->max_n) {
         AddWord(line, start_pos, n_end);
         n_end--;
@@ -104,7 +102,7 @@ void NewWordExtractor::Extract(const char *src_fname) {
     std::wstring line, raw_line;
     std::wstring gram_str;
     unsigned long start_pos, split_pos;
-    uint8_t k = this->max_n;
+    uint8_t k;
     std::vector<std::wstring> sub_lines;
     while (std::getline(src_file, raw_line)) {
         sub_lines.clear();
@@ -153,7 +151,6 @@ void NewWordExtractor::Extract(const char *src_fname) {
             vec.push_back(item);
         }
     }
-//    std::vector<std::pair<Node *, WordNeighbor>> vec(this->m_words.begin(), this->m_words.end());
     std::sort(vec.begin(), vec.end(), WordCmp);
     for (int i = 0; i < 200; ++i) {
         GetWord(vec[i].first, word);
@@ -253,7 +250,6 @@ void NewWordExtractor::Filter() {
             if (word_iter->first->value < this->m_min_freq) {
                 this->m_words[k].erase(word_iter++);
             } else {
-//            ++end_char_count[word_iter->first->key];
                 word_iter++;
             }
         }

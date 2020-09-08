@@ -19,10 +19,7 @@ TEST(test_ngram_fn, test_ngram){
     std::locale::global(std::locale(""));
     std::wcin.imbue(std::locale(""));
     std::wcout.imbue(std::locale(""));
-    time_t timep;
-    time(&timep);
-    char tmp[64];
-    strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
+
 
     AlgoLibR::LOGGING_INFO(L"开始");
 
