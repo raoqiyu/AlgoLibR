@@ -81,6 +81,7 @@ std::wstring str2wstr(std::string str){
 
 void split(const std::wstring& str, std::vector<std::wstring>& sub_strs, const std::wstring& delimiters){
 	std::wstring::size_type last_pos = str.find_first_not_of(delimiters, 0);
+	if(last_pos == std::wstring::npos) return;
 	std::wstring::size_type pos = str.find_first_of(delimiters, last_pos+1);
 	while(std::wstring::npos != pos || std::wstring::npos != last_pos){
 		sub_strs.push_back(str.substr(last_pos, pos-last_pos));
