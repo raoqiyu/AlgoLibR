@@ -26,7 +26,7 @@ namespace mining {
 namespace word {
 
 typedef struct WordNeighbor {
-  double score;
+  double score = 0;
   wchar_t start_char;
   std::unordered_map<wchar_t, u_long> left_neighbors;
 } WordNeighbor;
@@ -40,6 +40,7 @@ class NewWordExtractor : public NGramCounter {
  private:
   inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size);
   inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **ending_char_ptr);
+  inline void AddWord(wchar_t chr, Node **ending_char_ptr);
 
   inline void AddBeginWords(std::wstring &line);
   inline void AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end);
@@ -56,6 +57,7 @@ class NewWordExtractor : public NGramCounter {
   void Filter();
 
   unsigned long long m_min_freq;
+  std::unordered_map<uint8_t, ulong> ngram_count;
   std::unordered_map<uint8_t ,std::unordered_map<Node *, WordNeighbor>> m_words;
 
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");

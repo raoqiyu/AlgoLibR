@@ -42,14 +42,23 @@ void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_
     *ending_char_ptr = p;
 }
 
+inline void NewWordExtractor::AddWord(wchar_t chr, Node **last_char_ptr){
+    Node* p = *last_char_ptr;
+    p = p->AddChildPtr(chr);
+    p->value += 1;
+    p->is_ending_key=true;
+    *last_char_ptr = p;
+}
+
+
 
 inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
-    const unsigned long start_pos = 0, n = std::min(line.size(), (size_t)this->max_n);
+    const unsigned long start_pos = 0, n = std::min(line.size(), (size_t)this->max_n-1);
     Node *ending_char_ptr;
-    AddWord(line, start_pos, 1);
-    for (auto k = 2; k < n; k++) {
-        AddWord(line, start_pos, k, &ending_char_ptr);
-        this->start_char_count[line[start_pos]]++;
+    this->start_char_count[line[start_pos]] += n-1;
+    AddWord(line, start_pos, 1, &ending_char_ptr);
+    for (auto k = 2; k <= n; k++) {
+        AddWord(line[start_pos+k-1], &ending_char_ptr);
         this->end_char_count[line[start_pos+k-1]]++;
         auto iter = this->m_words[k].find(ending_char_ptr);
         if (iter == this->m_words[k].end()) {
@@ -58,23 +67,20 @@ inline void NewWordExtractor::AddBeginWords(std::wstring &line) {
             this->m_words[k].emplace(ending_char_ptr, word);
         }
     }
-    if (line.size() >= this->max_n) AddWord(line, start_pos, this->max_n);
+    if (line.size() >= this->max_n) AddWord(line[start_pos+this->max_n-1], &ending_char_ptr);
 }
 
 inline void NewWordExtractor::AddWords(std::wstring &line, unsigned long start_pos, unsigned long n_end) {
     Node *ending_char_ptr;
-    if (n_end == this->max_n) {
-        AddWord(line, start_pos, n_end);
-        n_end--;
-    }
     std::unordered_map<Node *, WordNeighbor>::iterator word_iter;
-    std::unordered_map<wchar_t, u_long>::iterator char_iter;
-    AddWord(line, start_pos, 1);
+//    std::unordered_map<wchar_t, u_long>::iterator char_iter;
+    this->start_char_count[line[start_pos]] += n_end-1;
+    if (n_end == this->max_n) this->start_char_count[line[start_pos]]--;
+    AddWord(line, start_pos, 1, &ending_char_ptr);
     for (auto k = 2; k <= n_end; k++) {
         //  1 2 3 4
         //  2 3 4 5
-        AddWord(line, start_pos, k, &ending_char_ptr);
-        this->start_char_count[line[start_pos]]++;
+        AddWord(line[start_pos+k-1], &ending_char_ptr);
         this->end_char_count[line[start_pos+k-1]]++;
         word_iter = this->m_words[k].find(ending_char_ptr);
         if (word_iter == this->m_words[k].end()) {
@@ -113,24 +119,26 @@ void NewWordExtractor::Extract(const char *src_fname) {
         }
 
         raw_line = std::regex_replace(raw_line, this->delimiters, L"*");
-        if(raw_line.size() < this->min_n or raw_line[0] == L'*'){
-            raw_line.clear();
-            continue;
-        }
-
         AlgoLibR::framework::string::split(raw_line, sub_lines, L"*");
         for(auto i = 0; i < sub_lines.size(); i++){
             line = sub_lines[i];
+//            AlgoLibR::LOGGING_INFO(L"%ls", sub_lines[i].c_str());
             if (line.size() < this->min_n) continue;
             AddBeginWords(line);
-            if (line.size() <= this->max_n) continue;
-            split_pos = std::max((long) (line.size() - this->max_n - 1), 1L);
-            for (start_pos = 1; start_pos < split_pos; start_pos++) {
-                AddWords(line, start_pos, this->max_n);
-            }
-            k = this->max_n;
-            for (start_pos = split_pos; start_pos < line.size() && k > 0; start_pos++, k--) {
-                AddWords(line, start_pos, k);
+            if(line.size() - 1 >= this->max_n){
+                split_pos = line.size() - 1 - this->max_n;
+                k = this->max_n;
+                for (start_pos = 1; start_pos <= split_pos; start_pos++) {
+                    AddWords(line, start_pos, this->max_n);
+                }
+                for (start_pos = split_pos+1; start_pos < line.size() && k > 0; start_pos++, k--) {
+                    AddWords(line, start_pos, k);
+                }
+            }else{
+                k = line.size() - 1;
+                for (start_pos = 1; start_pos < line.size() && k > 0; start_pos++, k--) {
+                    AddWords(line, start_pos, k);
+                }
             }
         }
         raw_line.clear();
@@ -147,12 +155,12 @@ void NewWordExtractor::Extract(const char *src_fname) {
     std::wstring word;
     std::vector<std::pair<Node *, WordNeighbor>> vec;
     for(auto k = 2; k < this->max_n; k++){
-        for(auto item : this->m_words[k]){
-            vec.push_back(item);
+        for(const auto& item : this->m_words[k]){
+            vec.emplace_back(item);
         }
     }
     std::sort(vec.begin(), vec.end(), WordCmp);
-    for (int i = 0; i < 200; ++i) {
+    for (int i = 0; i < std::min((size_t)200, vec.size()); ++i) {
         GetWord(vec[i].first, word);
         std::wcout << word << " : " << vec[i].second.score << std::endl;
         word.clear();
@@ -226,7 +234,7 @@ void NewWordExtractor::CalcScore() {
         auto word_iter = this->m_words[k].begin();
         while (word_iter != this->m_words[k].end()) {
             CalcEntropyScore(word_iter);
-            CalcPointMutalInformation(word_iter, this->m_words[k].size(), single_char_count, k);
+            CalcPointMutalInformation(word_iter, this->ngram_count[k], single_char_count, k);
             word_iter++;
         }
     }
@@ -244,46 +252,24 @@ inline wchar_t NewWordExtractor::FindLeadingChar(Node *end_node) {
     return leading_char;
 }
 void NewWordExtractor::Filter() {
-    for(auto k = 2; k < this->max_n; k++){
-        auto word_iter = this->m_words[k].begin();
-        while (word_iter != this->m_words[k].end()) {
-            if (word_iter->first->value < this->m_min_freq) {
-                this->m_words[k].erase(word_iter++);
-            } else {
-                word_iter++;
-            }
-        }
-    }
-
-//    for (auto node : this->root->child_nodes) {
-//        start_char_count[node.second->key] = node.second->value;
-//    }
+    this->m_words.erase(this->max_n);
     ulong threshold = 0;
-    for(auto iter = this->m_words.begin(); iter != this->m_words.end(); iter++){
-        threshold += iter->second.size();
-    }
-    threshold = ulong(threshold * 0.004);
-    threshold = std::max(ulong(50), threshold);
-    std::set<wchar_t> invalid_start_chars, invalid_end_chars;
-    for (auto char_cnt : this->start_char_count) {
-        if (char_cnt.second <= threshold) continue;
-        invalid_start_chars.insert(char_cnt.first);
-    }
-    for (auto char_cnt : this->end_char_count) {
-        if (char_cnt.second <= threshold) continue;
-        invalid_end_chars.insert(char_cnt.first);
-    }
     for(auto k = 2; k < this->max_n; k++) {
+        this->ngram_count[k] = this->m_words[k].size();
+        threshold = ulong(this->m_words[k].size()*0.004);
         auto word_iter = this->m_words[k].begin();
         while (word_iter != this->m_words[k].end()) {
-            if ((invalid_end_chars.end() != invalid_end_chars.find(word_iter->first->key)) or (
-                invalid_start_chars.end() != invalid_start_chars.find(word_iter->second.start_char))) {
+            if ((word_iter->first->value < this->m_min_freq) or
+                (this->start_char_count[word_iter->second.start_char] > threshold) or
+                (this->end_char_count[word_iter->first->key] > threshold)) {
                 this->m_words[k].erase(word_iter++);
                 continue;
             }
             word_iter++;
         }
     }
+    this->start_char_count.clear();
+    this->end_char_count.clear();
 }
 
 } // namespace word
