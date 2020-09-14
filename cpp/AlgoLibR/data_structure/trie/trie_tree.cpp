@@ -1,22 +1,22 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-11 19:27:41
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/trie_tree.cpp
+ * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/trie_tree.cpp
  * @Description: 
  */
 
 #include <iostream>
 #include <cstring>
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
-#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
-#include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include "AlgoLibR/data_structure/trie/trie_tree.h"
+#include "AlgoLibR/data_structure/trie/kv_trie_tree.h"
+#include "AlgoLibR/data_structure/trie/ac_trie.h"
 #include "AlgoLibR/framework/register_types.h"
 #include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
 #include "AlgoLibR/ai/nlp/mining/word/ngram_counter.h"
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace trie{
 
 TrieNode::TrieNode(const wchar_t key) : key(key), parent(NULL){
@@ -149,6 +149,6 @@ REGISTER_wchar_t(DEFINE_TRIE)
 REGISTER_wchar_t_ptr(DEFINE_TRIE) 
 
 } // namespace trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR

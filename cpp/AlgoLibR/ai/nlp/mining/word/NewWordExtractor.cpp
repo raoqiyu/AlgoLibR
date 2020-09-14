@@ -23,7 +23,7 @@ NewWordExtractor::NewWordExtractor(uint8_t max_word_length, unsigned long long m
     }
 }
 
-void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size){
+void NewWordExtractor::AddWord(std::wstring &str, u_long start_pos, uint8_t word_size){
     Node* p  = this->root;
     for(size_t i = 0; i < word_size; i++){
         p = p->AddChildPtr(str[start_pos+i]);
@@ -32,7 +32,7 @@ void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_
     p->is_ending_key=true;
 }
 
-void NewWordExtractor::AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **ending_char_ptr){
+void NewWordExtractor::AddWord(std::wstring &str, u_long start_pos, uint8_t word_size, Node **ending_char_ptr){
     Node* p  = this->root;
     for(size_t i = 0; i < word_size; i++){
         p = p->AddChildPtr(str[start_pos+i]);
@@ -210,7 +210,7 @@ inline void NewWordExtractor::CalcEntropyScore(const std::unordered_map<Node *, 
 
 
 inline void NewWordExtractor::CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
-                                                 const ulong &word_length_count, const ulong &single_char_count,
+                                                 const u_long &word_length_count, const u_long &single_char_count,
                                                  uint8_t &word_length) {
     double joint_prob, independent_prob=1;
 
@@ -224,7 +224,7 @@ inline void NewWordExtractor::CalcPointMutalInformation(const std::unordered_map
 }
 
 void NewWordExtractor::CalcScore() {
-    ulong single_char_count = 0;
+    u_long single_char_count = 0;
     for(auto child_node : this->root->child_nodes){
         if(child_node.second->value < this->m_min_freq) continue;
         single_char_count += child_node.second->value;
@@ -253,10 +253,10 @@ inline wchar_t NewWordExtractor::FindLeadingChar(Node *end_node) {
 }
 void NewWordExtractor::Filter() {
     this->m_words.erase(this->max_n);
-    ulong threshold = 0;
+    u_long threshold = 0;
     for(auto k = 2; k < this->max_n; k++) {
         this->ngram_count[k] = this->m_words[k].size();
-        threshold = ulong(this->m_words[k].size()*0.004);
+        threshold = u_long(this->m_words[k].size()*0.004);
         auto word_iter = this->m_words[k].begin();
         while (word_iter != this->m_words[k].end()) {
             if ((word_iter->first->value < this->m_min_freq) or

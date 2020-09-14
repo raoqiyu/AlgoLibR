@@ -1,7 +1,7 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-14 13:42:26
-FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/ac_trie.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/ac_trie.h
  * @Description: Aho-Corasick Trie
  */
 
@@ -11,11 +11,11 @@ FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/ac_trie.h
 #include <string>
 #include <stdlib.h>
 #include <vector>
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
+#include "AlgoLibR/data_structure/trie/trie_tree.h"
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace ac_trie{
 
 class ACTrieNode{
@@ -54,7 +54,7 @@ class ACTrie : public ACTrieBase<ACTrieNode>{
 };
 
 } // namespace ac_trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR
 

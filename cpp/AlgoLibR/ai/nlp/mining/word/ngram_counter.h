@@ -14,7 +14,7 @@
 #include <vector>
 #include <set>
 #include <fstream> 
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
+#include "AlgoLibR/data_structure/trie/trie_tree.h"
 
 namespace AlgoLibR{
 namespace ai{
@@ -41,7 +41,7 @@ public:
 };
 
 
-class NGramCounter : public AlgoLibR::data_structure::tree::trie::Trie<Node>{
+class NGramCounter : public AlgoLibR::data_structure::trie::trie::Trie<Node>{
 public:
     NGramCounter(const uint8_t min_n=2, const uint8_t max_n=3, const wchar_t *delimiters=nullptr);
     void Count(const char *src_fname, const char * dst_fname=nullptr);

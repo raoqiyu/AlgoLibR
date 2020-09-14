@@ -10,9 +10,9 @@ Description:
 #include <vector>
 #include <string>
 #include "AlgoLibR/data_structure/heap.hpp"
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
-#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
-#include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include "AlgoLibR/data_structure/trie/trie_tree.h"
+#include "AlgoLibR/data_structure/trie/kv_trie_tree.h"
+#include "AlgoLibR/data_structure/trie/ac_trie.h"
 #include <gtest/gtest.h>
 
 bool test_max(std::pair<int,int> x, std::pair<int,int> y){
@@ -68,7 +68,7 @@ TEST(test_data_structure,heap){
 TEST(test_data_structure, Trie){
     std::wcout << "Test Trie" << std::endl;
 
-    AlgoLibR::data_structure::tree::trie::Trie<AlgoLibR::data_structure::tree::trie::TrieNode> str_trie;
+    AlgoLibR::data_structure::trie::trie::Trie<AlgoLibR::data_structure::trie::trie::TrieNode> str_trie;
 
     str_trie.Add(L"hello");
     str_trie.Add(L"world");
@@ -100,7 +100,7 @@ TEST(test_data_structure, Trie){
 
 void test_KVTrie(){
     std::wcout << "Test KVTrie" << std::endl <<     std::flush;
-    AlgoLibR::data_structure::tree::kv_trie::KVTrie<wchar_t*> str_trie;
+    AlgoLibR::data_structure::trie::kv_trie::KVTrie<wchar_t*> str_trie;
 
     bool is_in;
     wchar_t* ret;
@@ -156,7 +156,7 @@ void test_KVTrie(){
 
 void test_ACTrie(){
     std::wcout << "Test AC Trie" << std::endl;
-    AlgoLibR::data_structure::tree::ac_trie::ACTrie ac_trie;
+    AlgoLibR::data_structure::trie::ac_trie::ACTrie ac_trie;
 
     bool is_in;
     std::wcout << "Add word" << std::endl;

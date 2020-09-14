@@ -1,7 +1,7 @@
 /*
 Author: raoqiyu@gmail.com
 Date: 2020-02-11 18:34:27
-FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/kv_trie_tree.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/kv_trie_tree.h
 Description: 
  */
 
@@ -10,11 +10,11 @@ Description:
 
 #include <map>
 #include <stdlib.h>
-#include "AlgoLibR/data_structure/tree/trie_tree.h"
+#include "AlgoLibR/data_structure/trie/trie_tree.h"
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace kv_trie{
 
 
@@ -42,7 +42,7 @@ public:
 };
 
 } // namespace kv_trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR
 

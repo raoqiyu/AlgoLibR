@@ -38,8 +38,8 @@ class NewWordExtractor : public NGramCounter {
   void Extract(const char *src_fname);
 
  private:
-  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size);
-  inline void AddWord(std::wstring &str, ulong start_pos, uint8_t word_size, Node **ending_char_ptr);
+  inline void AddWord(std::wstring &str, u_long start_pos, uint8_t word_size);
+  inline void AddWord(std::wstring &str, u_long start_pos, uint8_t word_size, Node **ending_char_ptr);
   inline void AddWord(wchar_t chr, Node **ending_char_ptr);
 
   inline void AddBeginWords(std::wstring &line);
@@ -50,14 +50,14 @@ class NewWordExtractor : public NGramCounter {
   void CalcScore();
   inline void CalcEntropyScore(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter);
   inline void CalcPointMutalInformation(const std::unordered_map<Node *, WordNeighbor>::iterator &word_iter,
-                                        const ulong &word_length_count, const ulong &single_char_count,
+                                        const u_long &word_length_count, const u_long &single_char_count,
                                         uint8_t &word_length);
 
   inline wchar_t FindLeadingChar(Node *end_node);
   void Filter();
 
   unsigned long long m_min_freq;
-  std::unordered_map<uint8_t, ulong> ngram_count;
+  std::unordered_map<uint8_t, u_long> ngram_count;
   std::unordered_map<uint8_t ,std::unordered_map<Node *, WordNeighbor>> m_words;
 
   std::wregex delimiters = std::wregex(L"[^\\u4e00-\\u9fa5\\u0030-\\u0039\\u0041-\\u005a\\u0061-\\u007a]");

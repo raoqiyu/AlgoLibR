@@ -1,21 +1,21 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-14 14:02:22
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/ac_trie.cpp
+ * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/ac_trie.cpp
  * @Description: Aho-Corasick ACTrie
  */
 
 #include <map>
 #include <queue>
 #include <cstring>
-#include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include "AlgoLibR/data_structure/trie/ac_trie.h"
 #include "AlgoLibR/ai/nlp/seg/ahocorasick_segment.h"
 
 #include <iostream>
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace ac_trie{
 
 ACTrieNode::ACTrieNode(const wchar_t key) : 
@@ -185,6 +185,6 @@ template class ACTrieBase<ACTrieNode>;
 template class ACTrieBase<AlgoLibR::ai::nlp::seg::ACSegNode>;
 
 } // namespace ac_trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR

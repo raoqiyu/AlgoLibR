@@ -11,7 +11,7 @@ FilePath: /AlgoLibR/cpp/AlgoLibR/ai/nlp/seg/ahocorasick_segment.h
 #include <vector>
 #include <string>
 #include <regex>
-#include "AlgoLibR/data_structure/tree/ac_trie.h"
+#include "AlgoLibR/data_structure/trie/ac_trie.h"
 
 namespace AlgoLibR{
 namespace ai{
@@ -50,7 +50,7 @@ public:
 };
 
 
-class AhoCorasickSegment : public AlgoLibR::data_structure::tree::ac_trie::ACTrieBase<ACSegNode>{
+class AhoCorasickSegment : public AlgoLibR::data_structure::trie::ac_trie::ACTrieBase<ACSegNode>{
 private:
     bool is_seg_all;
     std::wstring combine_pattern = L"([a-zA-Z0-9.-]+)";

@@ -1,18 +1,18 @@
 /*
  * @Author: raoqiyu@gmail.com
  * @Date: 2020-02-11 19:27:41
- * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/kv_trie_tree.cpp
+ * @FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/kv_trie_tree.cpp
  * @Description: 
  */
 
 #include <iostream>
 #include <cstring>
-#include "AlgoLibR/data_structure/tree/kv_trie_tree.h"
+#include "AlgoLibR/data_structure/trie/kv_trie_tree.h"
 #include "AlgoLibR/framework/register_types.h"
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace kv_trie{
 
 
@@ -93,6 +93,6 @@ REGISTER_wchar_t_ptr(DEFINE_TRIE)
 
 
 } // namespace kv_trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR

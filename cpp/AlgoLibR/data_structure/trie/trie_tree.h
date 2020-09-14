@@ -1,7 +1,7 @@
 /*
 Author: raoqiyu@gmail.com
 Date: 2020-02-11 18:34:27
-FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/tree/trie_tree.h
+FilePath: /AlgoLibR/cpp/AlgoLibR/data_structure/trie/trie_tree.h
 Description: 
  */
 
@@ -13,7 +13,7 @@ Description:
 
 namespace AlgoLibR{
 namespace data_structure{
-namespace tree{
+namespace trie{
 namespace trie{
 
 class TrieNode{
@@ -48,7 +48,7 @@ public:
 };
 
 } // namespace trie
-} // namespace tree
+} // namespace trie
 } // namespace data_struceture
 } // namespace AlgoLibR
 
