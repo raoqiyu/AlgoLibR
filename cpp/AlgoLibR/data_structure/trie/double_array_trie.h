@@ -42,8 +42,8 @@ class DoubleArrayTrie {
   std::vector<std::wstring> keys;
   std::vector<size_t> values;
 
-  std::unordered_map<wchar_t, uint16_t> char2id;
-  std::unordered_map<uint16_t, wchar_t> id2char;
+  std::unordered_map<wchar_t, uint16_t> char2id{{0,0}};
+  std::unordered_map<uint16_t, wchar_t> id2char{{0,0}};
 
 };
 

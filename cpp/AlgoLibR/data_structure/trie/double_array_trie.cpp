@@ -29,33 +29,38 @@ void DoubleArrayTrie::build(std::vector<std::wstring> keys, std::vector<size_t> 
 }
 
 void DoubleArrayTrie::fetchSibling(DATNode *node, std::vector<DATNode*> &siblings){
-    auto target_depth = node->depth;
-    wchar_t chr, last_char='\0';
+    auto target_depth = node->depth+1;
+    wchar_t chr, last_char=0;
     uint16_t chr_id;
     for(auto i = node->left; i < node->right; i++){
-        if(keys[i].size() < target_depth) continue;
+        if(keys[i].size() < node->depth) continue;
 
-        chr = keys[i][target_depth];
-
-        if(chr == last_char) continue;
-        last_char = chr;
-
-        auto chr_iter = char2id.find(chr);
-        if(chr_iter == char2id.end()){
-            chr_id = char2id.size();
-            char2id[chr] = chr_id;
-            id2char[chr_id] = chr;
-        }else{
-            chr_id = char2id[chr];
+        if(keys[i].size() == node->depth){
+            chr = 0;
+        }{
+            chr = keys[i][node->depth];
         }
 
-        DATNode *sibling = new DATNode();
-        sibling->depth = target_depth;
-        sibling->chr = chr_id;
-        sibling->left = i;
-        if(siblings.size() > 0)
-            siblings[siblings.size() - 1]->right = i;
-        siblings.push_back(sibling);
+        if(chr != last_char or siblings.size() == 0){
+            auto chr_iter = char2id.find(chr);
+            if(chr_iter == char2id.end()){
+                chr_id = char2id.size();
+                char2id[chr] = chr_id;
+                id2char[chr_id] = chr;
+            }else{
+                chr_id = char2id[chr];
+            }
+
+            DATNode *sibling = new DATNode();
+            sibling->depth = target_depth;
+            sibling->chr = chr_id;
+            sibling->left = i;
+            if(siblings.size() > 0)
+                siblings[siblings.size() - 1]->right = i;
+            siblings.push_back(sibling);
+        }
+        last_char = chr;
+
     }
     if (siblings.size() != 0)
         siblings[siblings.size() - 1]->right = node->right;

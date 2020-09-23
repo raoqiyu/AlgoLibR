@@ -26,20 +26,20 @@ TEST(test_dat, fetch_siblings){
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
 
-    ASSERT_EQ(siblings[0]->chr, 0); // 一, depth 0
-    ASSERT_EQ(siblings[0]->depth, 0);
+    ASSERT_EQ(siblings[0]->chr, 1); // 一, depth 1
+    ASSERT_EQ(siblings[0]->depth, 1);
     ASSERT_EQ(siblings[0]->left, 0);
     ASSERT_EQ(siblings[0]->right, 3);
     ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'一');
 
-    ASSERT_EQ(siblings[1]->chr, 1); // 二 , depth 0
-    ASSERT_EQ(siblings[1]->depth, 0);
+    ASSERT_EQ(siblings[1]->chr, 2); // 二 , depth 1
+    ASSERT_EQ(siblings[1]->depth, 1);
     ASSERT_EQ(siblings[1]->left, 3);
     ASSERT_EQ(siblings[1]->right, 4);
     ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'二');
 
-    ASSERT_EQ(siblings[2]->chr, 2); // 三 , depth 0
-    ASSERT_EQ(siblings[2]->depth, 0);
+    ASSERT_EQ(siblings[2]->chr, 3); // 三 , depth 1
+    ASSERT_EQ(siblings[2]->depth, 1);
     ASSERT_EQ(siblings[2]->left, 4);
     ASSERT_EQ(siblings[2]->right, 6);
     ASSERT_EQ(dat.getCharById(siblings[2]->chr), L'三');
@@ -52,14 +52,14 @@ TEST(test_dat, fetch_siblings){
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 2);
 
-    ASSERT_EQ(siblings[0]->chr, 3); // 开, depth 1
-    ASSERT_EQ(siblings[0]->depth, 1);
+    ASSERT_EQ(siblings[0]->chr, 4); // 开, depth 2
+    ASSERT_EQ(siblings[0]->depth, 2);
     ASSERT_EQ(siblings[0]->left, 0);
     ASSERT_EQ(siblings[0]->right, 1);
     ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'开');
 
-    ASSERT_EQ(siblings[1]->chr, 4); // 心 , depth 1
-    ASSERT_EQ(siblings[1]->depth, 1);
+    ASSERT_EQ(siblings[1]->chr, 5); // 心 , depth 2
+    ASSERT_EQ(siblings[1]->depth, 2);
     ASSERT_EQ(siblings[1]->left, 1);
     ASSERT_EQ(siblings[1]->right, 3);
     ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'心');
@@ -72,16 +72,16 @@ TEST(test_dat, fetch_siblings){
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
 
-    ASSERT_EQ(siblings[0]->chr, 5); // 龙, depth 1
-    ASSERT_EQ(siblings[0]->depth, 1);
+    ASSERT_EQ(siblings[0]->chr, 6); // 龙, depth 2
+    ASSERT_EQ(siblings[0]->depth, 2);
     ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'龙');
 
-    ASSERT_EQ(siblings[1]->chr, 6); // 阳 , depth 1
-    ASSERT_EQ(siblings[1]->depth, 1);
+    ASSERT_EQ(siblings[1]->chr, 7); // 阳 , depth 2
+    ASSERT_EQ(siblings[1]->depth, 2);
     ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'阳');
 
-    ASSERT_EQ(siblings[2]->chr, 2); // 三 , depth 1
-    ASSERT_EQ(siblings[2]->depth, 1);
+    ASSERT_EQ(siblings[2]->chr, 3); // 三 , depth 2
+    ASSERT_EQ(siblings[2]->depth, 2);
     ASSERT_EQ(dat.getCharById(siblings[2]->chr), L'三');
 
 
@@ -93,8 +93,8 @@ TEST(test_dat, fetch_siblings){
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 1);
 
-    ASSERT_EQ(siblings[0]->chr, 7); // 一开 -> 始, depth 2
-    ASSERT_EQ(siblings[0]->depth, 2);
+    ASSERT_EQ(siblings[0]->chr, 8); // 一开 -> 始, depth 3
+    ASSERT_EQ(siblings[0]->depth, 3);
     ASSERT_EQ(siblings[0]->left, 0);
     ASSERT_EQ(siblings[0]->right, 1);
     ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'始');
@@ -105,12 +105,18 @@ TEST(test_dat, fetch_siblings){
 
     siblings.clear();
     dat.fetchSibling(root, siblings);
-    ASSERT_EQ(siblings.size(), 1);
+    ASSERT_EQ(siblings.size(), 2);
 
-    ASSERT_EQ(siblings[0]->chr, 0); // 一心 -> 一, depth 2
-    ASSERT_EQ(siblings[0]->depth, 2);
-    ASSERT_EQ(siblings[0]->left, 2);
-    ASSERT_EQ(siblings[0]->right, 3);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'一');
+    ASSERT_EQ(siblings[0]->chr, 0); // 一心 -> 一, depth 3
+    ASSERT_EQ(siblings[0]->depth, 3);
+    ASSERT_EQ(siblings[0]->left, 1);
+    ASSERT_EQ(siblings[0]->right, 2);
+    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'\0');
+
+    ASSERT_EQ(siblings[1]->chr, 1); // 一心 -> 一, depth 3
+    ASSERT_EQ(siblings[1]->depth, 3);
+    ASSERT_EQ(siblings[1]->left, 2);
+    ASSERT_EQ(siblings[1]->right, 3);
+    ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'一');
 
 }
