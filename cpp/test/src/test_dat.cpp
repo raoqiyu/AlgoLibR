@@ -120,3 +120,188 @@ TEST(test_dat, fetch_siblings){
     ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'一');
 
 }
+
+TEST(test_dat, insert_siblings_basic) {
+    std::ios::sync_with_stdio(false);
+    std::wcout.imbue(std::locale("zh_CN.utf-8"));
+
+    auto dat = DoubleArrayTrie();
+
+//    std::vector<std::wstring> keys{L"一开始",L"一心", L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
+    std::vector<std::wstring> keys{L"一开",L"一心", L"一心一"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
+    dat.setKeys(keys);
+
+    auto  *root = new DATNode();
+    root->depth = 0;
+    root->left = 0;
+    root->right = keys.size();
+
+    std::vector<DATNode*> siblings;
+    std::unordered_set<int> used;
+
+    // root's neighbor: 一
+    dat.fetchSibling(root, siblings);
+    ASSERT_EQ(siblings.size(), 1);
+    ASSERT_EQ(siblings[0]->chr, 1);
+
+    // 一's neighbor: 开,心
+    std::vector<DATNode*> sub_siblings;
+    dat.fetchSibling(siblings[0], sub_siblings);
+    ASSERT_EQ(sub_siblings.size(), 2);
+    ASSERT_EQ(dat.getCharById(sub_siblings[0]->chr), L'开');
+    ASSERT_EQ(dat.getCharById(sub_siblings[1]->chr), L'心');
+
+    // 开's neighbor: \0
+    siblings.clear();
+    dat.fetchSibling(sub_siblings[0], siblings);
+    ASSERT_EQ(siblings.size(), 1);
+    ASSERT_EQ(siblings[0]->left, 0);
+    ASSERT_EQ(siblings[0]->right, 1);
+    ASSERT_EQ(siblings[0]->depth, 3);
+    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'\0');
+
+
+    // \0's neighbor: null
+    sub_siblings.clear();
+    dat.fetchSibling(siblings[0], sub_siblings);
+    ASSERT_EQ(sub_siblings.size(), 0);
+
+
+    // root's neighbor: 一
+    siblings.clear();
+    dat.fetchSibling(root, siblings);
+    ASSERT_EQ(siblings.size(), 1);
+    ASSERT_EQ(siblings[0]->chr, 1);
+    size_t parent_pos = 1;
+    dat.insertSibling(siblings, parent_pos, used);
+
+    for(auto v:dat.base) std::wcout << v << ' ';
+    std::wcout << std::endl;
+    for(auto v:dat.check) std::wcout << v << ' ';
+    std::wcout << std::endl;
+    std::flush(std::wcout);
+
+    ASSERT_NE(-1, dat.exactMatchSearch(keys[0]));
+    ASSERT_EQ(1, dat.exactMatchSearch(keys[0]));
+    ASSERT_EQ(2, dat.exactMatchSearch(keys[1]));
+    ASSERT_EQ(3, dat.exactMatchSearch(keys[2]));
+//    std::cout << dat.exactMatchSearch(keys[1]) << std::endl;
+}
+
+TEST(test_dat, insert_siblings_basic_2) {
+    std::ios::sync_with_stdio(false);
+    std::wcout.imbue(std::locale("zh_CN.utf-8"));
+
+    auto dat = DoubleArrayTrie();
+
+    std::vector<std::wstring> keys{L"一开始", L"一心", L"一心一意", L"三三两两", L"三阳开泰", L"二龙戏珠"};
+//    std::vector<std::wstring> keys{L"一开",L"一心"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
+    dat.setKeys(keys);
+
+    auto  *root = new DATNode();
+    root->depth = 0;
+    root->left = 0;
+    root->right = keys.size();
+
+    std::vector<DATNode*> siblings;
+    std::unordered_set<int> used;
+
+    // root's neighbor: 一
+    dat.fetchSibling(root, siblings);
+    ASSERT_EQ(siblings.size(), 3);
+    ASSERT_EQ(siblings[0]->chr, 1);
+
+    // 一's neighbor: 开,心
+    std::vector<DATNode*> sub_siblings;
+    dat.fetchSibling(siblings[0], sub_siblings);
+    ASSERT_EQ(sub_siblings.size(), 2);
+    ASSERT_EQ(dat.getCharById(sub_siblings[0]->chr), L'开');
+    ASSERT_EQ(dat.getCharById(sub_siblings[1]->chr), L'心');
+
+    // 开's neighbor: 始
+    siblings.clear();
+    dat.fetchSibling(sub_siblings[0], siblings);
+    ASSERT_EQ(siblings.size(), 1);
+    ASSERT_EQ(siblings[0]->left, 0);
+    ASSERT_EQ(siblings[0]->right, 1);
+    ASSERT_EQ(siblings[0]->depth, 3);
+    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'始');
+
+
+    // 始's neighbor: \0
+    sub_siblings.clear();
+    dat.fetchSibling(siblings[0], sub_siblings);
+    ASSERT_EQ(sub_siblings.size(), 1);
+
+
+    // root's neighbor: 一
+    siblings.clear();
+    dat.fetchSibling(root, siblings);
+    ASSERT_EQ(siblings.size(), 3);
+    ASSERT_EQ(siblings[0]->chr, 1);
+
+    size_t parent_pos = 1;
+    dat.insertSibling(siblings, parent_pos, used);
+    std::flush(std::wcout);
+
+    for(auto v:dat.base) std::wcout << v << ' ';
+    std::wcout << std::endl;
+    for(auto v:dat.check) std::wcout << v << ' ';
+    std::wcout << std::endl;
+    std::flush(std::wcout);
+//
+    ASSERT_EQ(1, dat.exactMatchSearch(keys[0]));
+    ASSERT_EQ(2, dat.exactMatchSearch(keys[1]));
+    ASSERT_EQ(3, dat.exactMatchSearch(keys[2]));
+    ASSERT_EQ(4, dat.exactMatchSearch(keys[3]));
+    ASSERT_EQ(5, dat.exactMatchSearch(keys[4]));
+//    ASSERT_EQ(6, dat.exactMatchSearch(keys[5]));
+//    std::cout << dat.exactMatchSearch(keys[1]) << std::endl;
+}
+
+
+class test_data_insert_siblings: public::testing::TestWithParam<std::vector<std::wstring>>{
+
+};
+
+
+TEST_P(test_data_insert_siblings, insert_siblings_utils) {
+    std::ios::sync_with_stdio(false);
+    std::wcout.imbue(std::locale("zh_CN.utf-8"));
+
+    auto dat = DoubleArrayTrie();
+
+    std::vector<std::wstring> keys = GetParam();
+    dat.setKeys(keys);
+
+    auto  *root = new DATNode();
+    root->depth = 0;
+    root->left = 0;
+    root->right = keys.size();
+
+    std::vector<DATNode*> siblings;
+    std::unordered_set<int> used;
+    size_t parent_pos = 1;
+
+
+    dat.fetchSibling(root, siblings);
+    dat.insertSibling(siblings, parent_pos, used);
+    std::flush(std::wcout);
+
+    std::wstring tmp;
+    for(auto i = 0 ; i < keys.size(); i++){
+        ASSERT_EQ(i+1, dat.exactMatchSearch(keys[i]));
+        tmp = keys[i].substr(1, (size_t) keys[i].size()-1);
+        ASSERT_EQ(-1, dat.exactMatchSearch(tmp));
+    }
+}
+
+
+INSTANTIATE_TEST_CASE_P(test_with_keys,
+                        test_data_insert_siblings,
+                        testing::Values(std::vector<std::wstring>{L"lie", L"like", L"人民", L"民生", L"浙江"},
+                                        std::vector<std::wstring>{L"lie", L"like", L"人民"},
+                                        std::vector<std::wstring>{L"一举", L"一举一动", L"一举成名", L"一举成名天下知",
+                                                                  L"万能", L"万能胶"}
+                                        )
+                        );
