@@ -19,27 +19,29 @@ void DoubleArrayTrie::build(std::vector<std::wstring> keys, std::vector<size_t> 
     this->keys = keys;
     this->values = values;
 
-    DATNode *root = new DATNode();
-    root->depth = 0;
-    root->left = 0;
-    root->right = keys.size();
+    DATNode root;
+    root.depth = 0;
+    root.left = 0;
+    root.right = keys.size();
 
-    std::vector<DATNode*> siblings;
+    std::vector<DATNode> siblings;
+    std::unordered_set<int> used;
+
     fetchSibling(root, siblings);
-//    insertSibling(siblings);
+    insertSibling(siblings, 1, used);
 }
 
-void DoubleArrayTrie::fetchSibling(DATNode *node, std::vector<DATNode*> &siblings){
-    auto target_depth = node->depth+1;
+void DoubleArrayTrie::fetchSibling(DATNode &node, std::vector<DATNode> &siblings){
+    auto target_depth = node.depth+1;
     wchar_t chr, last_char=0;
     uint16_t chr_id;
-    for(auto i = node->left; i < node->right; i++){
-        if(keys[i].size() < node->depth) continue;
+    for(auto i = node.left; i < node.right; i++){
+        if(keys[i].size() < node.depth) continue;
 
-        if(keys[i].size() == node->depth){
+        if(keys[i].size() == node.depth){
             chr = 0;
         }{
-            chr = keys[i][node->depth];
+            chr = keys[i][node.depth];
         }
 
         if(chr != last_char or siblings.size() == 0){
@@ -52,22 +54,22 @@ void DoubleArrayTrie::fetchSibling(DATNode *node, std::vector<DATNode*> &sibling
                 chr_id = char2id[chr];
             }
 
-            DATNode *sibling = new DATNode();
-            sibling->depth = target_depth;
-            sibling->chr = chr_id;
-            sibling->left = i;
+            DATNode sibling;
+            sibling.depth = target_depth;
+            sibling.chr = chr_id;
+            sibling.left = i;
             if(siblings.size() > 0)
-                siblings[siblings.size() - 1]->right = i;
+                siblings[siblings.size() - 1].right = i;
             siblings.push_back(sibling);
         }
         last_char = chr;
 
     }
     if (siblings.size() != 0)
-        siblings[siblings.size() - 1]->right = node->right;
+        siblings[siblings.size() - 1].right = node.right;
 }
 
-size_t DoubleArrayTrie::insertSibling(std::vector<DATNode*> &siblings,  size_t parent_pos, std::unordered_set<int> &used){
+size_t DoubleArrayTrie::insertSibling(std::vector<DATNode> &siblings,  size_t parent_pos, std::unordered_set<int> &used){
     if(siblings.empty()) return 0;
 
     long begin=-1, end,  i, sub_begin;
@@ -83,14 +85,14 @@ size_t DoubleArrayTrie::insertSibling(std::vector<DATNode*> &siblings,  size_t p
             continue;
         }
 
-        end = begin + siblings.back()->chr+1;
+        end = begin + siblings.back().chr+1;
         if (this->base.size() <= end) {
             this->base.resize(end);
             this->check.resize(end);
         }
         is_find = true;
         for (i = 0; i < siblings.size(); i++) {
-            if (check[begin + siblings[i]->chr] != 0 || base[begin + siblings[i]->chr] != 0) {
+            if (check[begin + siblings[i].chr] != 0 || base[begin + siblings[i].chr] != 0) {
                 is_find = false;
                 break;
             }
@@ -100,21 +102,21 @@ size_t DoubleArrayTrie::insertSibling(std::vector<DATNode*> &siblings,  size_t p
         }
     }
     for(i = 0; i < siblings.size(); i++ ){
-        check[begin + siblings[i]->chr] =  parent_pos;
+        check[begin + siblings[i].chr] =  parent_pos;
     }
     used.insert(begin);
-    std::vector<DATNode*> sub_siblings;
+    std::vector<DATNode> sub_siblings;
     for(i = 0; i < siblings.size(); i++ ){
         sub_siblings.clear();
         fetchSibling(siblings[i], sub_siblings);
 
         if(sub_siblings.empty()){
             // end of words
-            base[begin + siblings[i]->chr] = -(long)siblings[i]->left-1;
+            base[begin + siblings[i].chr] = -(long)siblings[i].left-1;
 
         }else{
-            sub_begin = insertSibling(sub_siblings, begin + siblings[i]->chr+1, used);
-            base[begin + siblings[i]->chr] = sub_begin;
+            sub_begin = insertSibling(sub_siblings, begin + siblings[i].chr+1, used);
+            base[begin + siblings[i].chr] = sub_begin;
         }
 
     }

@@ -16,108 +16,108 @@ TEST(test_dat, fetch_siblings){
     std::vector<std::wstring> keys{L"一开始",L"一心", L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
     dat.setKeys(keys);
 
-    auto  *root = new DATNode();
-    root->depth = 0;
-    root->left = 0;
-    root->right = keys.size();
+    DATNode  root;
+    root.depth = 0;
+    root.left = 0;
+    root.right = keys.size();
 
 
-    std::vector<DATNode*> siblings;
+    std::vector<DATNode> siblings;
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
 
-    ASSERT_EQ(siblings[0]->chr, 1); // 一, depth 1
-    ASSERT_EQ(siblings[0]->depth, 1);
-    ASSERT_EQ(siblings[0]->left, 0);
-    ASSERT_EQ(siblings[0]->right, 3);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'一');
+    ASSERT_EQ(siblings[0].chr, 1); // 一, depth 1
+    ASSERT_EQ(siblings[0].depth, 1);
+    ASSERT_EQ(siblings[0].left, 0);
+    ASSERT_EQ(siblings[0].right, 3);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'一');
 
-    ASSERT_EQ(siblings[1]->chr, 2); // 二 , depth 1
-    ASSERT_EQ(siblings[1]->depth, 1);
-    ASSERT_EQ(siblings[1]->left, 3);
-    ASSERT_EQ(siblings[1]->right, 4);
-    ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'二');
+    ASSERT_EQ(siblings[1].chr, 2); // 二 , depth 1
+    ASSERT_EQ(siblings[1].depth, 1);
+    ASSERT_EQ(siblings[1].left, 3);
+    ASSERT_EQ(siblings[1].right, 4);
+    ASSERT_EQ(dat.getCharById(siblings[1].chr), L'二');
 
-    ASSERT_EQ(siblings[2]->chr, 3); // 三 , depth 1
-    ASSERT_EQ(siblings[2]->depth, 1);
-    ASSERT_EQ(siblings[2]->left, 4);
-    ASSERT_EQ(siblings[2]->right, 6);
-    ASSERT_EQ(dat.getCharById(siblings[2]->chr), L'三');
+    ASSERT_EQ(siblings[2].chr, 3); // 三 , depth 1
+    ASSERT_EQ(siblings[2].depth, 1);
+    ASSERT_EQ(siblings[2].left, 4);
+    ASSERT_EQ(siblings[2].right, 6);
+    ASSERT_EQ(dat.getCharById(siblings[2].chr), L'三');
 
-    root->depth = 1;
-    root->left = 0;
-    root->right = 3;
+    root.depth = 1;
+    root.left = 0;
+    root.right = 3;
 
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 2);
 
-    ASSERT_EQ(siblings[0]->chr, 4); // 开, depth 2
-    ASSERT_EQ(siblings[0]->depth, 2);
-    ASSERT_EQ(siblings[0]->left, 0);
-    ASSERT_EQ(siblings[0]->right, 1);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'开');
+    ASSERT_EQ(siblings[0].chr, 4); // 开, depth 2
+    ASSERT_EQ(siblings[0].depth, 2);
+    ASSERT_EQ(siblings[0].left, 0);
+    ASSERT_EQ(siblings[0].right, 1);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'开');
 
-    ASSERT_EQ(siblings[1]->chr, 5); // 心 , depth 2
-    ASSERT_EQ(siblings[1]->depth, 2);
-    ASSERT_EQ(siblings[1]->left, 1);
-    ASSERT_EQ(siblings[1]->right, 3);
-    ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'心');
+    ASSERT_EQ(siblings[1].chr, 5); // 心 , depth 2
+    ASSERT_EQ(siblings[1].depth, 2);
+    ASSERT_EQ(siblings[1].left, 1);
+    ASSERT_EQ(siblings[1].right, 3);
+    ASSERT_EQ(dat.getCharById(siblings[1].chr), L'心');
 
-    root->depth = 1;
-    root->left = 3;
-    root->right = 6;
+    root.depth = 1;
+    root.left = 3;
+    root.right = 6;
 
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
 
-    ASSERT_EQ(siblings[0]->chr, 6); // 龙, depth 2
-    ASSERT_EQ(siblings[0]->depth, 2);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'龙');
+    ASSERT_EQ(siblings[0].chr, 6); // 龙, depth 2
+    ASSERT_EQ(siblings[0].depth, 2);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'龙');
 
-    ASSERT_EQ(siblings[1]->chr, 7); // 阳 , depth 2
-    ASSERT_EQ(siblings[1]->depth, 2);
-    ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'阳');
+    ASSERT_EQ(siblings[1].chr, 7); // 阳 , depth 2
+    ASSERT_EQ(siblings[1].depth, 2);
+    ASSERT_EQ(dat.getCharById(siblings[1].chr), L'阳');
 
-    ASSERT_EQ(siblings[2]->chr, 3); // 三 , depth 2
-    ASSERT_EQ(siblings[2]->depth, 2);
-    ASSERT_EQ(dat.getCharById(siblings[2]->chr), L'三');
+    ASSERT_EQ(siblings[2].chr, 3); // 三 , depth 2
+    ASSERT_EQ(siblings[2].depth, 2);
+    ASSERT_EQ(dat.getCharById(siblings[2].chr), L'三');
 
 
-    root->depth = 2;
-    root->left = 0;
-    root->right = 1;
+    root.depth = 2;
+    root.left = 0;
+    root.right = 1;
 
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 1);
 
-    ASSERT_EQ(siblings[0]->chr, 8); // 一开 -> 始, depth 3
-    ASSERT_EQ(siblings[0]->depth, 3);
-    ASSERT_EQ(siblings[0]->left, 0);
-    ASSERT_EQ(siblings[0]->right, 1);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'始');
+    ASSERT_EQ(siblings[0].chr, 8); // 一开 -> 始, depth 3
+    ASSERT_EQ(siblings[0].depth, 3);
+    ASSERT_EQ(siblings[0].left, 0);
+    ASSERT_EQ(siblings[0].right, 1);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'始');
 
-    root->depth = 2;
-    root->left = 1;
-    root->right = 3;
+    root.depth = 2;
+    root.left = 1;
+    root.right = 3;
 
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 2);
 
-    ASSERT_EQ(siblings[0]->chr, 0); // 一心 -> 一, depth 3
-    ASSERT_EQ(siblings[0]->depth, 3);
-    ASSERT_EQ(siblings[0]->left, 1);
-    ASSERT_EQ(siblings[0]->right, 2);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'\0');
+    ASSERT_EQ(siblings[0].chr, 0); // 一心 -> 一, depth 3
+    ASSERT_EQ(siblings[0].depth, 3);
+    ASSERT_EQ(siblings[0].left, 1);
+    ASSERT_EQ(siblings[0].right, 2);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'\0');
 
-    ASSERT_EQ(siblings[1]->chr, 1); // 一心 -> 一, depth 3
-    ASSERT_EQ(siblings[1]->depth, 3);
-    ASSERT_EQ(siblings[1]->left, 2);
-    ASSERT_EQ(siblings[1]->right, 3);
-    ASSERT_EQ(dat.getCharById(siblings[1]->chr), L'一');
+    ASSERT_EQ(siblings[1].chr, 1); // 一心 -> 一, depth 3
+    ASSERT_EQ(siblings[1].depth, 3);
+    ASSERT_EQ(siblings[1].left, 2);
+    ASSERT_EQ(siblings[1].right, 3);
+    ASSERT_EQ(dat.getCharById(siblings[1].chr), L'一');
 
 }
 
@@ -131,34 +131,34 @@ TEST(test_dat, insert_siblings_basic) {
     std::vector<std::wstring> keys{L"一开",L"一心", L"一心一"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
     dat.setKeys(keys);
 
-    auto  *root = new DATNode();
-    root->depth = 0;
-    root->left = 0;
-    root->right = keys.size();
+    DATNode  root;
+    root.depth = 0;
+    root.left = 0;
+    root.right = keys.size();
 
-    std::vector<DATNode*> siblings;
+    std::vector<DATNode> siblings;
     std::unordered_set<int> used;
 
     // root's neighbor: 一
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 1);
-    ASSERT_EQ(siblings[0]->chr, 1);
+    ASSERT_EQ(siblings[0].chr, 1);
 
     // 一's neighbor: 开,心
-    std::vector<DATNode*> sub_siblings;
+    std::vector<DATNode> sub_siblings;
     dat.fetchSibling(siblings[0], sub_siblings);
     ASSERT_EQ(sub_siblings.size(), 2);
-    ASSERT_EQ(dat.getCharById(sub_siblings[0]->chr), L'开');
-    ASSERT_EQ(dat.getCharById(sub_siblings[1]->chr), L'心');
+    ASSERT_EQ(dat.getCharById(sub_siblings[0].chr), L'开');
+    ASSERT_EQ(dat.getCharById(sub_siblings[1].chr), L'心');
 
     // 开's neighbor: \0
     siblings.clear();
     dat.fetchSibling(sub_siblings[0], siblings);
     ASSERT_EQ(siblings.size(), 1);
-    ASSERT_EQ(siblings[0]->left, 0);
-    ASSERT_EQ(siblings[0]->right, 1);
-    ASSERT_EQ(siblings[0]->depth, 3);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'\0');
+    ASSERT_EQ(siblings[0].left, 0);
+    ASSERT_EQ(siblings[0].right, 1);
+    ASSERT_EQ(siblings[0].depth, 3);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'\0');
 
 
     // \0's neighbor: null
@@ -171,7 +171,7 @@ TEST(test_dat, insert_siblings_basic) {
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 1);
-    ASSERT_EQ(siblings[0]->chr, 1);
+    ASSERT_EQ(siblings[0].chr, 1);
     size_t parent_pos = 1;
     dat.insertSibling(siblings, parent_pos, used);
 
@@ -198,34 +198,34 @@ TEST(test_dat, insert_siblings_basic_2) {
 //    std::vector<std::wstring> keys{L"一开",L"一心"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
     dat.setKeys(keys);
 
-    auto  *root = new DATNode();
-    root->depth = 0;
-    root->left = 0;
-    root->right = keys.size();
+    DATNode  root;
+    root.depth = 0;
+    root.left = 0;
+    root.right = keys.size();
 
-    std::vector<DATNode*> siblings;
+    std::vector<DATNode> siblings;
     std::unordered_set<int> used;
 
     // root's neighbor: 一
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
-    ASSERT_EQ(siblings[0]->chr, 1);
+    ASSERT_EQ(siblings[0].chr, 1);
 
     // 一's neighbor: 开,心
-    std::vector<DATNode*> sub_siblings;
+    std::vector<DATNode> sub_siblings;
     dat.fetchSibling(siblings[0], sub_siblings);
     ASSERT_EQ(sub_siblings.size(), 2);
-    ASSERT_EQ(dat.getCharById(sub_siblings[0]->chr), L'开');
-    ASSERT_EQ(dat.getCharById(sub_siblings[1]->chr), L'心');
+    ASSERT_EQ(dat.getCharById(sub_siblings[0].chr), L'开');
+    ASSERT_EQ(dat.getCharById(sub_siblings[1].chr), L'心');
 
     // 开's neighbor: 始
     siblings.clear();
     dat.fetchSibling(sub_siblings[0], siblings);
     ASSERT_EQ(siblings.size(), 1);
-    ASSERT_EQ(siblings[0]->left, 0);
-    ASSERT_EQ(siblings[0]->right, 1);
-    ASSERT_EQ(siblings[0]->depth, 3);
-    ASSERT_EQ(dat.getCharById(siblings[0]->chr), L'始');
+    ASSERT_EQ(siblings[0].left, 0);
+    ASSERT_EQ(siblings[0].right, 1);
+    ASSERT_EQ(siblings[0].depth, 3);
+    ASSERT_EQ(dat.getCharById(siblings[0].chr), L'始');
 
 
     // 始's neighbor: \0
@@ -238,7 +238,7 @@ TEST(test_dat, insert_siblings_basic_2) {
     siblings.clear();
     dat.fetchSibling(root, siblings);
     ASSERT_EQ(siblings.size(), 3);
-    ASSERT_EQ(siblings[0]->chr, 1);
+    ASSERT_EQ(siblings[0].chr, 1);
 
     size_t parent_pos = 1;
     dat.insertSibling(siblings, parent_pos, used);
@@ -274,12 +274,12 @@ TEST_P(test_data_insert_siblings, insert_siblings_utils) {
     std::vector<std::wstring> keys = GetParam();
     dat.setKeys(keys);
 
-    auto  *root = new DATNode();
-    root->depth = 0;
-    root->left = 0;
-    root->right = keys.size();
+    DATNode  root;
+    root.depth = 0;
+    root.left = 0;
+    root.right = keys.size();
 
-    std::vector<DATNode*> siblings;
+    std::vector<DATNode> siblings;
     std::unordered_set<int> used;
     size_t parent_pos = 1;
 

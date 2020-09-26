@@ -35,8 +35,8 @@ class DoubleArrayTrie {
   std::vector<int> commonPrefixSearch(std::wstring &key);
 
   wchar_t getCharById(uint16_t id);
-  void fetchSibling(DATNode *node, std::vector<DATNode*> &siblings);
-  size_t insertSibling(std::vector<DATNode*> &siblings, size_t parent_pos, std::unordered_set<int> &used);
+  void fetchSibling(DATNode &node, std::vector<DATNode> &siblings);
+  size_t insertSibling(std::vector<DATNode> &siblings, size_t parent_pos, std::unordered_set<int> &used);
 
 // protected:
   std::vector<int> base{0};
