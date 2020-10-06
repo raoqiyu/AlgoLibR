@@ -171,7 +171,18 @@ class DoubleArrayTrie {
       }
       return begin;
   }
-  
+
+  VALUETYPE get(std::wstring &key){
+      auto idx = exactMatchSearch(key);
+      if(idx < 0){
+          return NULL;
+      }
+      return this->m_values[idx-1];
+  }
+
+  VALUETYPE operator[](std::wstring &key){
+      return get(key);
+  }
 
 // protected:
   std::vector<int> base{0};

@@ -305,3 +305,35 @@ INSTANTIATE_TEST_CASE_P(test_with_keys,
                                                                   L"万能", L"万能胶"}
                                         )
                         );
+
+
+TEST(test_dat, query_value) {
+    std::ios::sync_with_stdio(false);
+    std::wcout.imbue(std::locale("zh_CN.utf-8"));
+
+    std::vector<std::wstring> keys{L"一开始", L"一心", L"一心一意", L"三三两两", L"三阳开泰", L"二龙戏珠"};
+    std::vector<char> values{'A', 'B', 'C', 'D', 'E', 'F'};;
+
+    auto dat = DoubleArrayTrie<char>();
+
+    dat.build(keys, values);
+
+    std::wstring k1{L"哈哈"}, k2{L"测试"};
+    ASSERT_EQ(NULL, dat.get(k1));
+    ASSERT_EQ(NULL, dat[k2]);
+
+    ASSERT_EQ('A', dat.get(keys[0]));
+    ASSERT_EQ('B', dat.get(keys[1]));
+    ASSERT_EQ('C', dat.get(keys[2]));
+    ASSERT_EQ('D', dat.get(keys[3]));
+    ASSERT_EQ('E', dat.get(keys[4]));
+    ASSERT_EQ('F', dat.get(keys[5]));
+
+    ASSERT_EQ('A', dat[keys[0]]);
+    ASSERT_EQ('B', dat[keys[1]]);
+    ASSERT_EQ('C', dat[keys[2]]);
+    ASSERT_EQ('D', dat[keys[3]]);
+    ASSERT_EQ('E', dat[keys[4]]);
+    ASSERT_EQ('F', dat[keys[5]]);
+
+}
