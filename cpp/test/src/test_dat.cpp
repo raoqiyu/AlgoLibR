@@ -7,12 +7,12 @@
 #include <string>
 #include <gtest/gtest.h>
 
-#include "AlgoLibR/data_structure/trie/double_array_trie.h"
+#include "AlgoLibR/data_structure/trie/double_array_trie.hpp"
 
 using namespace AlgoLibR::data_structure::trie::dat;
 
 TEST(test_dat, fetch_siblings){
-    auto dat = DoubleArrayTrie();
+    auto dat = DoubleArrayTrie<int>();
     std::vector<std::wstring> keys{L"一开始",L"一心", L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
     dat.setKeys(keys);
 
@@ -125,7 +125,7 @@ TEST(test_dat, insert_siblings_basic) {
     std::ios::sync_with_stdio(false);
     std::wcout.imbue(std::locale("zh_CN.utf-8"));
 
-    auto dat = DoubleArrayTrie();
+    auto dat = DoubleArrayTrie<int>();
 
 //    std::vector<std::wstring> keys{L"一开始",L"一心", L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
     std::vector<std::wstring> keys{L"一开",L"一心", L"一心一"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
@@ -192,7 +192,7 @@ TEST(test_dat, insert_siblings_basic_2) {
     std::ios::sync_with_stdio(false);
     std::wcout.imbue(std::locale("zh_CN.utf-8"));
 
-    auto dat = DoubleArrayTrie();
+    auto dat = DoubleArrayTrie<int>();
 
     std::vector<std::wstring> keys{L"一开始", L"一心", L"一心一意", L"三三两两", L"三阳开泰", L"二龙戏珠"};
 //    std::vector<std::wstring> keys{L"一开",L"一心"};//, L"一心一意",L"二龙戏珠",L"三阳开泰",L"三三两两"};
@@ -269,7 +269,7 @@ TEST_P(test_data_insert_siblings, insert_siblings_utils) {
     std::ios::sync_with_stdio(false);
     std::wcout.imbue(std::locale("zh_CN.utf-8"));
 
-    auto dat = DoubleArrayTrie();
+    auto dat = DoubleArrayTrie<int>();
 
     std::vector<std::wstring> keys = GetParam();
     dat.setKeys(keys);
