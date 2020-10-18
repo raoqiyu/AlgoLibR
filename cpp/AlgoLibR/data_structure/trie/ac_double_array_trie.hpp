@@ -10,12 +10,12 @@ class ACDATNode {
  public:
   explicit ACDATNode(wchar_t chr) : chr(chr), key_index_(0), base_index_(0) {}
   ~ACDATNode() {
-      for (auto child_node:this->child_nodes_) {
+      for (auto & child_node : this->child_nodes_) {
           delete child_node;
-          child_node = nullptr;
       }
       this->child_nodes_.clear();
       this->child_indices_.clear();
+      failure_ = nullptr;
   }
 
   ACDATNode *addChild(wchar_t key) {
@@ -69,6 +69,15 @@ class AhoCorasickDoubleArrayTrie {
   AhoCorasickDoubleArrayTrie() {
       this->root_ = new ACDATNode(L'/');
   }
+  ~AhoCorasickDoubleArrayTrie() {
+      if(this->root_ != nullptr) delete this->root_;
+      this->base_.clear();
+      this->check_.clear();
+      this->keys_.clear();
+      this->values_.clear();
+      this->char2id_.clear();
+      this->id2char_.clear();
+  }
 
   void build(std::vector<std::wstring> keys, std::vector<V> values) {
       // build trie Tree
@@ -81,7 +90,8 @@ class AhoCorasickDoubleArrayTrie {
       constructFailure();
 
       // delete trie Tree
-//      delete this->m_root;
+      delete this->root_;
+      this->root_ = nullptr;
   }
 
   V get(std::wstring &key) {
