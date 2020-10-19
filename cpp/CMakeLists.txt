@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(AlgoLibR VERSION 0.10.0 LANGUAGES CXX)
 
 option(GOOGLE_TEST "Build google tests" ON)
-option(USE_CUDA "Build CUDA code" ON)
+option(USE_CUDA "Build CUDA code" OFF)
 
 
 ###################################################################################################

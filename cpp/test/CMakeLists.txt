@@ -1,5 +1,5 @@
 file(GLOB_RECURSE TEST_SOURCES "src/*.cpp")
-list(APPEND TEST_SOURCES "src/test_ngrams.cpp")
+#list(APPEND TEST_SOURCES "src/test_ngrams.cpp")
 
 if (USE_CUDA)
     file(GLOB_RECURSE CUDA_TEST_SOURCES "*.cu")
