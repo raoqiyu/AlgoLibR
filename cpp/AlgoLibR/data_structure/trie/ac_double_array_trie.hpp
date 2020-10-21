@@ -57,7 +57,7 @@ class ACDATNode {
   template <typename V> friend class AhoCorasickDoubleArrayTrie;
  protected:
   wchar_t chr;
-  ACDATNode *failure_;
+  ACDATNode *failure_{};
   size_t key_index_, base_index_;
   std::unordered_map<wchar_t, size_t> child_indices_;
   std::vector<ACDATNode *> child_nodes_;
@@ -139,6 +139,49 @@ class AhoCorasickDoubleArrayTrie {
   }
 
  protected:
+  int transition(int state, wchar_t key) {
+      auto iter = this->char2id_.find(key);
+      if (iter == this->char2id_.end()) return 0;
+
+      uint16_t key_id = iter->second;
+      int next_state = this->base_[state] + key_id;
+
+      // 按照 success 表跳转
+      if (state + 1 == this->check_[next_state]) {
+          return next_state;
+      }
+
+      state = this->failures_[state];
+      next_state = this->base_[state] + key_id;
+      while (next_state != 0) {
+          if (state + 1 == this->check_[next_state]) {
+              return next_state;
+          }
+          if(this->failures_[state] == state) break;
+          state = this->failures_[state];
+          next_state = this->base_[state] + key_id;
+      }
+      return 0;
+  }
+
+  void collectOutputs(size_t state, size_t pos, std::vector<std::pair<size_t, std::wstring>> &words) {
+      while (state != 0) {
+          if (this->base_[this->base_[state]] < 0 && state + 1 == this->check_[this->base_[state]])
+              words.emplace_back(pos, this->keys_[this->outputs_[this->base_[state]] - 1]);
+          state = this->base_[this->failures_[state]];
+      }
+  }
+
+  void collectValues(size_t state, std::vector<V> &words) {
+      while (state != 0) {
+          if (this->base_[this->base_[state]] < 0 && state + 1 == this->check_[this->base_[state]])
+              words.push_back(this->values_[this->outputs_[this->base_[state]] - 1]);
+          state = this->base_[this->failures_[state]];
+      }
+  }
+
+
+ private:
   // build trie Tree
   void buildTrieTree(std::vector<std::wstring> &keys, std::vector<V> &values) {
       this->keys_ = keys;
@@ -193,38 +236,6 @@ class AhoCorasickDoubleArrayTrie {
   void constructOutput(ACDATNode *node) {
       if (node->key_index_ == 0) return;
       this->outputs_[node->base_index_] = node->key_index_;
-  }
-
-  int transition(int state, wchar_t key) {
-      auto iter = this->char2id_.find(key);
-      if (iter == this->char2id_.end()) return 0;
-
-      uint16_t key_id = iter->second;
-      int next_state = this->base_[state] + key_id;
-
-      // 按照 success 表跳转
-      if (state + 1 == this->check_[next_state]) {
-          return next_state;
-      }
-
-      state = this->failures_[state];
-      while (state != 0) {
-          next_state = this->base_[state] + key_id;
-          if (state + 1 == this->check_[next_state]) {
-              return next_state;
-          }
-          state = this->failures_[state];
-      }
-      return 0;
-  }
-
-  void collectOutputs(size_t state, size_t pos, std::vector<std::pair<size_t, std::wstring>> &words) {
-      while (state != 0) {
-          if (this->base_[this->base_[state]] < 0 && state + 1 == this->check_[this->base_[state]])
-              words.emplace_back(pos, this->keys_[this->outputs_[this->base_[state]] - 1]);
-          state = this->base_[this->failures_[state]];
-      }
-
   }
 
   // build double array trie from trie Tree
@@ -319,13 +330,13 @@ class AhoCorasickDoubleArrayTrie {
  private:
   ACDATNode *root_{};
 
-  std::vector<int> base_;
-  std::vector<uint> check_;
+  std::vector<long long> base_;
+  std::vector<unsigned long long> check_;
   std::vector<std::wstring> keys_;
   std::vector<V> values_;
 
-  std::vector<size_t> outputs_;
-  std::vector<size_t> failures_;
+  std::vector<unsigned long long> outputs_;
+  std::vector<unsigned long long> failures_;
 
   std::unordered_map<wchar_t, uint16_t> char2id_{{0, 0}};
   std::unordered_map<uint16_t, wchar_t> id2char_{{0, 0}};

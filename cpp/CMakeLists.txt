@@ -16,7 +16,7 @@ set(DEFAULT_BUILD_TYPE "Debug")
 
 ###################################################################################################
 # - Compiler Options  -----------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX11_ABI ON)
 
