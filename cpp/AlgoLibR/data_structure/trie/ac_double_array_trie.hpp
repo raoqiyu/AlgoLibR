@@ -176,7 +176,7 @@ class AhoCorasickDoubleArrayTrie {
       while (state != 0) {
           if (this->base_[this->base_[state]] < 0 && state + 1 == this->check_[this->base_[state]])
               words.push_back(this->values_[this->outputs_[this->base_[state]] - 1]);
-          state = this->base_[this->failures_[state]];
+          state = this->failures_[state];
       }
   }
 
@@ -270,25 +270,37 @@ class AhoCorasickDoubleArrayTrie {
                        size_t parent_pos,
                        std::unordered_set<int> &used) {
       if (siblings.empty()) return 0;
-
-      long begin = -1, end, i, sub_begin;
+//      if(this->n_processed_ % 1000 == 0){
+//          std::wcout << this->n_processed_ << " of " << this->keys_.size() << " processed; "
+//                     << "base size: " << this->base_.size() << std::endl;
+//      }
+      long pos = std::max((size_t)siblings[0].first, this->next_check_pos_)-1, end, i, begin, sub_begin;
       bool is_find = false;
+      size_t nonzero_num = 0;
       while (true) {
-          begin++;
-          if (this->base_.size() <= begin) {
-              this->base_.resize(begin + 1);
-              this->check_.resize(begin + 1);
+          pos++;
+          if (this->base_.size() <= pos) {
+              this->base_.resize(pos + 1);
+              this->check_.resize(pos + 1);
+          }
+
+          if (this->check_[pos] != 0){
+              nonzero_num++;
+              continue;
+          }
+
+          begin = pos - siblings[0].first;
+          end = begin + siblings.back().first + 1;
+          if (this->base_.size() <= end) {
+              size_t n = end * 1.3;
+              this->base_.resize(n);
+              this->check_.resize(n);
           }
 
           if (used.end() != used.find(begin) || this->check_[begin] != 0) {
               continue;
           }
 
-          end = begin + siblings.back().first + 1;
-          if (this->base_.size() <= end) {
-              this->base_.resize(end);
-              this->check_.resize(end);
-          }
           is_find = true;
           for (i = 0; i < siblings.size(); i++) {
               if (this->check_[begin + siblings[i].first] != 0 || this->base_[begin + siblings[i].first] != 0) {
@@ -299,7 +311,11 @@ class AhoCorasickDoubleArrayTrie {
           if (is_find) {
               break;
           }
+          nonzero_num++;
       }
+      if (1.0 * nonzero_num / (begin - this->next_check_pos_ + 1) >= 0.95)
+          this->next_check_pos_ = begin+1; // 从位置 next_check_pos 开始到 pos 间，如果已占用的空间在95%以上，下次插入节点时，直接从 pos 位置处开始查找
+
       for (i = 0; i < siblings.size(); i++) {
           this->check_[begin + siblings[i].first] = parent_pos;
       }
@@ -312,6 +328,7 @@ class AhoCorasickDoubleArrayTrie {
           if (sub_siblings.empty()) {
               // end of words
               this->base_[begin + siblings[i].first] = -siblings[i].second->key_index_;
+              this->n_processed_++;
 
           } else {
               sub_begin = insertSibling(sub_siblings, begin + siblings[i].first + 1, used);
@@ -329,7 +346,8 @@ class AhoCorasickDoubleArrayTrie {
 
  private:
   ACDATNode *root_{};
-
+  size_t n_processed_{0};
+  size_t  next_check_pos_{0};
   std::vector<long long> base_;
   std::vector<unsigned long long> check_;
   std::vector<std::wstring> keys_;
