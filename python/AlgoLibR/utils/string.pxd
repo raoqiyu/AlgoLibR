@@ -49,7 +49,7 @@ cdef extern from "Python.h":
     Py_ssize_t PyUnicode_AsWideChar(object o, wchar_t *w, Py_ssize_t size) except -1
 
     #  # https://docs.python.org/3/c-api/unicode.html#c.PyUnicode_AsWideCharString
-    wchar_t* PyUnicode_AsWideCharString(PyObject *unicode, Py_ssize_t *size)
+    wchar_t* PyUnicode_AsWideCharString(PyObject *unicode, Py_ssize_t *size) except NULL
 
 # conversion function
 cdef inline wstring to_wstring(s):
